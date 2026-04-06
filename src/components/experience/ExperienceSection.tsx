@@ -99,7 +99,7 @@ function ExperienceModal({
   index: number
   totalItems: number
   isOpen: boolean
-  onClose: () => void
+  onClose: (finalIndex?: number) => void
   onPrev: () => void
   onNext: () => void
 }) {
@@ -137,7 +137,7 @@ function ExperienceModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
-          onClick={onClose}
+          onClick={() => onClose()}
         >
           {/* Backdrop - transparent with light fog effect */}
           <div className="absolute inset-0 bg-dark-bg/40 backdrop-blur-sm" />
@@ -164,7 +164,7 @@ function ExperienceModal({
             >
               {/* Close Button - positioned inside the card */}
               <button
-                onClick={(e) => { e.stopPropagation(); onClose(); }}
+                onClick={(e) => { e.stopPropagation(); onClose(index); }}
                 className="absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-border/50 hover:bg-blue-primary/20 transition-colors duration-200"
                 aria-label="Close modal"
               >
@@ -352,16 +352,40 @@ export default function ExperienceSection() {
     setModalOpen(true)
   }, [])
 
-  const closeModal = useCallback(() => {
+  const closeModal = useCallback((finalIndex?: number) => {
     setModalOpen(false)
-  }, [])
+    // Scroll to the card that was being viewed when modal closes
+    const indexToScroll = finalIndex !== undefined ? finalIndex : modalIndex
+    const card = cardRefs.current[indexToScroll]
+    if (card) {
+      setTimeout(() => {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 100) // Small delay to allow modal close animation
+    }
+  }, [modalIndex])
 
   const goToPrev = useCallback(() => {
-    setModalIndex((prev) => Math.max(0, prev - 1))
+    setModalIndex((prev) => {
+      const newIndex = Math.max(0, prev - 1)
+      // Real-time scroll sync
+      const card = cardRefs.current[newIndex]
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+      return newIndex
+    })
   }, [])
 
   const goToNext = useCallback(() => {
-    setModalIndex((prev) => Math.min(experienceData.length - 1, prev + 1))
+    setModalIndex((prev) => {
+      const newIndex = Math.min(experienceData.length - 1, prev + 1)
+      // Real-time scroll sync
+      const card = cardRefs.current[newIndex]
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+      return newIndex
+    })
   }, [])
 
   useEffect(() => {

@@ -151,24 +151,19 @@ const ProjectCard = ({ project, index }: { project: typeof projectsData[0]; inde
         </div>
 
         {/* Achievements */}
-        <div className="mb-6">
-          <h4 className="text-xs sm:text-sm font-semibold text-gray-light mb-3">Key Achievements:</h4>
+        <div className="flex-grow">
+          <h4 className="text-xs sm:text-sm font-semibold text-gray-light mb-3 uppercase tracking-wider">Key Achievements</h4>
           <ul className="space-y-2">
             {project.achievements.map((achievement, achievementIndex) => (
-              <li key={achievementIndex} className="flex items-start text-xs sm:text-sm text-gray-medium">
-                <span className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-primary mt-1.5 mr-2 sm:mr-3 flex-shrink-0" />
-                {achievement}
+              <li 
+                key={achievementIndex}
+                className="flex items-start text-xs sm:text-sm text-gray-medium"
+              >
+                <span className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-primary mt-1.5 mr-2 sm:mr-3 flex-shrink-0" />
+                <span>{achievement}</span>
               </li>
             ))}
           </ul>
-        </div>
-
-        {/* Links */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-auto">
-          <button className="inline-flex items-center justify-center px-4 sm:px-6 py-2 text-sm border border-blue-primary text-blue-primary rounded-lg hover:bg-blue-primary hover:text-white transition-colors duration-300">
-            <ExternalLink className="w-4 h-4 mr-2" />
-            View Project
-          </button>
         </div>
       </div>
     </motion.div>
@@ -248,7 +243,7 @@ export default function ProjectsSection() {
               <h3 className="text-xl sm:text-2xl font-display font-bold text-gray-light">Global Impact</h3>
             </div>
             
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 text-center">
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-green-primary mb-2">$33K+</div>
                 <div className="text-xs sm:text-sm text-gray-medium">Scholarships Raised</div>
@@ -256,10 +251,6 @@ export default function ProjectsSection() {
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-blue-primary mb-2">110+</div>
                 <div className="text-xs sm:text-sm text-gray-medium">Countries Served</div>
-              </div>
-              <div>
-                <div className="text-2xl sm:text-3xl font-bold text-purple-electric mb-2">3</div>
-                <div className="text-xs sm:text-sm text-gray-medium">Major Projects</div>
               </div>
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-coral-pop mb-2">501c3</div>
