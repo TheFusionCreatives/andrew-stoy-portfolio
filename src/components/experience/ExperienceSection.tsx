@@ -140,7 +140,7 @@ export default function ExperienceSection() {
           <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-blue-primary via-green-primary to-purple-electric" />
 
           <motion.div
-            className="space-y-12"
+            className="space-y-2"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -156,8 +156,8 @@ export default function ExperienceSection() {
                 <div className="absolute left-6 sm:left-8 md:left-1/2 transform md:-translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-blue-primary border-4 border-dark-bg shadow-lg shadow-blue-primary/50" />
 
                 {/* Content card */}
-                <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} ml-16 md:ml-0`}>
-                  <div className="p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/50 backdrop-blur-s hover:border-blue-primary/30 transition-all duration-300 group">
+                <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} ml-16 md:ml-0 ${index > 0 ? 'md:-mt-24' : ''}`}>
+                  <div className="p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/50 backdrop-blur-s hover:border-blue-primary/30 hover:scale-[1.03] hover:z-10 hover:shadow-2xl hover:shadow-blue-primary/20 transition-all duration-300 group relative">
                     {/* Header */}
                     <div className="flex items-center gap-3 mb-4 md:justify-end md:flex-row-reverse">
                       <div className="flex items-center text-blue-primary">
