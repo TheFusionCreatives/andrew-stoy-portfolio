@@ -135,10 +135,6 @@ export default function HeroSection() {
           <a href="mailto:Andrewjstoy@gmail.com" className="hover:text-blue-primary transition-colors">
             Andrewjstoy@gmail.com
           </a>
-          <span className="hidden sm:inline">•</span>
-          <a href="tel:+19189449222" className="hover:text-blue-primary transition-colors">
-            +1(918) 944-9222
-          </a>
         </motion.div>
 
         <motion.div 

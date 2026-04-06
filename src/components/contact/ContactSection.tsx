@@ -111,10 +111,38 @@ export default function ContactSection() {
           
           <motion.p 
             variants={itemVariants}
-            className="text-xl text-gray-medium max-w-4xl mx-auto leading-relaxed"
+            className="text-xl text-gray-medium max-w-4xl mx-auto leading-relaxed mb-8"
           >
             Let's collaborate on innovative solutions at the intersection of psychology and technology.
           </motion.p>
+
+          {/* Current Availability - Under Header */}
+          <motion.div 
+            variants={itemVariants} 
+            className="max-w-3xl mx-auto"
+          >
+            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4">
+              {/* Status indicator */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-primary/10 border border-green-primary/20">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-primary"></span>
+                </span>
+                <span className="text-sm font-medium text-green-primary">Available for</span>
+              </div>
+              
+              {/* Opportunity tags */}
+              <span className="px-4 py-2 text-sm text-gray-light rounded-full border border-dark-border bg-dark-surface/30 hover:border-blue-primary/50 hover:bg-blue-primary/5 transition-all duration-300 cursor-default">
+                Digital Mental Health
+              </span>
+              <span className="px-4 py-2 text-sm text-gray-light rounded-full border border-dark-border bg-dark-surface/30 hover:border-purple-electric/50 hover:bg-purple-electric/5 transition-all duration-300 cursor-default">
+                Crisis Systems
+              </span>
+              <span className="px-4 py-2 text-sm text-gray-light rounded-full border border-dark-border bg-dark-surface/30 hover:border-coral-pop/50 hover:bg-coral-pop/5 transition-all duration-300 cursor-default">
+                Speaking Engagements
+              </span>
+            </div>
+          </motion.div>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
@@ -289,34 +317,6 @@ export default function ContactSection() {
                   </a>
                 ))}
               </div>
-            </motion.div>
-
-            {/* Availability */}
-            <motion.div variants={itemVariants} className="p-8 rounded-xl border border-green-primary/30 bg-gradient-to-br from-green-primary/10 to-blue-primary/10 backdrop-blur-s">
-              <h3 className="text-xl font-display font-bold text-gray-light mb-4">
-                Current Availability
-              </h3>
-              <p className="text-gray-medium mb-4">
-                I'm currently open to consulting opportunities and collaborative projects in:
-              </p>
-              <ul className="space-y-2 text-sm text-gray-medium">
-                <li className="flex items-center">
-                  <span className="inline-block w-2 h-2 rounded-full bg-green-primary mr-3" />
-                  Digital mental health product development
-                </li>
-                <li className="flex items-center">
-                  <span className="inline-block w-2 h-2 rounded-full bg-green-primary mr-3" />
-                  Crisis intervention system design
-                </li>
-                <li className="flex items-center">
-                  <span className="inline-block w-2 h-2 rounded-full bg-green-primary mr-3" />
-                  Research collaborations in digital psychology
-                </li>
-                <li className="flex items-center">
-                  <span className="inline-block w-2 h-2 rounded-full bg-green-primary mr-3" />
-                  Speaking engagements and workshops
-                </li>
-              </ul>
             </motion.div>
           </motion.div>
         </div>
