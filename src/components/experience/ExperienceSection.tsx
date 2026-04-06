@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Container from '@/components/ui/Container'
 import { Calendar, MapPin, Briefcase, ChevronLeft, ChevronRight, X } from 'lucide-react'
 
@@ -257,37 +257,9 @@ function ExperienceCard({ item, index, isActive, innerRef, onClick }: {
   innerRef?: React.Ref<HTMLDivElement>
   onClick?: () => void
 }) {
-  // Use mutable ref for scroll tracking
-  const cardRef = useRef<HTMLDivElement | null>(null)
-  
-  // Scroll-triggered scale effect
-  const { scrollYProgress } = useScroll({
-    target: cardRef as React.RefObject<HTMLElement>,
-    offset: ["start end", "end start"]
-  })
-  
-  // Scale from 0.85 when entering to 1.08 at center to 0.85 when leaving
-  const scale = useTransform(scrollYProgress, [0, 0.4, 0.5, 0.6, 1], [0.85, 1, 1.08, 1, 0.85])
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.5, 0.7, 1], [0.5, 0.9, 1, 0.9, 0.5])
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [40, 0, -40])
-
-  // Combined ref callback to handle both refs
-  const setRefs = useCallback((el: HTMLDivElement | null) => {
-    // Cast to avoid TypeScript readonly issue
-    (cardRef as React.MutableRefObject<HTMLDivElement | null>).current = el
-    if (innerRef) {
-      if (typeof innerRef === 'function') {
-        innerRef(el)
-      } else {
-        const mutableRef = innerRef as React.MutableRefObject<HTMLDivElement | null>
-        mutableRef.current = el
-      }
-    }
-  }, [innerRef])
-  
   return (
     <motion.div
-      ref={setRefs}
+      ref={innerRef}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -303,22 +275,15 @@ function ExperienceCard({ item, index, isActive, innerRef, onClick }: {
         <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full border-4 border-dark-bg shadow-lg transition-all duration-300 ${isActive ? 'bg-blue-primary shadow-blue-primary/50 shadow-xl' : 'bg-green-primary shadow-green-primary/50'}`} />
       </motion.div>
 
-      {/* Content card with scroll animation */}
+      {/* Content card */}
       <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} ml-16 md:ml-0 ${index > 0 ? 'md:-mt-24' : ''}`}>
         <motion.div 
-          style={{ scale, opacity, y }}
-          className={`p-4 sm:p-6 rounded-xl border backdrop-blur-s transition-all duration-300 group relative cursor-pointer will-change-transform ${
+          className={`p-4 sm:p-6 rounded-xl border backdrop-blur-s transition-all duration-300 group relative cursor-pointer ${
             isActive 
-              ? 'border-blue-primary/50 bg-dark-surface/80 shadow-2xl shadow-blue-primary/20 z-10' 
-              : 'border-dark-border bg-dark-surface/50 hover:border-green-primary/30 hover:z-10 hover:shadow-2xl hover:shadow-green-primary/20'
+              ? 'border-blue-primary/50 bg-dark-surface/80 shadow-2xl shadow-blue-primary/20 scale-[1.02] z-10' 
+              : 'border-dark-border bg-dark-surface/50 hover:border-green-primary/30 hover:scale-[1.03] hover:z-10 hover:shadow-2xl hover:shadow-green-primary/20'
           }`}
-          whileHover={{ 
-            scale: 1.05,
-            boxShadow: isActive 
-              ? '0 25px 50px -12px rgba(59, 130, 246, 0.4)' 
-              : '0 25px 50px -12px rgba(16, 185, 129, 0.4)',
-            transition: { duration: 0.2 }
-          }}
+          whileHover={{ scale: isActive ? 1.02 : 1.03 }}
           onClick={onClick}
         >
           {/* Active indicator glow */}

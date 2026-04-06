@@ -78,7 +78,7 @@ const educationData = [
     period: '2021 - 2025',
     minor: 'Minor in Marketing',
     graduation: 'Graduated May 30th, 2025 - Certified',
-    diplomaLink: 'https://thefusioncreatives.github.io/My-resume/assets/Bachelors-of-Science-in-Business-Admin-Diploma.pdf',
+    diplomaLink: '/assets/Bachelors-of-Science-in-Business-Admin-Diploma.pdf',
     achievements: [
       'Leadership and Ethics Undergraduate Certificate',
       'Decision Support for Business Undergraduate Certificate',
@@ -136,7 +136,7 @@ const certificationsData = [
     issuer: 'IBM, Coursera',
     date: '2023',
     credential: 'Certified',
-    link: 'https://thefusioncreatives.github.io/My-resume/assets/IBM-Data-Analysis-Basics-Certificate.pdf'
+    link: '/assets/IBM-Data-Analysis-Basics-Certificate.pdf'
   },
   {
     name: 'Programming (Multiple Certified Badges)',
@@ -150,42 +150,42 @@ const certificationsData = [
     issuer: 'Google, Coursera',
     date: '2024',
     credential: 'Certified',
-    link: 'https://thefusioncreatives.github.io/My-resume/assets/Foundations-in-Business-Intelligence.pdf'
+    link: '/assets/Foundations-in-Business-Intelligence.pdf'
   },
   {
     name: 'Leadership and Ethics',
     issuer: 'University of Maryland, GC',
     date: '2024',
     credential: 'Certified',
-    link: 'https://thefusioncreatives.github.io/My-resume/assets/Leadership-and-Ethics-Certificate.pdf'
+    link: '/assets/Leadership-and-Ethics-Certificate.pdf'
   },
   {
     name: 'Addiction Treatment: Clinical Skills',
     issuer: 'Yale University, Coursera',
     date: '2024',
     credential: 'Certified',
-    link: 'https://thefusioncreatives.github.io/My-resume/assets/Yale-Addiction-Treatment-Certificate.pdf'
+    link: '/assets/Yale-Addiction-Treatment-Certificate.pdf'
   },
   {
     name: 'Understanding LGBTQ+ Sexuality and Gender Identity',
     issuer: 'Colorado University, Coursera',
     date: '2024',
     credential: 'Certified',
-    link: 'https://thefusioncreatives.github.io/My-resume/assets/University-of-Colorado-LGBTQ%2BIdentities-Certificate.pdf'
+    link: '/assets/University-of-Colorado-LGBTQ%2BIdentities-Certificate.pdf'
   },
   {
     name: 'Decision Support for Business',
     issuer: 'University of Maryland, GC',
     date: '2024',
     credential: 'Certified',
-    link: 'https://thefusioncreatives.github.io/My-resume/assets/Decision-Support-for-Business-Certificate.pdf'
+    link: '/assets/Decision-Support-for-Business-Certificate.pdf'
   },
   {
     name: 'Accounting Foundations',
     issuer: 'University of Maryland, GC',
     date: '2023',
     credential: 'Certified',
-    link: 'https://thefusioncreatives.github.io/My-resume/assets/accounting-foundations-certificate.pdf'
+    link: '/assets/accounting-foundations-certificate.pdf'
   }
 ]
 
