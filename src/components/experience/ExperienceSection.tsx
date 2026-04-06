@@ -459,7 +459,7 @@ export default function ExperienceSection() {
             variants={itemVariants}
             className="text-xl text-gray-medium max-w-4xl mx-auto leading-relaxed"
           >
-            A journey bridging psychology and technology to create meaningful impact in mental health.
+            Leveraging psychology and technology to drive meaningful change in mental health.
           </motion.p>
         </motion.div>
 
