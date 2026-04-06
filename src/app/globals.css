@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: var(--font-inter);
+    --font-space-grotesk: var(--font-space-grotesk);
+  }
+
+  body {
+    @apply bg-dark-bg text-gray-light;
+    font-family: var(--font-inter);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .header-primary {
+    @apply text-white;
+  }
+
+  .glow-effect {
+    @apply shadow-lg shadow-blue-primary/20;
+  }
+
+  .supernova-bg {
+    background: radial-gradient(ellipse at center, 
+      rgba(59, 130, 246, 0.1) 0%, 
+      rgba(16, 185, 129, 0.05) 25%, 
+      rgba(168, 85, 247, 0.03) 50%, 
+      transparent 100%);
+  }
+
+  .particle {
+    @apply absolute rounded-full bg-blue-primary opacity-60;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .nav-link {
+    @apply relative text-gray-light hover:text-blue-primary transition-colors duration-300;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-primary to-green-primary transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+}
+
+@layer utilities {
+  .text-shadow-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  .backdrop-blur-s {
+    backdrop-filter: blur(4px);
+  }
+}
