@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { Calendar, MapPin, Briefcase } from 'lucide-react'
+import { Calendar, MapPin, Briefcase, ChevronLeft, ChevronRight, X } from 'lucide-react'
 
 const experienceData = [
   {
@@ -86,11 +86,176 @@ const experienceData = [
   }
 ]
 
-function ExperienceCard({ item, index, isActive, innerRef }: { 
+function ExperienceModal({ 
+  item, 
+  index, 
+  totalItems,
+  isOpen, 
+  onClose, 
+  onPrev, 
+  onNext 
+}: { 
+  item: typeof experienceData[0]
+  index: number
+  totalItems: number
+  isOpen: boolean
+  onClose: () => void
+  onPrev: () => void
+  onNext: () => void
+}) {
+  // Handle keyboard navigation
+  useEffect(() => {
+    if (!isOpen) return
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') onPrev()
+      if (e.key === 'ArrowRight') onNext()
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose, onPrev, onNext])
+  
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => { document.body.style.overflow = 'unset' }
+  }, [isOpen])
+  
+  if (!isOpen || !item) return null
+  
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+          onClick={onClose}
+        >
+          {/* Backdrop - transparent with light fog effect */}
+          <div className="absolute inset-0 bg-dark-bg/40 backdrop-blur-sm" />
+          
+          {/* Modal Container - allows arrows to sit outside */}
+          <div className="relative flex items-center" onClick={(e) => e.stopPropagation()}>
+            {/* Left Arrow */}
+            <button
+              onClick={(e) => { e.stopPropagation(); onPrev(); }}
+              disabled={index === 0}
+              className="flex-shrink-0 p-3 rounded-full bg-dark-surface/80 border border-blue-primary/30 hover:bg-blue-primary/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-lg mr-2 sm:mr-4"
+              aria-label="Previous experience"
+            >
+              <ChevronLeft className="w-6 h-6 text-gray-light" />
+            </button>
+            
+            {/* Modal Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-blue-primary/30 bg-dark-surface/95 backdrop-blur-xl shadow-2xl shadow-blue-primary/20"
+            >
+              {/* Close Button - positioned inside the card */}
+              <button
+                onClick={(e) => { e.stopPropagation(); onClose(); }}
+                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-border/50 hover:bg-blue-primary/20 transition-colors duration-200"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5 text-gray-light" />
+              </button>
+              
+              {/* Content */}
+              <div className="p-6 sm:p-8">
+                {/* Counter */}
+                <div className="text-sm text-gray-medium mb-4 text-center">
+                  {index + 1} / {totalItems}
+                </div>
+                
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center text-blue-primary">
+                    <Briefcase className="w-6 h-6 mr-3" />
+                    <h2 className="text-xl sm:text-2xl font-display font-bold">{item.title}</h2>
+                  </div>
+                </div>
+                
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-light mb-4">
+                  {item.organization}
+                </h3>
+                
+                {/* Meta info */}
+                <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-medium">
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    {item.period}
+                  </div>
+                  <div className="flex items-center">
+                    <MapPin className="w-4 h-4 mr-2" />
+                    {item.location}
+                  </div>
+                </div>
+                
+                {/* Description */}
+                <p className="text-gray-medium mb-6 leading-relaxed">
+                  {item.description}
+                </p>
+                
+                {/* Achievements */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-light mb-4 uppercase tracking-wider">
+                    Key Achievements
+                  </h4>
+                  <ul className="space-y-3">
+                    {item.achievements.map((achievement, achievementIndex) => (
+                      <li 
+                        key={achievementIndex}
+                        className="flex items-start text-sm text-gray-medium"
+                      >
+                        <span className="inline-block w-2 h-2 rounded-full bg-blue-primary mt-1.5 mr-3 flex-shrink-0" />
+                        <span>{achievement}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Footer hint */}
+              <div className="px-6 py-4 border-t border-dark-border/50 bg-dark-surface/50">
+                <p className="text-xs text-gray-medium text-center">
+                  Use <kbd className="px-2 py-1 rounded bg-dark-border text-gray-light">←</kbd> <kbd className="px-2 py-1 rounded bg-dark-border text-gray-light">→</kbd> to navigate · <kbd className="px-2 py-1 rounded bg-dark-border text-gray-light">ESC</kbd> to close
+                </p>
+              </div>
+            </motion.div>
+            
+            {/* Right Arrow */}
+            <button
+              onClick={(e) => { e.stopPropagation(); onNext(); }}
+              disabled={index === totalItems - 1}
+              className="flex-shrink-0 p-3 rounded-full bg-dark-surface/80 border border-blue-primary/30 hover:bg-blue-primary/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-lg ml-2 sm:ml-4"
+              aria-label="Next experience"
+            >
+              <ChevronRight className="w-6 h-6 text-gray-light" />
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+
+function ExperienceCard({ item, index, isActive, innerRef, onClick }: { 
   item: typeof experienceData[0], 
   index: number, 
   isActive: boolean,
   innerRef?: React.Ref<HTMLDivElement>
+  onClick?: () => void
 }) {
   return (
     <motion.div
@@ -113,12 +278,13 @@ function ExperienceCard({ item, index, isActive, innerRef }: {
       {/* Content card */}
       <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} ml-16 md:ml-0 ${index > 0 ? 'md:-mt-24' : ''}`}>
         <motion.div 
-          className={`p-4 sm:p-6 rounded-xl border backdrop-blur-s transition-all duration-300 group relative ${
+          className={`p-4 sm:p-6 rounded-xl border backdrop-blur-s transition-all duration-300 group relative cursor-pointer ${
             isActive 
               ? 'border-blue-primary/50 bg-dark-surface/80 shadow-2xl shadow-blue-primary/20 scale-[1.02] z-10' 
               : 'border-dark-border bg-dark-surface/50 hover:border-green-primary/30 hover:scale-[1.03] hover:z-10 hover:shadow-2xl hover:shadow-green-primary/20'
           }`}
           whileHover={{ scale: isActive ? 1.02 : 1.03 }}
+          onClick={onClick}
         >
           {/* Active indicator glow */}
           {isActive && (
@@ -177,7 +343,26 @@ function ExperienceCard({ item, index, isActive, innerRef }: {
 
 export default function ExperienceSection() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalIndex, setModalIndex] = useState(0)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  const openModal = useCallback((index: number) => {
+    setModalIndex(index)
+    setModalOpen(true)
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false)
+  }, [])
+
+  const goToPrev = useCallback(() => {
+    setModalIndex((prev) => Math.max(0, prev - 1))
+  }, [])
+
+  const goToNext = useCallback(() => {
+    setModalIndex((prev) => Math.min(experienceData.length - 1, prev + 1))
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -278,9 +463,21 @@ export default function ExperienceSection() {
                 index={index}
                 isActive={activeIndex === index}
                 innerRef={(el: HTMLDivElement | null) => { cardRefs.current[index] = el }}
+                onClick={() => openModal(index)}
               />
             ))}
           </div>
+          
+          {/* Modal */}
+          <ExperienceModal
+            item={experienceData[modalIndex]}
+            index={modalIndex}
+            totalItems={experienceData.length}
+            isOpen={modalOpen}
+            onClose={closeModal}
+            onPrev={goToPrev}
+            onNext={goToNext}
+          />
         </div>
       </Container>
     </section>
