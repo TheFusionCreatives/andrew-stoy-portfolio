@@ -79,6 +79,7 @@ const educationData = [
     minor: 'Minor in Marketing',
     graduation: 'Graduated May 30th, 2025 - Certified',
     diplomaLink: '/assets/Bachelors-of-Science-in-Business-Admin-Diploma.pdf',
+    diplomaTitle: 'Bachelor of Science Diploma',
     achievements: [
       'Leadership and Ethics Undergraduate Certificate',
       'Decision Support for Business Undergraduate Certificate',
@@ -136,62 +137,83 @@ const certificationsData = [
     issuer: 'IBM, Coursera',
     date: '2023',
     credential: 'Certified',
-    link: '/assets/IBM-Data-Analysis-Basics-Certificate.pdf'
+    link: '/assets/IBM-Data-Analysis-Basics-Certificate.pdf',
+    title: 'IBM Data Analysis Certificate'
   },
   {
     name: 'Programming (Multiple Certified Badges)',
     issuer: 'CodeCademy',
     date: '2024',
     credential: 'Certified',
-    link: 'https://www.codecademy.com/profiles/andrewstoy'
+    link: 'https://www.codecademy.com/profiles/andrewstoy',
+    title: 'CodeCademy Profile',
+    isExternal: true
   },
   {
     name: 'Foundations of Business Intelligence',
     issuer: 'Google, Coursera',
     date: '2024',
     credential: 'Certified',
-    link: '/assets/Foundations-in-Business-Intelligence.pdf'
+    link: '/assets/Foundations-in-Business-Intelligence.pdf',
+    title: 'Business Intelligence Certificate'
   },
   {
     name: 'Leadership and Ethics',
     issuer: 'University of Maryland, GC',
     date: '2024',
     credential: 'Certified',
-    link: '/assets/Leadership-and-Ethics-Certificate.pdf'
+    link: '/assets/Leadership-and-Ethics-Certificate.pdf',
+    title: 'Leadership and Ethics Certificate'
   },
   {
     name: 'Addiction Treatment: Clinical Skills',
     issuer: 'Yale University, Coursera',
     date: '2024',
     credential: 'Certified',
-    link: '/assets/Yale-Addiction-Treatment-Certificate.pdf'
+    link: '/assets/Yale-Addiction-Treatment-Certificate.pdf',
+    title: 'Yale Addiction Treatment Certificate'
   },
   {
     name: 'Understanding LGBTQ+ Sexuality and Gender Identity',
     issuer: 'Colorado University, Coursera',
     date: '2024',
     credential: 'Certified',
-    link: '/assets/University-of-Colorado-LGBTQ%2BIdentities-Certificate.pdf'
+    link: '/assets/University-of-Colorado-LGBTQ%2BIdentities-Certificate.pdf',
+    title: 'LGBTQ+ Identities Certificate'
   },
   {
     name: 'Decision Support for Business',
     issuer: 'University of Maryland, GC',
     date: '2024',
     credential: 'Certified',
-    link: '/assets/Decision-Support-for-Business-Certificate.pdf'
+    link: '/assets/Decision-Support-for-Business-Certificate.pdf',
+    title: 'Decision Support Certificate'
   },
   {
     name: 'Accounting Foundations',
     issuer: 'University of Maryland, GC',
     date: '2023',
     credential: 'Certified',
-    link: '/assets/accounting-foundations-certificate.pdf'
+    link: '/assets/accounting-foundations-certificate.pdf',
+    title: 'Accounting Foundations Certificate'
   }
 ]
 
 export default function EducationSection() {
   const [courseworkModalOpen, setCourseworkModalOpen] = useState(false)
+  const [pdfModalOpen, setPdfModalOpen] = useState(false)
+  const [activePdf, setActivePdf] = useState<{src: string, title: string} | null>(null)
   const [activeCategory, setActiveCategory] = useState(0)
+
+  const openPdfModal = (src: string, title: string) => {
+    setActivePdf({ src, title })
+    setPdfModalOpen(true)
+  }
+
+  const closePdfModal = () => {
+    setPdfModalOpen(false)
+    setActivePdf(null)
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -298,17 +320,15 @@ export default function EducationSection() {
                   <h4 className="text-xs sm:text-sm font-semibold text-gray-light mb-2">Graduation:</h4>
                   <p className="text-gray-medium text-xs sm:text-sm italic">{item.graduation}</p>
                   {item.diplomaLink && (
-                    <a
-                      href={item.diplomaLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => openPdfModal(item.diplomaLink!, item.diplomaTitle || 'Diploma')}
                       className="inline-flex items-center mt-2 text-xs sm:text-sm text-blue-primary hover:text-blue-primary/80 transition-colors"
                     >
                       <span>View Diploma</span>
                       <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
                       </svg>
-                    </a>
+                    </button>
                   )}
                 </div>
               )}
@@ -397,34 +417,103 @@ export default function EducationSection() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
           >
             {certificationsData.map((cert, index) => (
-              <a
-                key={index}
-                href={cert.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/30 backdrop-blur-s hover:border-green-primary/30 transition-all duration-300 group"
-              >
-                <div className="flex items-center text-green-primary mb-4">
-                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                  <h4 className="font-semibold text-gray-light group-hover:text-green-primary transition-colors text-sm sm:text-base">
-                    {cert.name}
-                  </h4>
-                </div>
-                <p className="text-xs sm:text-sm text-gray-medium mb-2">{cert.issuer}</p>
-                <div className="flex justify-between items-center text-xs text-gray-medium mb-3">
-                </div>
-                <div className="flex items-center text-blue-primary hover:text-blue-primary/80 transition-colors">
-                  <span className="text-xs sm:text-sm font-medium">
-                    View Certification
-                  </span>
-                  <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
-                  </svg>
-                </div>
-              </a>
+              cert.isExternal ? (
+                <a
+                  key={index}
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/30 backdrop-blur-s hover:border-green-primary/30 transition-all duration-300 group"
+                >
+                  <div className="flex items-center text-green-primary mb-4">
+                    <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    <h4 className="font-semibold text-gray-light group-hover:text-green-primary transition-colors text-sm sm:text-base">
+                      {cert.name}
+                    </h4>
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-medium mb-2">{cert.issuer}</p>
+                  <div className="flex items-center text-blue-primary hover:text-blue-primary/80 transition-colors">
+                    <span className="text-xs sm:text-sm font-medium">View Profile</span>
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
+                    </svg>
+                  </div>
+                </a>
+              ) : (
+                <button
+                  key={index}
+                  onClick={() => openPdfModal(cert.link, cert.title || cert.name)}
+                  className="block w-full text-left p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/30 backdrop-blur-s hover:border-green-primary/30 transition-all duration-300 group"
+                >
+                  <div className="flex items-center text-green-primary mb-4">
+                    <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    <h4 className="font-semibold text-gray-light group-hover:text-green-primary transition-colors text-sm sm:text-base">
+                      {cert.name}
+                    </h4>
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-medium mb-2">{cert.issuer}</p>
+                  <div className="flex items-center text-blue-primary hover:text-blue-primary/80 transition-colors">
+                    <span className="text-xs sm:text-sm font-medium">View Certification</span>
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
+                    </svg>
+                  </div>
+                </button>
+              )
             ))}
           </motion.div>
         </motion.div>
+
+        {/* PDF Viewer Modal */}
+        <AnimatePresence>
+          {pdfModalOpen && activePdf && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+              onClick={closePdfModal}
+            >
+              {/* Backdrop */}
+              <div className="absolute inset-0 bg-dark-bg/80 backdrop-blur-sm" />
+              
+              {/* Modal Container */}
+              <div className="relative flex items-center" onClick={(e) => e.stopPropagation()}>
+                {/* Modal Card */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="relative w-full max-w-5xl max-h-[90vh] rounded-2xl border border-blue-primary/30 bg-dark-surface/95 backdrop-blur-xl shadow-2xl shadow-blue-primary/20 overflow-hidden"
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between p-4 border-b border-dark-border">
+                    <h3 className="text-lg sm:text-xl font-display font-bold text-gray-light">
+                      {activePdf.title}
+                    </h3>
+                    <button
+                      onClick={closePdfModal}
+                      className="p-2 rounded-full bg-dark-border/50 hover:bg-blue-primary/20 transition-colors duration-200"
+                      aria-label="Close modal"
+                    >
+                      <X className="w-5 h-5 text-gray-light" />
+                    </button>
+                  </div>
+                  
+                  {/* PDF Viewer */}
+                  <div className="h-[70vh] sm:h-[75vh]">
+                    <iframe
+                      src={activePdf.src}
+                      className="w-full h-full"
+                      title={activePdf.title}
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Coursework Modal */}
         <AnimatePresence>
