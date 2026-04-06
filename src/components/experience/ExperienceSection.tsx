@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Container from '@/components/ui/Container'
 import { Calendar, MapPin, Briefcase } from 'lucide-react'
@@ -85,7 +86,126 @@ const experienceData = [
   }
 ]
 
+function ExperienceCard({ item, index, isActive, innerRef }: { 
+  item: typeof experienceData[0], 
+  index: number, 
+  isActive: boolean,
+  innerRef?: React.Ref<HTMLDivElement>
+}) {
+  return (
+    <motion.div
+      ref={innerRef}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6 }}
+      className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} flex-col md:justify-between`}
+    >
+      {/* Timeline dot - pulses when active */}
+      <motion.div 
+        className="absolute left-6 sm:left-8 md:left-1/2 transform md:-translate-x-1/2 z-20"
+        animate={isActive ? { scale: 1.5 } : { scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full border-4 border-dark-bg shadow-lg transition-all duration-300 ${isActive ? 'bg-blue-primary shadow-blue-primary/50 shadow-xl' : 'bg-green-primary shadow-green-primary/50'}`} />
+      </motion.div>
+
+      {/* Content card */}
+      <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} ml-16 md:ml-0 ${index > 0 ? 'md:-mt-24' : ''}`}>
+        <motion.div 
+          className={`p-4 sm:p-6 rounded-xl border backdrop-blur-s transition-all duration-300 group relative ${
+            isActive 
+              ? 'border-blue-primary/50 bg-dark-surface/80 shadow-2xl shadow-blue-primary/20 scale-[1.02] z-10' 
+              : 'border-dark-border bg-dark-surface/50 hover:border-green-primary/30 hover:scale-[1.03] hover:z-10 hover:shadow-2xl hover:shadow-green-primary/20'
+          }`}
+          whileHover={{ scale: isActive ? 1.02 : 1.03 }}
+        >
+          {/* Active indicator glow */}
+          {isActive && (
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-primary/10 via-transparent to-green-primary/10 pointer-events-none" />
+          )}
+          
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-4 md:justify-end md:flex-row-reverse">
+            <div className={`flex items-center transition-colors duration-300 ${isActive ? 'text-blue-primary' : 'text-green-primary'}`}>
+              <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <span className="font-medium text-sm sm:text-base">{item.title}</span>
+            </div>
+          </div>
+
+          <h3 className={`text-lg sm:text-xl font-display font-bold mb-2 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-light group-hover:text-blue-primary'}`}>
+            {item.organization}
+          </h3>
+
+          {/* Meta info */}
+          <div className="flex flex-wrap gap-3 sm:gap-4 mb-4 text-xs sm:text-sm text-gray-medium md:justify-end">
+            <div className="flex items-center">
+              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              {item.period}
+            </div>
+            <div className="flex items-center">
+              <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              {item.location}
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-gray-medium mb-4 leading-relaxed text-sm sm:text-base">
+            {item.description}
+          </p>
+
+          {/* Achievements */}
+          <ul className="space-y-2">
+            {item.achievements.map((achievement, achievementIndex) => (
+              <li 
+                key={achievementIndex}
+                className="flex items-start text-xs sm:text-sm text-gray-medium md:justify-end"
+              >
+                <span className={`inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mt-1.5 mr-2 sm:mr-3 flex-shrink-0 md:order-2 md:ml-3 md:mr-0 transition-colors duration-300 ${isActive ? 'bg-blue-primary' : 'bg-green-primary'}`} />
+                <span className="md:order-1">{achievement}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      </div>
+
+      {/* Spacer for alternating layout */}
+      <div className="hidden md:block w-5/12" />
+    </motion.div>
+  )
+}
+
 export default function ExperienceSection() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const viewportCenter = window.innerHeight / 2
+      let closestIndex = 0
+      let closestDistance = Infinity
+
+      cardRefs.current.forEach((card, index) => {
+        if (card) {
+          const rect = card.getBoundingClientRect()
+          const cardCenter = rect.top + rect.height / 2
+          const distance = Math.abs(viewportCenter - cardCenter)
+          
+          if (distance < closestDistance) {
+            closestDistance = distance
+            closestIndex = index
+          }
+        }
+      })
+
+      setActiveIndex(closestIndex)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -139,74 +259,28 @@ export default function ExperienceSection() {
           {/* Timeline line */}
           <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-blue-primary via-green-primary to-purple-electric" />
 
-          <motion.div
-            className="space-y-2"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
+          {/* Progress indicator line */}
+          <motion.div 
+            className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-0.5 bg-gradient-to-b from-blue-primary to-blue-primary origin-top"
+            style={{ 
+              height: `${((activeIndex + 1) / experienceData.length) * 100}%`
+            }}
+            initial={{ height: 0 }}
+            animate={{ height: `${((activeIndex + 1) / experienceData.length) * 100}%` }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
+
+          <div className="space-y-2">
             {experienceData.map((item, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} flex-col md:justify-between`}
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-6 sm:left-8 md:left-1/2 transform md:-translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-blue-primary border-4 border-dark-bg shadow-lg shadow-blue-primary/50" />
-
-                {/* Content card */}
-                <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'} ml-16 md:ml-0 ${index > 0 ? 'md:-mt-24' : ''}`}>
-                  <div className="p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/50 backdrop-blur-s hover:border-blue-primary/30 hover:scale-[1.03] hover:z-10 hover:shadow-2xl hover:shadow-blue-primary/20 transition-all duration-300 group relative">
-                    {/* Header */}
-                    <div className="flex items-center gap-3 mb-4 md:justify-end md:flex-row-reverse">
-                      <div className="flex items-center text-blue-primary">
-                        <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                        <span className="font-medium text-sm sm:text-base">{item.title}</span>
-                      </div>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-display font-bold text-gray-light mb-2">
-                      {item.organization}
-                    </h3>
-
-                    {/* Meta info */}
-                    <div className="flex flex-wrap gap-3 sm:gap-4 mb-4 text-xs sm:text-sm text-gray-medium md:justify-end">
-                      <div className="flex items-center">
-                        <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                        {item.period}
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                        {item.location}
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-gray-medium mb-4 leading-relaxed text-sm sm:text-base">
-                      {item.description}
-                    </p>
-
-                    {/* Achievements */}
-                    <ul className="space-y-2">
-                      {item.achievements.map((achievement, achievementIndex) => (
-                        <li 
-                          key={achievementIndex}
-                          className="flex items-start text-xs sm:text-sm text-gray-medium md:justify-end"
-                        >
-                          <span className="inline-block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-primary mt-1.5 mr-2 sm:mr-3 flex-shrink-0 md:order-2 md:ml-3 md:mr-0" />
-                          <span className="md:order-1">{achievement}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Spacer for alternating layout */}
-                <div className="hidden md:block w-5/12" />
-              </motion.div>
+              <ExperienceCard 
+                key={index} 
+                item={item} 
+                index={index}
+                isActive={activeIndex === index}
+                innerRef={(el: HTMLDivElement | null) => { cardRefs.current[index] = el }}
+              />
             ))}
-          </motion.div>
+          </div>
         </div>
       </Container>
     </section>
