@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Download, Sparkles, ChevronDown } from 'lucide-react'
+import { ArrowDown, Download, Sparkles } from 'lucide-react'
 
 interface Particle {
   id: number
@@ -145,15 +145,22 @@ export default function HeroSection() {
           variants={itemVariants}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <button className="group relative inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-primary to-green-primary text-white font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-primary/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:ring-offset-dark-bg text-sm sm:text-base">
+          <button 
+            onClick={() => {
+              const aboutSection = document.getElementById('about')
+              aboutSection?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="group relative inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-primary to-green-primary text-white font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-primary/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:ring-offset-dark-bg text-sm sm:text-base"
+          >
             <span className="mr-2">View My Work</span>
-            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
+            <ArrowDown className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-1 transition-transform duration-300" />
           </button>
 
-          <button className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border border-blue-primary text-blue-primary font-medium rounded-lg transition-all duration-300 hover:bg-blue-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:ring-offset-dark-bg text-sm sm:text-base">
+          {/* Download Resume Button - Hidden for now */}
+          {/* <button className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border border-blue-primary text-blue-primary font-medium rounded-lg transition-all duration-300 hover:bg-blue-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:ring-offset-dark-bg text-sm sm:text-base">
             <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:animate-bounce" />
             Download Resume
-          </button>
+          </button> */}
         </motion.div>
 
               </motion.div>

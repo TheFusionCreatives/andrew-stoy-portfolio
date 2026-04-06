@@ -65,15 +65,17 @@ export default function AboutSection() {
             variants={itemVariants}
             className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-display font-bold mb-6 header-primary"
           >
-            About Me
+            My Approach
           </motion.h2>
           
           <motion.p 
             variants={itemVariants}
             className="text-xl text-gray-medium max-w-4xl mx-auto leading-relaxed"
           >
-            I'm a psychology-focused professional dedicated to integrating behavioral science 
-            and technology to create innovative mental health solutions that make a real difference.
+            My work sits at the intersection of psychology and technology, where I apply 
+            research methods and data analysis to examine how digital contexts influence 
+            cognition, emotion, and behavior. This unique perspective allows me to develop 
+            solutions that are both technologically advanced and psychologically sound.
           </motion.p>
         </motion.div>
 
@@ -85,23 +87,6 @@ export default function AboutSection() {
           viewport={{ once: true }}
           variants={containerVariants}
         >
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-2xl font-display font-bold text-gray-light mb-4">
-              My Approach
-            </h3>
-            <p className="text-gray-medium leading-relaxed">
-              My work sits at the intersection of psychology and technology, where I apply 
-              research methods and data analysis to examine how digital contexts influence 
-              cognition, emotion, and behavior. This unique perspective allows me to develop 
-              solutions that are both technologically advanced and psychologically sound.
-            </p>
-            <p className="text-gray-medium leading-relaxed">
-              With direct experience in crisis intervention and a strong commitment to 
-              client-centered care, I bring practical insights from high-stakes environments 
-              to every project I undertake.
-            </p>
-          </motion.div>
-
           <motion.div variants={itemVariants} className="space-y-6">
             <h3 className="text-2xl font-display font-bold text-gray-light mb-4">
               Core Values
@@ -116,6 +101,22 @@ export default function AboutSection() {
               My global experience has taught me the importance of cultural sensitivity 
               and adaptation in mental health interventions, ensuring that solutions are 
               effective across diverse populations and contexts.
+            </p>
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="space-y-6">
+            <h3 className="text-2xl font-display font-bold text-gray-light mb-4">
+              Global Impact
+            </h3>
+            <p className="text-gray-medium leading-relaxed">
+              Direct experience supporting crisis intervention efforts across 110+ countries 
+              has provided me with unique insights into diverse mental health challenges and 
+              cultural contexts. This global perspective informs every aspect of my work.
+            </p>
+            <p className="text-gray-medium leading-relaxed">
+              I'm committed to creating solutions that are culturally sensitive and adaptable, 
+              ensuring that mental health support is accessible and effective for all populations 
+              regardless of their background or location.
             </p>
           </motion.div>
         </motion.div>
