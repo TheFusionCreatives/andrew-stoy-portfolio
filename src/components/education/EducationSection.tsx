@@ -1,8 +1,74 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { GraduationCap, Award, BookOpen, Calendar, MapPin } from 'lucide-react'
+import { GraduationCap, Award, BookOpen, Calendar, MapPin, X, Library } from 'lucide-react'
+
+const courseworkData = {
+  institutions: [
+    { name: 'Ohio Wesleyan University', period: '2020-2021' },
+    { name: 'University of Maryland Global Campus', period: '2021-2025' },
+    { name: 'ACE/NCCRS Certified Undergraduate College Credits', period: '2021-2026' }
+  ],
+  categories: [
+    {
+      title: 'PSYCHOLOGY',
+      color: 'blue',
+      courses: [
+        { name: 'Lifespan Developmental Psychology (PSYC 107)', status: 'in-progress', desc: 'Study of human development across the lifespan, including physical, cognitive, and socioemotional changes.' },
+        { name: 'Psychology of Personality (PSYC 310)', status: 'in-progress', desc: 'Examination of major personality theories, individual differences, and psychological factors shaping identity.' },
+        { name: 'Psychology of Motivation (PSYC 315)', status: 'in-progress', desc: 'Exploration of processes that initiate, sustain, and regulate goal-directed behavior.' },
+        { name: 'Advanced Abnormal Psychology (PSYC 306)', status: 'in-progress', desc: 'In-depth study of psychological disorders, diagnosis, etiology, and evidence-based treatment.' },
+        { name: 'Industrial/Organizational Psychology (PSYC 301)', status: 'completed', desc: 'Study of workplace behavior, motivation, leadership, and employee performance.' },
+        { name: 'Research Methods in Psychology (PSYC 300)', status: 'completed', desc: 'Designing studies, analyzing data, and applying scientific methods to psychological research.' },
+        { name: 'Psychology of Gender (PSYC 338)', status: 'completed', desc: 'Exploration of gender identity, social roles, and psychological research on gender differences.' },
+        { name: 'Introduction to Psychology (PSYC 100)', status: 'completed', desc: 'Overview of core psychological concepts including cognition, behavior, and mental processes.' }
+      ]
+    },
+    {
+      title: 'DATA & ANALYTICS',
+      color: 'green',
+      courses: [
+        { name: 'Statistics (STAT 200)', status: 'completed', desc: 'Statistical analysis, probability, and interpretation of quantitative data.' },
+        { name: 'Intelligence & Data Analytics (IFSM 330)', status: 'completed', desc: 'Using data analytics tools to support business intelligence and decision-making.' },
+        { name: 'Information Systems (IFSM 300)', status: 'completed', desc: 'Role of technology systems in business operations and organizational strategy.' },
+        { name: 'Finance (FINC 330)', status: 'completed', desc: 'Financial analysis, budgeting, and evaluation of investments and financial performance.' },
+        { name: 'Microeconomics (ECON 203)', status: 'completed', desc: 'Economic behavior of individuals and firms, supply, demand, and market structures.' },
+        { name: 'Macroeconomics (ECON 201)', status: 'completed', desc: 'National and global economic systems, inflation, unemployment, and fiscal policy.' },
+        { name: 'Principles of Accounting I & II (ACCT 220 & 221)', status: 'completed', desc: 'Financial accounting fundamentals, financial statements, reporting, and analysis.' },
+        { name: 'Intermediate Accounting (ACCT 310)', status: 'completed', desc: 'Advanced financial reporting, accounting standards, and complex transactions.' }
+      ]
+    },
+    {
+      title: 'MARKETING & CONSUMER',
+      color: 'purple',
+      courses: [
+        { name: 'Consumer Behavior (MRKT 410)', status: 'completed', desc: 'Analysis of how psychological, social, and cultural factors influence purchasing decisions.' },
+        { name: 'Managing Customer Relationships (MRKT 394)', status: 'completed', desc: 'Strategies for customer retention, CRM systems, and building long-term relationships.' },
+        { name: 'Email Marketing (MRKT 356)', status: 'completed', desc: 'Planning and executing targeted email campaigns using analytics and segmentation.' },
+        { name: 'Nonprofit Marketing (MRKT 314)', status: 'completed', desc: 'Marketing strategies for nonprofits, including fundraising and mission-driven messaging.' },
+        { name: 'Social Media Marketing (MRKT 458)', status: 'completed', desc: 'Developing digital marketing strategies using social platforms and engagement analytics.' },
+        { name: 'Marketing Principles (MRKT 310)', status: 'completed', desc: 'Fundamentals of marketing including market research, branding, and strategy development.' }
+      ]
+    },
+    {
+      title: 'LEADERSHIP & MANAGEMENT',
+      color: 'coral',
+      courses: [
+        { name: 'Foundations of Leadership (BMGT 302)', status: 'completed', desc: 'Leadership theories, communication strategies, and decision-making in organizations.' },
+        { name: 'Business Ethics (BMGT 496)', status: 'completed', desc: 'Ethical decision-making, corporate responsibility, and ethical frameworks in business.' },
+        { name: 'Management & Organizational Theory (BMGT 364)', status: 'completed', desc: 'Examination of management models, organizational structures, and workplace effectiveness.' },
+        { name: 'Business Law (BMGT 380)', status: 'completed', desc: 'Legal principles affecting businesses including contracts, liability, and compliance.' },
+        { name: 'Strategic Management (BMGT 495)', status: 'completed', desc: 'Developing long-term business strategies using competitive and organizational analysis.' },
+        { name: 'Organizational Leadership (BMGT 365)', status: 'completed', desc: 'Leadership approaches focused on change management, influence, and organizational growth.' },
+        { name: 'Human Resource Management (HMRN 300)', status: 'completed', desc: 'Workforce planning, talent management, and HR policies in organizations.' },
+        { name: 'Developing Effective Teams (BMGT Elective)', status: 'completed', desc: 'Building high-performing teams through collaboration, communication, and group dynamics.' },
+        { name: 'Managing Conflicts (BMGT Elective)', status: 'completed', desc: 'Conflict resolution strategies and negotiation techniques within professional environments.' }
+      ]
+    }
+  ]
+}
 
 const educationData = [
   {
@@ -124,6 +190,9 @@ const certificationsData = [
 ]
 
 export default function EducationSection() {
+  const [courseworkModalOpen, setCourseworkModalOpen] = useState(false)
+  const [activeCategory, setActiveCategory] = useState(0)
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -273,6 +342,38 @@ export default function EducationSection() {
               </div>
             </motion.div>
           ))}
+          
+          {/* Coursework Gallery Card */}
+          <motion.div
+            variants={itemVariants}
+            className="p-6 sm:p-8 rounded-xl border border-purple-electric/30 bg-dark-surface/50 backdrop-blur-s hover:border-purple-electric/50 transition-all duration-300 group cursor-pointer"
+            onClick={() => setCourseworkModalOpen(true)}
+          >
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-electric/20 to-blue-primary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Library className="w-8 h-8 text-purple-electric" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-display font-bold text-gray-light group-hover:text-purple-electric transition-colors mb-2">
+                Academic Coursework
+              </h3>
+              <p className="text-sm text-gray-medium mb-4">
+                Complete course catalog from all institutions
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {courseworkData.categories.slice(0, 3).map((cat, i) => (
+                  <span 
+                    key={i}
+                    className="px-3 py-1 text-xs rounded-full border border-purple-electric/30 bg-purple-electric/10 text-purple-electric"
+                  >
+                    {cat.title}
+                  </span>
+                ))}
+                <span className="px-3 py-1 text-xs rounded-full border border-dark-border bg-dark-surface/50 text-gray-medium">
+                  +{courseworkData.categories.length - 3} more
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Certifications */}
@@ -324,6 +425,111 @@ export default function EducationSection() {
             ))}
           </motion.div>
         </motion.div>
+
+        {/* Coursework Modal */}
+        <AnimatePresence>
+          {courseworkModalOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+              onClick={() => setCourseworkModalOpen(false)}
+            >
+              {/* Backdrop */}
+              <div className="absolute inset-0 bg-dark-bg/60 backdrop-blur-sm" />
+              
+              {/* Modal Container */}
+              <div className="relative flex items-center" onClick={(e) => e.stopPropagation()}>
+                {/* Modal Card */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="relative w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-2xl border border-purple-electric/30 bg-dark-surface/95 backdrop-blur-xl shadow-2xl shadow-purple-electric/20"
+                >
+                  {/* Close Button */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setCourseworkModalOpen(false); }}
+                    className="absolute top-4 right-4 z-10 p-2 rounded-full bg-dark-border/50 hover:bg-purple-electric/20 transition-colors duration-200"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-5 h-5 text-gray-light" />
+                  </button>
+                  
+                  {/* Content */}
+                  <div className="p-6 sm:p-8">
+                    {/* Header */}
+                    <div className="flex items-center gap-3 mb-6">
+                      <Library className="w-6 h-6 text-purple-electric" />
+                      <h2 className="text-xl sm:text-2xl font-display font-bold text-gray-light">Academic Coursework</h2>
+                    </div>
+                    
+                    {/* Institutions */}
+                    <div className="flex flex-wrap gap-3 mb-6 text-xs text-gray-medium">
+                      {courseworkData.institutions.map((inst, i) => (
+                        <div key={i} className="px-3 py-1 rounded-full bg-dark-surface/50 border border-dark-border">
+                          <span className="font-medium text-gray-light">{inst.name}</span>
+                          <span className="ml-2 text-purple-electric">{inst.period}</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Category Tabs */}
+                    <div className="flex flex-wrap gap-2 mb-6 border-b border-dark-border pb-4">
+                      {courseworkData.categories.map((cat, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setActiveCategory(index)}
+                          className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                            activeCategory === index
+                              ? 'bg-purple-electric/20 text-purple-electric border border-purple-electric/50'
+                              : 'bg-dark-surface/50 text-gray-medium border border-dark-border hover:border-purple-electric/30'
+                          }`}
+                        >
+                          {cat.title}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    {/* Course List */}
+                    <div className="space-y-3">
+                      {courseworkData.categories[activeCategory].courses.map((course, courseIndex) => (
+                        <div
+                          key={courseIndex}
+                          className="p-4 rounded-lg border border-dark-border hover:border-purple-electric/30 bg-dark-surface/30 transition-all duration-300"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <h4 className="font-semibold text-gray-light text-sm sm:text-base">{course.name}</h4>
+                            {course.status === 'in-progress' && (
+                              <span className="px-2 py-1 text-xs rounded-full bg-blue-primary/10 text-blue-primary border border-blue-primary/30">
+                                In Progress
+                              </span>
+                            )}
+                            {course.status === 'completed' && (
+                              <span className="px-2 py-1 text-xs rounded-full bg-green-primary/10 text-green-primary border border-green-primary/30">
+                                Completed
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs sm:text-sm text-gray-medium">{course.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Footer */}
+                    <div className="mt-6 pt-4 border-t border-dark-border/50 text-center">
+                      <p className="text-xs text-gray-medium">
+                        Use category tabs to explore different subject areas
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Container>
     </section>
   )
