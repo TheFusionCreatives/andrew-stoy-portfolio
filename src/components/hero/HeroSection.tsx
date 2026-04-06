@@ -153,7 +153,7 @@ export default function HeroSection() {
             className="group relative inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-primary to-green-primary text-white font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-blue-primary/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2 focus:ring-offset-dark-bg text-sm sm:text-base"
           >
             <span className="mr-2">View My Work</span>
-            <ArrowDown className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-1 transition-transform duration-300" />
+            <ArrowDown className="w-4 h-4 sm:w-5 sm:h-5 animate-bounce group-hover:translate-y-1 transition-transform duration-300" />
           </button>
 
           {/* Download Resume Button - Hidden for now */}
