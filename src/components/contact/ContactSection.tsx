@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { Mail, Phone, MapPin, Send, Linkedin } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, Linkedin, Github } from 'lucide-react'
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -42,6 +42,11 @@ export default function ContactSection() {
       icon: Linkedin,
       label: 'LinkedIn',
       href: 'https://www.linkedin.com/in/drew-s-/'
+    },
+    {
+      icon: Github,
+      label: 'GitHub',
+      href: 'https://github.com/TheFusionCreatives'
     }
   ]
 
