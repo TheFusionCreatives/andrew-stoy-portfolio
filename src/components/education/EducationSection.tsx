@@ -204,6 +204,7 @@ export default function EducationSection() {
   const [pdfModalOpen, setPdfModalOpen] = useState(false)
   const [pdfModalIndex, setPdfModalIndex] = useState(0)
   const [activeCategory, setActiveCategory] = useState(0)
+  const [expandedSection, setExpandedSection] = useState<'highlights' | 'courses' | 'projects'>('highlights')
 
   // All PDF items for navigation (including external CodeCademy)
   const allPdfItems = [
@@ -568,21 +569,152 @@ export default function EducationSection() {
                   </div>
                   
                   {/* Content */}
-                  <div className="h-[70vh] sm:h-[75vh]">
+                  <div className="h-[70vh] sm:h-[75vh] overflow-y-auto">
                     {allPdfItems[pdfModalIndex].type === 'external' ? (
-                      <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-                        <p className="text-gray-medium mb-4">This will open CodeCademy in a new tab</p>
-                        <a
-                          href={allPdfItems[pdfModalIndex].src}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-6 py-3 rounded-lg bg-blue-primary/20 text-blue-primary hover:bg-blue-primary/30 transition-colors"
-                        >
-                          <span>View Profile</span>
-                          <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
-                          </svg>
-                        </a>
+                      <div className="p-6 sm:p-8">
+                        {/* CodeCademy Profile Header */}
+                        <div className="flex items-center gap-3 mb-6 pb-6 border-b border-dark-border">
+                          <div className="w-12 h-12 rounded-full bg-blue-primary/20 flex items-center justify-center">
+                            <svg className="w-6 h-6 text-blue-primary" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                            </svg>
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-display font-bold text-gray-light">CodeCademy Profile</h3>
+                            <p className="text-sm text-gray-medium">Programming & Development Skills</p>
+                          </div>
+                          <a
+                            href={allPdfItems[pdfModalIndex].src}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-auto inline-flex items-center px-4 py-2 rounded-lg bg-blue-primary/20 text-blue-primary hover:bg-blue-primary/30 transition-colors text-sm"
+                          >
+                            <span>View Full Profile</span>
+                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
+                            </svg>
+                          </a>
+                        </div>
+
+                        {/* Learning Highlights - Collapsible */}
+                        <div className="mb-4">
+                          <button
+                            onClick={() => setExpandedSection(expandedSection === 'highlights' ? 'highlights' : 'highlights')}
+                            className="w-full flex items-center justify-between p-3 rounded-lg border border-coral/30 bg-coral/10 hover:bg-coral/20 transition-colors"
+                          >
+                            <h4 className="text-sm font-semibold text-coral uppercase tracking-wider flex items-center gap-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                              </svg>
+                              Learning Highlights (3)
+                            </h4>
+                            <svg 
+                              className={`w-5 h-5 text-coral transition-transform duration-200 ${expandedSection === 'highlights' ? 'rotate-180' : ''}`} 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          {expandedSection === 'highlights' && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="mt-3 space-y-3"
+                            >
+                              <div className="p-3 rounded-lg border-l-4 border-purple-electric bg-dark-surface/30">
+                                <p className="text-sm text-gray-light"><strong className="text-purple-electric">Language Versatility:</strong> Demonstrating a foundational grasp of Python, JavaScript, and CSS through hands-on projects.</p>
+                              </div>
+                              <div className="p-3 rounded-lg border-l-4 border-blue-primary bg-dark-surface/30">
+                                <p className="text-sm text-gray-light"><strong className="text-blue-primary">Full-Stack Foundations:</strong> Moving beyond basic styling into back-end logic and modern frameworks like Next.js.</p>
+                              </div>
+                              <div className="p-3 rounded-lg border-l-4 border-green-primary bg-dark-surface/30">
+                                <p className="text-sm text-gray-light"><strong className="text-green-primary">AI Implementation:</strong> Gaining practical experience with LLMs and AI-powered development tools like Windsurf.</p>
+                              </div>
+                            </motion.div>
+                          )}
+                        </div>
+
+                        {/* Key Modules & Projects - Collapsible */}
+                        <div className="mb-4">
+                          <button
+                            onClick={() => setExpandedSection(expandedSection === 'projects' ? 'highlights' : 'projects')}
+                            className="w-full flex items-center justify-between p-3 rounded-lg border border-blue-primary/30 bg-blue-primary/10 hover:bg-blue-primary/20 transition-colors"
+                          >
+                            <h4 className="text-sm font-semibold text-blue-primary uppercase tracking-wider flex items-center gap-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                              </svg>
+                              Key Modules & Projects (6)
+                            </h4>
+                            <svg 
+                              className={`w-5 h-5 text-blue-primary transition-transform duration-200 ${expandedSection === 'projects' ? 'rotate-180' : ''}`} 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          {expandedSection === 'projects' && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="mt-3 grid grid-cols-2 gap-2"
+                            >
+                              {['Next.js Core Concepts', 'Visual Rules (CSS)', 'Syntax and Selectors (CSS)', 'Kelvin Weather Project (JavaScript)', 'Python Syntax', 'Tip Calculator Project (Python)'].map((project, i) => (
+                                <div key={i} className="flex items-center gap-2 p-2 rounded bg-dark-surface/50 text-sm text-gray-light">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-primary flex-shrink-0" />
+                                  {project}
+                                </div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </div>
+
+                        {/* Course Completions - Collapsible */}
+                        <div>
+                          <button
+                            onClick={() => setExpandedSection(expandedSection === 'courses' ? 'highlights' : 'courses')}
+                            className="w-full flex items-center justify-between p-3 rounded-lg border border-green-primary/30 bg-green-primary/10 hover:bg-green-primary/20 transition-colors"
+                          >
+                            <h4 className="text-sm font-semibold text-green-primary uppercase tracking-wider flex items-center gap-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              Course Completions (4)
+                            </h4>
+                            <svg 
+                              className={`w-5 h-5 text-green-primary transition-transform duration-200 ${expandedSection === 'courses' ? 'rotate-180' : ''}`} 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          {expandedSection === 'courses' && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3"
+                            >
+                              {['Learn CSS: Introduction', 'Intro to Large Language Models (LLMs)', 'Introduction to Back-End Programming', 'Intro to AI Programming with Windsurf'].map((course, i) => (
+                                <div key={i} className="flex items-center gap-2 p-3 rounded-lg border border-green-primary/20 bg-green-primary/5">
+                                  <span className="w-2 h-2 rounded-full bg-green-primary flex-shrink-0" />
+                                  <span className="text-sm text-gray-light">{course}</span>
+                                </div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </div>
                       </div>
                     ) : (
                       <iframe
