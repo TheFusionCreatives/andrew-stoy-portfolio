@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { GraduationCap, Award, BookOpen, Calendar, MapPin, X, Library } from 'lucide-react'
+import { GraduationCap, Award, BookOpen, Calendar, MapPin, X, Library, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const courseworkData = {
   institutions: [
@@ -202,18 +202,52 @@ const certificationsData = [
 export default function EducationSection() {
   const [courseworkModalOpen, setCourseworkModalOpen] = useState(false)
   const [pdfModalOpen, setPdfModalOpen] = useState(false)
-  const [activePdf, setActivePdf] = useState<{src: string, title: string} | null>(null)
+  const [pdfModalIndex, setPdfModalIndex] = useState(0)
   const [activeCategory, setActiveCategory] = useState(0)
 
-  const openPdfModal = (src: string, title: string) => {
-    setActivePdf({ src, title })
+  // All PDF items for navigation (including external CodeCademy)
+  const allPdfItems = [
+    { name: 'Bachelor of Science Diploma', src: '/assets/Bachelors-of-Science-in-Business-Admin-Diploma.pdf', type: 'pdf' },
+    { name: 'IBM Data Analysis Certificate', src: '/assets/IBM-Data-Analysis-Basics-Certificate.pdf', type: 'pdf' },
+    { name: 'CodeCademy Profile', src: 'https://www.codecademy.com/profiles/andrewstoy', type: 'external' },
+    { name: 'Business Intelligence Certificate', src: '/assets/Foundations-in-Business-Intelligence.pdf', type: 'pdf' },
+    { name: 'Leadership and Ethics Certificate', src: '/assets/Leadership-and-Ethics-Certificate.pdf', type: 'pdf' },
+    { name: 'Yale Addiction Treatment Certificate', src: '/assets/Yale-Addiction-Treatment-Certificate.pdf', type: 'pdf' },
+    { name: 'LGBTQ+ Identities Certificate', src: '/assets/University-of-Colorado-LGBTQ+Identities-Certificate.pdf', type: 'pdf' },
+    { name: 'Decision Support Certificate', src: '/assets/Decision-Support-for-Business-Certificate.pdf', type: 'pdf' },
+    { name: 'Accounting Foundations Certificate', src: '/assets/accounting-foundations-certificate.pdf', type: 'pdf' },
+  ]
+
+  const openPdfModal = (index: number) => {
+    setPdfModalIndex(index)
     setPdfModalOpen(true)
   }
 
   const closePdfModal = () => {
     setPdfModalOpen(false)
-    setActivePdf(null)
   }
+
+  const goToPrev = () => {
+    setPdfModalIndex((prev) => Math.max(0, prev - 1))
+  }
+
+  const goToNext = () => {
+    setPdfModalIndex((prev) => Math.min(allPdfItems.length - 1, prev + 1))
+  }
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!pdfModalOpen) return
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closePdfModal()
+      if (e.key === 'ArrowLeft') goToPrev()
+      if (e.key === 'ArrowRight') goToNext()
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [pdfModalOpen])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -321,7 +355,7 @@ export default function EducationSection() {
                   <p className="text-gray-medium text-xs sm:text-sm italic">{item.graduation}</p>
                   {item.diplomaLink && (
                     <button
-                      onClick={() => openPdfModal(item.diplomaLink!, item.diplomaTitle || 'Diploma')}
+                      onClick={() => openPdfModal(0)}
                       className="inline-flex items-center mt-2 text-xs sm:text-sm text-blue-primary hover:text-blue-primary/80 transition-colors"
                     >
                       <span>View Diploma</span>
@@ -418,12 +452,10 @@ export default function EducationSection() {
           >
             {certificationsData.map((cert, index) => (
               cert.isExternal ? (
-                <a
+                <button
                   key={index}
-                  href={cert.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/30 backdrop-blur-s hover:border-green-primary/30 transition-all duration-300 group"
+                  onClick={() => openPdfModal(2)} // CodeCademy is index 2
+                  className="block w-full text-left p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/30 backdrop-blur-s hover:border-green-primary/30 transition-all duration-300 group"
                 >
                   <div className="flex items-center text-green-primary mb-4">
                     <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -438,11 +470,15 @@ export default function EducationSection() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
                     </svg>
                   </div>
-                </a>
+                </button>
               ) : (
                 <button
                   key={index}
-                  onClick={() => openPdfModal(cert.link, cert.title || cert.name)}
+                  onClick={() => {
+                    // Map cert to index in allPdfItems
+                    const pdfIndex = allPdfItems.findIndex(item => item.src === cert.link)
+                    openPdfModal(pdfIndex >= 0 ? pdfIndex : 0)
+                  }}
                   className="block w-full text-left p-4 sm:p-6 rounded-xl border border-dark-border bg-dark-surface/30 backdrop-blur-s hover:border-green-primary/30 transition-all duration-300 group"
                 >
                   <div className="flex items-center text-green-primary mb-4">
@@ -466,7 +502,7 @@ export default function EducationSection() {
 
         {/* PDF Viewer Modal */}
         <AnimatePresence>
-          {pdfModalOpen && activePdf && (
+          {pdfModalOpen && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -474,36 +510,53 @@ export default function EducationSection() {
               className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
               onClick={closePdfModal}
             >
-              {/* Backdrop */}
-              <div className="absolute inset-0 bg-dark-bg/80 backdrop-blur-sm" />
+              {/* Backdrop - transparent with light fog */}
+              <div className="absolute inset-0 bg-dark-bg/40 backdrop-blur-sm" />
               
-              {/* Modal Container */}
+              {/* Modal Container with arrows */}
               <div className="relative flex items-center" onClick={(e) => e.stopPropagation()}>
+                {/* Left Arrow */}
+                <button
+                  onClick={(e) => { e.stopPropagation(); goToPrev(); }}
+                  disabled={pdfModalIndex === 0}
+                  className="flex-shrink-0 p-3 rounded-full bg-dark-surface/80 border border-blue-primary/30 hover:bg-blue-primary/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-lg mr-2 sm:mr-4"
+                  aria-label="Previous document"
+                >
+                  <ChevronLeft className="w-6 h-6 text-gray-light" />
+                </button>
+                
                 {/* Modal Card */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 20 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="relative w-full max-w-5xl max-h-[90vh] rounded-2xl border border-blue-primary/30 bg-dark-surface/95 backdrop-blur-xl shadow-2xl shadow-blue-primary/20 overflow-hidden"
+                  className="relative w-[90vw] max-h-[90vh] rounded-2xl border border-blue-primary/30 bg-dark-surface/95 backdrop-blur-xl shadow-2xl shadow-blue-primary/20 overflow-hidden"
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between p-4 border-b border-dark-border">
-                    <h3 className="text-lg sm:text-xl font-display font-bold text-gray-light">
-                      {activePdf.title}
-                    </h3>
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-display font-bold text-gray-light">
+                        {allPdfItems[pdfModalIndex].name}
+                      </h3>
+                      <p className="text-sm text-gray-medium">
+                        {pdfModalIndex + 1} / {allPdfItems.length}
+                      </p>
+                    </div>
                     <div className="flex items-center gap-2">
-                      <a
-                        href={activePdf.src}
-                        download
-                        className="p-2 rounded-full bg-dark-border/50 hover:bg-green-primary/20 transition-colors duration-200"
-                        aria-label="Download PDF"
-                        title="Download PDF"
-                      >
-                        <svg className="w-5 h-5 text-gray-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                      </a>
+                      {allPdfItems[pdfModalIndex].type === 'pdf' && (
+                        <a
+                          href={allPdfItems[pdfModalIndex].src}
+                          download
+                          className="p-2 rounded-full bg-dark-border/50 hover:bg-green-primary/20 transition-colors duration-200"
+                          aria-label="Download PDF"
+                          title="Download PDF"
+                        >
+                          <svg className="w-5 h-5 text-gray-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                          </svg>
+                        </a>
+                      )}
                       <button
                         onClick={closePdfModal}
                         className="p-2 rounded-full bg-dark-border/50 hover:bg-blue-primary/20 transition-colors duration-200"
@@ -514,15 +567,49 @@ export default function EducationSection() {
                     </div>
                   </div>
                   
-                  {/* PDF Viewer */}
+                  {/* Content */}
                   <div className="h-[70vh] sm:h-[75vh]">
-                    <iframe
-                      src={activePdf.src}
-                      className="w-full h-full"
-                      title={activePdf.title}
-                    />
+                    {allPdfItems[pdfModalIndex].type === 'external' ? (
+                      <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                        <p className="text-gray-medium mb-4">This will open CodeCademy in a new tab</p>
+                        <a
+                          href={allPdfItems[pdfModalIndex].src}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-6 py-3 rounded-lg bg-blue-primary/20 text-blue-primary hover:bg-blue-primary/30 transition-colors"
+                        >
+                          <span>View Profile</span>
+                          <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L6 14" />
+                          </svg>
+                        </a>
+                      </div>
+                    ) : (
+                      <iframe
+                        src={allPdfItems[pdfModalIndex].src}
+                        className="w-full h-full"
+                        title={allPdfItems[pdfModalIndex].name}
+                      />
+                    )}
+                  </div>
+                  
+                  {/* Footer hint */}
+                  <div className="px-6 py-4 border-t border-dark-border/50 bg-dark-surface/50">
+                    <p className="text-xs text-gray-medium text-center">
+                      Use <kbd className="px-2 py-1 rounded bg-dark-border text-gray-light">←</kbd> <kbd className="px-2 py-1 rounded bg-dark-border text-gray-light">→</kbd> to navigate · <kbd className="px-2 py-1 rounded bg-dark-border text-gray-light">ESC</kbd> to close
+                    </p>
                   </div>
                 </motion.div>
+                
+                {/* Right Arrow */}
+                <button
+                  onClick={(e) => { e.stopPropagation(); goToNext(); }}
+                  disabled={pdfModalIndex === allPdfItems.length - 1}
+                  className="flex-shrink-0 p-3 rounded-full bg-dark-surface/80 border border-blue-primary/30 hover:bg-blue-primary/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-lg ml-2 sm:ml-4"
+                  aria-label="Next document"
+                >
+                  <ChevronRight className="w-6 h-6 text-gray-light" />
+                </button>
               </div>
             </motion.div>
           )}
