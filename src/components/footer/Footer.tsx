@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { Linkedin, Mail, ArrowUp, Heart, Sparkles } from 'lucide-react'
+import { Linkedin, Mail, ArrowUp, Heart, Sparkles, Github } from 'lucide-react'
 
 export default function Footer() {
   const socialLinks = [
@@ -10,6 +10,11 @@ export default function Footer() {
       icon: Linkedin,
       href: 'https://www.linkedin.com/in/drew-s-/',
       label: 'LinkedIn'
+    },
+    {
+      icon: Github,
+      href: 'https://github.com/TheFusionCreatives',
+      label: 'GitHub'
     },
     {
       icon: Mail,

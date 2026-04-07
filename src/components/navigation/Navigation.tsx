@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, X, Linkedin, Mail } from 'lucide-react'
+import { Menu, X, Linkedin, Mail, Github } from 'lucide-react'
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -18,6 +18,7 @@ export default function Navigation() {
 
   const socialLinks = [
     { icon: Linkedin, href: 'https://www.linkedin.com/in/drew-s-/', label: 'LinkedIn' },
+    { icon: Github, href: 'https://github.com/TheFusionCreatives', label: 'GitHub' },
     { icon: Mail, href: 'mailto:andrewjstoy@gmail.com', label: 'Email' }
   ]
 
