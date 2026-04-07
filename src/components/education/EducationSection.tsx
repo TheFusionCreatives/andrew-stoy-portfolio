@@ -178,7 +178,7 @@ const certificationsData = [
     issuer: 'Colorado University, Coursera',
     date: '2024',
     credential: 'Certified',
-    link: '/assets/University-of-Colorado-LGBTQ%2BIdentities-Certificate.pdf',
+    link: '/assets/University-of-Colorado-LGBTQ+Identities-Certificate.pdf',
     title: 'LGBTQ+ Identities Certificate'
   },
   {
@@ -492,13 +492,26 @@ export default function EducationSection() {
                     <h3 className="text-lg sm:text-xl font-display font-bold text-gray-light">
                       {activePdf.title}
                     </h3>
-                    <button
-                      onClick={closePdfModal}
-                      className="p-2 rounded-full bg-dark-border/50 hover:bg-blue-primary/20 transition-colors duration-200"
-                      aria-label="Close modal"
-                    >
-                      <X className="w-5 h-5 text-gray-light" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={activePdf.src}
+                        download
+                        className="p-2 rounded-full bg-dark-border/50 hover:bg-green-primary/20 transition-colors duration-200"
+                        aria-label="Download PDF"
+                        title="Download PDF"
+                      >
+                        <svg className="w-5 h-5 text-gray-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                      </a>
+                      <button
+                        onClick={closePdfModal}
+                        className="p-2 rounded-full bg-dark-border/50 hover:bg-blue-primary/20 transition-colors duration-200"
+                        aria-label="Close modal"
+                      >
+                        <X className="w-5 h-5 text-gray-light" />
+                      </button>
+                    </div>
                   </div>
                   
                   {/* PDF Viewer */}
