@@ -111,7 +111,10 @@ export default function Footer() {
               </h4>
               <div className="space-y-2 text-sm">
                 <p className="text-gray-medium">
-                  <span className="text-gray-light">Email:</span> andrewjstoy@gmail.com
+                  <span className="text-gray-light">Email:</span>{' '}
+                  <a href="mailto:andrewjstoy@gmail.com" className="hover:text-blue-primary transition-colors">
+                    andrewjstoy@gmail.com
+                  </a>
                 </p>
                 <p className="text-gray-medium">
                   <span className="text-gray-light">Location:</span> Maryland, USA
