@@ -1,6 +1,6 @@
 # Andrew Stoy Portfolio
 
-**Live Site:** [https://andrew-stoy.netlify.app/](https://andrew-stoy.netlify.app/)
+**Live Site:** [https://andrew-stoy.com/](https://andrew-stoy.com/)
 
 A stunning personal portfolio website for Andrew Stoy, showcasing psychology and technology integration expertise. Built with Next.js 14, featuring a supernova-style design with calming blues and greens against a dark technological backdrop.
 
@@ -13,13 +13,15 @@ A stunning personal portfolio website for Andrew Stoy, showcasing psychology and
 - 🌟 **Supernova particle effects** for visual impact
 - 🔧 **TypeScript** for type safety
 - 📧 **Contact form** with validation
-- 🎯 **Complete sections**: Hero, About, Experience, Education, Projects, Contact
+- 📖 **Immersive Story Section**: Interactive narrative with 8-phase journey
+- 🎯 **Complete sections**: Hero, About, Experience, Story, Education, Projects, Contact
 
 ## Sections
 
 - **Hero**: Animated introduction with particle effects and CTAs
 - **About**: Psychology background and expertise areas
 - **Experience**: Professional timeline with achievements
+- **Story**: Immersive narrative "The Education That Couldn't Be Taught" with 8 phases, keyboard/swipe/scroll navigation
 - **Education**: Academic background and certifications
 - **Projects**: Case studies with metrics and impact
 - **Contact**: Contact form and professional links
@@ -78,6 +80,8 @@ src/
 │   │   └── ExperienceSection.tsx # Experience timeline
 │   ├── education/
 │   │   └── EducationSection.tsx  # Education and certifications
+│   ├── story/
+│   │   └── StorySection.tsx      # Immersive narrative story
 │   ├── projects/
 │   │   └── ProjectsSection.tsx   # Projects and case studies
 │   ├── contact/
