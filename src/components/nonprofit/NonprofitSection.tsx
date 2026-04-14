@@ -9,7 +9,7 @@ const nonprofitData = [
     title: 'Co-Founder & President',
     organization: 'Love is a Habit, Corp (501(c)3)',
     location: 'Maryland, USA',
-    period: 'August 2021 – January 2024',
+    period: 'June 2022 – Present',
     website: 'https://loveisahabit.org',
     description: 'Co-founded and helped scale a registered 501(c)3 nonprofit focused on youth mentorship, service, and personal development.',
     achievements: [

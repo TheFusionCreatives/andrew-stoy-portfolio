@@ -52,7 +52,7 @@ const projectsData = [
     description: 'Co-founded and scaled a registered 501(c)3 nonprofit, developing messaging, systems, and workflows to support sustainable youth mentorship operations.',
     role: 'Co-Founder & President',
     organization: 'Love is a Habit, Corp',
-    period: 'August 2021 – January 2024',
+    period: 'June 2022 – Present',
     impact: 'Raised $33,000 in scholarships and established sustainable nonprofit operations',
     technologies: ['Nonprofit Management', 'Fundraising Systems', 'Volunteer Coordination', 'Community Outreach', 'Strategic Planning'],
     achievements: [
