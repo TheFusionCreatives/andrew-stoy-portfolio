@@ -129,7 +129,7 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row gap-2 justify-center items-center mb-12 text-gray-medium"
         >
           <span className="flex items-center">
-            Washington DC, USA
+            Maryland, USA
           </span>
           <span className="hidden sm:inline">•</span>
           <a href="mailto:Andrewjstoy@gmail.com" className="hover:text-blue-primary transition-colors">

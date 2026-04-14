@@ -114,7 +114,7 @@ export default function Footer() {
                   <span className="text-gray-light">Email:</span> andrewjstoy@gmail.com
                 </p>
                 <p className="text-gray-medium">
-                  <span className="text-gray-light">Location:</span> Washington DC, USA
+                  <span className="text-gray-light">Location:</span> Maryland, USA
                 </p>
                 <p className="text-gray-medium">
                   <span className="text-gray-light">Available:</span> Consulting & Collaborations

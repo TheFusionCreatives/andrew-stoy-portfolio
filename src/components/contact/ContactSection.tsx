@@ -32,7 +32,7 @@ export default function ContactSection() {
     {
       icon: MapPin,
       label: 'Location',
-      value: 'Washington DC, USA',
+      value: 'Maryland, USA',
       href: '#'
     }
   ]
