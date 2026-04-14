@@ -466,7 +466,7 @@ export default function StorySection() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute top-24 left-1/2 transform -translate-x-1/2 z-20"
+                    className="absolute top-24 left-1/2 transform -translate-x-1/2 z-20 hidden md:flex"
                   >
                     <div className="flex items-center gap-3 px-4 py-3 rounded-full bg-dark-surface/80 border border-blue-primary/30 backdrop-blur-sm">
                       <Keyboard className="w-5 h-5 text-blue-primary" />
