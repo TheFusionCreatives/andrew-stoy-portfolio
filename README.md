@@ -1,6 +1,6 @@
 # Andrew Stoy Portfolio
 
-**Live Site:** [andrew-stoy.com/](https://andrew-stoy.com/)
+**Live Site:** [andrew-stoy.com](https://andrew-stoy.com/)
 
 A stunning personal portfolio website for Andrew Stoy, showcasing psychology and technology integration expertise. Built with Next.js 14, featuring a supernova-style design with calming blues and greens against a dark technological backdrop.
 
