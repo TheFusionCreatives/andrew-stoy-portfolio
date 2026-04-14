@@ -9,7 +9,7 @@ export default function Navigation() {
   const navItems = [
     { label: 'About', href: '#about' },
     { label: 'Experience', href: '#experience' },
-    { label: 'Education', href: '#education' },
+    { label: 'Education', href: '#story' },
     { label: 'Certifications', href: '#certifications' },
     { label: 'Nonprofit', href: '#nonprofit' },
     { label: 'Projects', href: '#projects' },
