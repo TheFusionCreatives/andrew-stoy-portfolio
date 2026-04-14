@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { Mail, Phone, MapPin, Send, Linkedin, Github } from 'lucide-react'
+import { Mail, MapPin, Send, Linkedin, Github } from 'lucide-react'
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -22,12 +22,6 @@ export default function ContactSection() {
       label: 'Email',
       value: 'andrewjstoy@gmail.com',
       href: 'mailto:andrewjstoy@gmail.com'
-    },
-    {
-      icon: Phone,
-      label: 'Phone',
-      value: '+1(918) 944-9222',
-      href: 'tel:+19189449222'
     },
     {
       icon: MapPin,
