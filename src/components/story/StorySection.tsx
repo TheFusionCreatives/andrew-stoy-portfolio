@@ -82,6 +82,7 @@ export default function StorySection() {
   const modalRef = useRef<HTMLDivElement>(null)
   const autoAdvanceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const scrollCooldownRef = useRef(false)
+  const lastClickTimeRef = useRef(0)
 
   const openStory = () => {
     setIsOpen(true)
@@ -104,6 +105,9 @@ export default function StorySection() {
     if (currentPhase < storyPhases.length - 1) {
       setCurrentPhase(prev => prev + 1)
       setUserInteracted(true)
+    } else {
+      // On last page, close the modal
+      closeStory()
     }
   }, [currentPhase])
 
@@ -161,9 +165,14 @@ export default function StorySection() {
         scrollCooldownRef.current = true
         
         // Execute navigation
-        if (e.deltaY > 0 && currentPhase < storyPhases.length - 1) {
-          setCurrentPhase(prev => prev + 1)
-          setUserInteracted(true)
+        if (e.deltaY > 0) {
+          if (currentPhase < storyPhases.length - 1) {
+            setCurrentPhase(prev => prev + 1)
+            setUserInteracted(true)
+          } else {
+            // On last page, scroll down closes the modal
+            closeStory()
+          }
         } else if (e.deltaY < 0 && currentPhase > 0) {
           setCurrentPhase(prev => prev - 1)
           setUserInteracted(true)
@@ -201,9 +210,14 @@ export default function StorySection() {
       
       if (Math.abs(diff) > threshold) {
         lastTouchTime = now
-        if (diff > 0 && currentPhase < storyPhases.length - 1) {
-          setCurrentPhase(prev => prev + 1)
-          setUserInteracted(true)
+        if (diff > 0) {
+          if (currentPhase < storyPhases.length - 1) {
+            setCurrentPhase(prev => prev + 1)
+            setUserInteracted(true)
+          } else {
+            // On last page, swipe up closes the modal
+            closeStory()
+          }
         } else if (diff < 0 && currentPhase > 0) {
           setCurrentPhase(prev => prev - 1)
           setUserInteracted(true)
@@ -239,10 +253,13 @@ export default function StorySection() {
         closeStory()
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault()
+        lastKeyTime = now
         if (currentPhase < storyPhases.length - 1) {
-          lastKeyTime = now
           setCurrentPhase(prev => prev + 1)
           setUserInteracted(true)
+        } else {
+          // On last page, forward key closes the modal
+          closeStory()
         }
       } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
         e.preventDefault()
@@ -334,7 +351,14 @@ export default function StorySection() {
             {/* Backdrop */}
             <div 
               className="absolute inset-0 bg-dark-bg/95 backdrop-blur-xl"
-              onClick={closeStory}
+              onClick={(e) => {
+                // Double-click/tap to close (on last page only)
+                const now = Date.now()
+                if (currentPhase === storyPhases.length - 1 && now - lastClickTimeRef.current < 500) {
+                  closeStory()
+                }
+                lastClickTimeRef.current = now
+              }}
             />
 
             {/* Content */}
@@ -401,14 +425,23 @@ export default function StorySection() {
                       ))}
                     </div>
 
-                    <button
-                      onClick={nextPhase}
-                      disabled={currentPhase === storyPhases.length - 1}
-                      className="p-3 rounded-full border border-dark-border bg-dark-surface/50 hover:bg-dark-surface disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                      aria-label="Next"
-                    >
-                      <ChevronDown className="w-6 h-6 text-gray-light" />
-                    </button>
+                    {currentPhase === storyPhases.length - 1 ? (
+                      <button
+                        onClick={closeStory}
+                        className="p-3 rounded-full border border-blue-primary/50 bg-blue-primary/20 hover:bg-blue-primary/40 transition-all group"
+                        aria-label="Close story"
+                      >
+                        <X className="w-6 h-6 text-blue-primary group-hover:text-white transition-colors" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={nextPhase}
+                        className="p-3 rounded-full border border-dark-border bg-dark-surface/50 hover:bg-dark-surface transition-all"
+                        aria-label="Next"
+                      >
+                        <ChevronDown className="w-6 h-6 text-gray-light" />
+                      </button>
+                    )}
                   </div>
 
                   {/* Exit hint */}
@@ -419,7 +452,7 @@ export default function StorySection() {
                       transition={{ delay: 0.5 }}
                       className="mt-8 text-sm text-gray-medium"
                     >
-                      Press ESC or click X to close
+                      Press →, swipe up, scroll down, or double-tap to close
                     </motion.p>
                   )}
                 </motion.div>
