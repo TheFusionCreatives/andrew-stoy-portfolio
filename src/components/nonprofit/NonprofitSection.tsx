@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { Heart, Users, DollarSign, Calendar, Award } from 'lucide-react'
+import { Heart, Users, DollarSign, Calendar, Award, ExternalLink } from 'lucide-react'
 
 const nonprofitData = [
   {
@@ -10,6 +10,7 @@ const nonprofitData = [
     organization: 'Love is a Habit, Corp (501(c)3)',
     location: 'Maryland, USA',
     period: 'August 2021 – January 2024',
+    website: 'https://loveisahabit.org',
     description: 'Co-founded and helped scale a registered 501(c)3 nonprofit focused on youth mentorship, service, and personal development.',
     achievements: [
       'Led public relations, outreach strategy, and community engagement initiatives across multiple regions',
@@ -138,6 +139,19 @@ export default function NonprofitSection() {
                   </div>
                 </div>
               </div>
+
+              {/* Website Link */}
+              {item.website && (
+                <a
+                  href={item.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full border-2 border-blue-primary/50 bg-blue-primary/20 text-blue-primary hover:bg-blue-primary hover:text-white transition-all duration-300 font-semibold text-sm sm:text-base group/link"
+                >
+                  <span>Loveisahabit.org</span>
+                  <ExternalLink className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                </a>
+              )}
 
               {/* Meta info */}
               <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 text-xs sm:text-sm text-gray-medium">
