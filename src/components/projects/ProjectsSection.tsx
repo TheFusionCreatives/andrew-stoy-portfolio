@@ -8,7 +8,7 @@ const projectsData = [
   {
     title: 'Clinical CRM Ecosystem',
     description: 'Engineered an end-to-end clinical CRM ecosystem automating multi-channel touchpoints (Call, SMS, Email, Phone Trees) to streamline the patient journey from intake to therapeutic intervention.',
-    role: 'Mental Health Practice Operations Assistant',
+    role: 'Client Experience & Technology Integration Coordinator',
     organization: 'Kentlands Psychotherapy',
     period: '2026 – Present',
     impact: 'Improved patient accessibility and reduced onboarding friction',

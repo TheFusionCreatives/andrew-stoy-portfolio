@@ -7,7 +7,7 @@ import { Calendar, MapPin, Briefcase, ChevronLeft, ChevronRight, X } from 'lucid
 
 const experienceData = [
   {
-    title: 'Mental Health Practice Operations Assistant',
+    title: 'Client Experience & Technology Integration Coordinator',
     organization: 'Kentlands Psychotherapy',
     location: 'Maryland, USA',
     period: '2026 – Present',
