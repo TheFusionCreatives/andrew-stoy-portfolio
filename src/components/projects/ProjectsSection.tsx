@@ -110,7 +110,18 @@ const ProjectCard = ({ project, index }: { project: typeof projectsData[0]; inde
         {/* Meta info */}
         <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 text-xs sm:text-sm text-gray-medium">
           <div>
-            <span className="text-gray-light">Organization:</span> {project.organization}
+            <span className="text-gray-light">Organization:</span> {project.organization === 'The Hope Line, Inc' ? (
+              <a 
+                href="https://www.thehopeline.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-medium hover:text-blue-primary transition-colors duration-300"
+              >
+                {project.organization}
+              </a>
+            ) : (
+              project.organization
+            )}
           </div>
           <div>
             <span className="text-gray-light">Period:</span> {project.period}

@@ -300,7 +300,18 @@ function ExperienceCard({ item, index, isActive, innerRef, onClick }: {
           </div>
 
           <h3 className={`text-lg sm:text-xl font-display font-bold mb-2 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-light group-hover:text-blue-primary'}`}>
-            {item.organization}
+            {item.organization === 'The Hope Line, Inc' ? (
+              <a 
+                href="https://www.thehopeline.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={`${isActive ? 'text-white hover:text-blue-primary' : 'text-gray-light hover:text-blue-primary'} transition-colors duration-300`}
+              >
+                {item.organization}
+              </a>
+            ) : (
+              item.organization
+            )}
           </h3>
 
           {/* Meta info */}
