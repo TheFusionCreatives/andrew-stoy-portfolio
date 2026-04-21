@@ -62,11 +62,11 @@ export default function ContactSection() {
       const form = e.target as HTMLFormElement
       const formData = new FormData(form)
       
-      // Use standard form submission for Netlify
-      const response = await fetch('/', {
+      // Post to static HTML file for Netlify Forms detection
+      const response = await fetch('/__forms.html', {
         method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/x-www-form-urlencoded' }
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString()
       })
       
       if (response.ok) {
