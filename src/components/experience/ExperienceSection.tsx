@@ -187,7 +187,19 @@ function ExperienceModal({
                 </div>
                 
                 <h3 className="text-lg sm:text-xl font-semibold text-gray-light mb-4">
-                  {item.organization}
+                  {item.organization === 'The Hope Line, Inc' ? (
+                    <a 
+                      href="https://www.thehopeline.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-light hover:text-blue-primary transition-colors duration-300 inline-flex items-center gap-2"
+                    >
+                      {item.organization}
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  ) : (
+                    item.organization
+                  )}
                 </h3>
                 
                 {/* Meta info */}
