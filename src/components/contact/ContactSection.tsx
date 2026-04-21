@@ -59,16 +59,22 @@ export default function ContactSection() {
     setIsSubmitting(true)
     
     try {
-      const formData = new FormData(e.target as HTMLFormElement)
+      const form = e.target as HTMLFormElement
+      const formData = new FormData(form)
       
-      await fetch('/', {
+      // Use standard form submission for Netlify
+      const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as any).toString()
+        body: formData,
+        headers: { 'Accept': 'application/x-www-form-urlencoded' }
       })
       
-      setSubmitStatus('success')
-      setFormData({ name: '', email: '', subject: '', message: '' })
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({ name: '', email: '', subject: '', message: '' })
+      } else {
+        setSubmitStatus('error')
+      }
     } catch (error) {
       setSubmitStatus('error')
     } finally {
