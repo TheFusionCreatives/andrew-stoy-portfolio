@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { Calendar, MapPin, Briefcase, ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { Calendar, MapPin, Briefcase, ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react'
 
 const experienceData = [
   {
@@ -305,9 +305,10 @@ function ExperienceCard({ item, index, isActive, innerRef, onClick }: {
                 href="https://www.thehopeline.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className={`${isActive ? 'text-white hover:text-blue-primary' : 'text-gray-light hover:text-blue-primary'} transition-colors duration-300`}
+                className={`${isActive ? 'text-white hover:text-blue-primary' : 'text-gray-light hover:text-blue-primary'} transition-colors duration-300 inline-flex items-center gap-2`}
               >
                 {item.organization}
+                <ExternalLink className="w-4 h-4" />
               </a>
             ) : (
               item.organization

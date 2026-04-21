@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Container from '@/components/ui/Container'
-import { Mail, MapPin, Send, Linkedin, Github } from 'lucide-react'
+import { Mail, MapPin, Send, Linkedin, Github, Heart } from 'lucide-react'
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -41,6 +41,11 @@ export default function ContactSection() {
       icon: Github,
       label: 'GitHub',
       href: 'https://github.com/TheFusionCreatives'
+    },
+    {
+      icon: Heart,
+      label: 'LIAH',
+      href: 'https://loveisahabit.org'
     }
   ]
 
@@ -307,10 +312,20 @@ export default function ContactSection() {
                     rel="noopener noreferrer"
                     className="flex flex-col items-center p-4 rounded-lg border border-dark-border hover:border-blue-primary/30 transition-all duration-300 group"
                   >
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-electric/20 to-coral-pop/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <social.icon className="w-6 h-6 text-purple-electric" />
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300 ${
+                      social.label === 'LIAH' 
+                        ? 'bg-gradient-to-br from-coral-pop/20 to-pink-500/20' 
+                        : 'bg-gradient-to-br from-purple-electric/20 to-coral-pop/20'
+                    }`}>
+                      <social.icon className={`w-6 h-6 ${
+                        social.label === 'LIAH' ? 'text-coral-pop' : 'text-purple-electric'
+                      }`} />
                     </div>
-                    <span className="text-sm text-gray-medium group-hover:text-purple-electric transition-colors">
+                    <span className={`text-sm group-hover:transition-colors ${
+                      social.label === 'LIAH' 
+                        ? 'text-gray-medium group-hover:text-coral-pop' 
+                        : 'text-gray-medium group-hover:text-purple-electric'
+                    }`}>
                       {social.label}
                     </span>
                   </a>
