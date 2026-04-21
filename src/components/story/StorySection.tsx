@@ -32,12 +32,20 @@ const storyPhases = [
     accentColor: "green-primary"
   },
   {
-    id: 'conventional',
+    id: 'digital',
     content: {
-      text: "For a while, I followed the culturally sanctioned blueprint of success: academic achievement, entrepreneurship, athletics, leadership. I ran a landscaping business, graduated as valedictorian, earned a full-ride scholarship, and collected championships and MVP awards. On paper, my trajectory looked secure."
+      text: "I turned inward, finding myself increasingly reliant on digital spaces as a form of escape. Only later did I begin to understand that my digital habits were not simply a matter of individual weakness, but the result of carefully engineered reward loops, persuasive design patterns, and algorithms optimized to monetize attention."
     },
     background: "bg-dark-bg",
-    accentColor: "blue-primary"
+    accentColor: "purple-electric"
+  },
+  {
+    id: 'transformation',
+    content: {
+      text: "I deleted social media apps, shared screen-time passwords for accountability, and rebuilt healthier routines. I transformed, following a culturally sanctioned blueprint for success: academic achievement, entrepreneurship, athletics, and leadership. I ran a landscaping business, graduated as valedictorian, earned a full-ride scholarship, and collected championships and MVP awards."
+    },
+    background: "bg-dark-bg",
+    accentColor: "green-primary"
   },
   {
     id: 'awakening',
@@ -48,9 +56,9 @@ const storyPhases = [
     accentColor: "purple-electric"
   },
   {
-    id: 'journey',
+    id: 'nonprofit',
     content: {
-      text: "Working full time, running a business, traveling, and managing school was not the easy option—but I no longer wanted to only read about the world behind a screen; I wanted to study it in motion. Before graduating, I traveled to all fifty states and circled the globe. I lived and worked in Puerto Rico for a year, running my landscaping business from the beach while working at a hostel and pescadería, meeting travelers and locals from every walk of life."
+      text: "Before graduating, I founded a nonprofit, raising $33,000 for educational scholarships within its first five months. I traveled to all fifty states and circled the globe, living and working in Puerto Rico for a year, running my landscaping business remotely while working at a hostel and a pescadería, engaging daily with travelers and locals from vastly different backgrounds."
     },
     background: "bg-dark-bg",
     accentColor: "coral"
@@ -58,7 +66,7 @@ const storyPhases = [
   {
     id: 'realization',
     content: {
-      text: "I deepened my business acumen through consulting, business strategy, and technological systems architecture, and was awarded $10,000 to relocate and join the Tech Hub in Tulsa, Oklahoma. From there, I spent four months in Asia supporting NGOs and community organizations, including time in Thailand working with Burmese trafficking survivors. Moving through so many different crises, cultures, and technical systems made one thing clear to me: the systems around us, from software to workflows to relationships, either push us closer to the edge or help us find our way back."
+      text: "I continued developing my business acumen through consulting, strategy, and technological systems architecture, and was awarded $10,000 to relocate and join the Tech Hub in Tulsa, Oklahoma. I later spent four months in Asia supporting NGOs and community organizations, including time in Thailand working with Burmese trafficking survivors. Across these settings, I began to notice recurring patterns in how adversity, culture, and access to support shape psychological outcomes."
     },
     background: "bg-dark-bg",
     accentColor: "blue-primary"
