@@ -7,7 +7,7 @@ import { Calendar, MapPin, Briefcase, ChevronLeft, ChevronRight, X, ExternalLink
 
 const experienceData = [
   {
-    title: 'Client Experience & Technology Integration Coordinator',
+    title: 'Client Experience Coordinator & Technology Integration Lead',
     organization: 'Kentlands Psychotherapy',
     location: 'Maryland, USA',
     period: '2026 – Present',
