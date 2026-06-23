@@ -1,0 +1,1068 @@
+<meta charset="utf-8">
+<title>Kentlands Psychotherapy — The Build, in Full</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#332c26;--muted:#7c7066;--clay:#c2724a;--clay-deep:#a4582f;
+  --cream:#faf5ee;--sand:#f1e8da;--line:#e4d9c8;
+  --good:#4f8c63;--good-bg:#eaf3ec;--bad:#b9543f;--bad-bg:#f6e9e5;
+  --navy:#33414f;--navy-deep:#2b3640;--amber:#c98a2e;--violet:#7d6488;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Jost',system-ui,sans-serif;line-height:1.6;font-size:16px}
+h1,h2,h3,h4,.serif{font-family:'Lora',Georgia,serif;line-height:1.16;font-weight:600}
+a{color:var(--clay-deep);text-decoration:none}
+.wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+.kicker{text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:600;color:var(--clay-deep)}
+.rule{height:3px;width:54px;background:var(--clay);border-radius:3px;margin:10px 0 22px}
+.muted{color:var(--muted)}
+section{padding:66px 0;border-bottom:1px solid var(--line)}
+h2{font-size:32px;margin:0 0 4px}
+h3{font-size:20px;margin:0 0 8px}
+.lead{font-size:18px;font-family:'Lora';color:#4a4039;max-width:62ch}
+
+/* progress + nav */
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--clay);width:0;z-index:60;transition:width .1s}
+nav{position:sticky;top:0;z-index:50;background:rgba(250,245,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:6px;height:56px;flex-wrap:wrap}
+nav .brand{font-family:'Lora';font-weight:600;margin-right:auto;font-size:16px;color:var(--ink);text-decoration:none;cursor:pointer}
+nav .brand:hover{color:var(--clay-deep)}
+nav a.nl{font-size:13px;color:var(--muted);padding:6px 9px;border-radius:7px;white-space:nowrap}
+nav a.nl:hover,nav a.nl.on{color:var(--ink);background:var(--sand)}
+.btn-print{font-family:'Jost';font-size:13px;font-weight:500;background:var(--clay);color:#fff;border:0;padding:8px 14px;border-radius:8px;cursor:pointer}
+.btn-print:hover{background:var(--clay-deep)}
+
+/* hero */
+.hero{background:linear-gradient(160deg,#3b4654,#2b3640);color:#f4ece1;border-bottom:0}
+.hero .wrap{padding-top:74px;padding-bottom:74px}
+.hero .kicker{color:#e9c9b4}
+.hero h1{font-size:54px;color:#fff;margin:16px 0 8px;line-height:1.04}
+.hero .sub{font-size:22px;font-family:'Lora';font-style:italic;color:#d9cab9}
+.hero p.thesis{max-width:64ch;color:#eadfce;font-size:17px;border-left:3px solid var(--clay);padding-left:18px;margin-top:24px}
+.counters{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+.counters .c{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:18px}
+.counters b{font-family:'Lora';font-size:40px;color:#fff;display:block;line-height:1}
+.counters span{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:#bfb09e}
+
+/* before/after */
+.ba{width:100%;border-collapse:collapse;margin-top:8px;font-size:14.5px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ba th{text-align:left;padding:11px 14px;font-family:'Jost';font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.ba th.b{background:var(--bad-bg);color:var(--bad)}.ba th.a{background:var(--good-bg);color:var(--good)}
+.ba td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top}
+.ba td.b{color:#8a6a60;width:50%;border-right:2px solid var(--clay)}
+.ba td.a{color:#33493b;font-weight:500}
+.ba tr:hover td{background:#fdfaf5}
+
+/* era timeline */
+.eras{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:14px 0 26px}
+.era{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;position:relative}
+.era .dot{width:14px;height:14px;border-radius:50%;margin-bottom:10px}
+.era.e0 .dot{background:var(--bad)}.era.e1 .dot{background:var(--amber)}.era.e2{border-color:var(--good);background:var(--good-bg)}.era.e2 .dot{background:var(--good)}
+.era h4{font-size:16px;margin:0 0 4px}.era p{margin:0;font-size:13.5px;color:var(--muted)}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:10px}
+.pillar{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.pillar .ic{width:44px;height:44px;border-radius:12px;background:var(--sand);display:grid;place-items:center;font-size:22px;margin-bottom:12px}
+.pillar h3{margin:0 0 6px}
+.pillar ul{margin:10px 0 0;padding-left:18px;font-size:14px}.pillar li{margin-bottom:5px}
+.pillar .mech{margin-top:12px;font-size:12.5px;color:var(--muted);background:var(--cream);border-radius:10px;padding:10px 12px}
+.pillar .mech b{color:var(--clay-deep)}
+
+/* feature catalog */
+.filterbar{position:sticky;top:56px;z-index:40;background:var(--cream);padding:14px 0;margin-bottom:8px}
+.filterbar input{width:100%;max-width:380px;font-family:'Jost';font-size:14px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.chip{font-family:'Jost';font-size:12.5px;border:1px solid var(--line);background:#fff;color:var(--muted);padding:6px 12px;border-radius:20px;cursor:pointer;user-select:none}
+.chip:hover{border-color:var(--clay)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip[data-theme].on{background:var(--t)}
+.count-line{font-size:13px;color:var(--muted);margin:12px 0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px 16px;display:flex;flex-direction:column;gap:7px}
+.card h4{font-size:14.5px;margin:0;line-height:1.25}
+.card .why{font-size:12.5px;color:var(--muted);margin:0;flex:1}
+.card .meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.tag{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:20px;font-weight:600}
+.tag.tool{background:var(--sand);color:var(--clay-deep)}
+.dottheme{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:3px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:14px}
+.legend span{display:flex;align-items:center;gap:5px}
+
+/* security / integrity feature rows */
+.deep{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.drow{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px 18px}
+.drow.dark{background:var(--navy);border-color:var(--navy);color:#eef2f5}
+.drow.dark h4,.drow.dark b{color:#fff}
+.drow h4{font-size:15px;margin:0 0 6px;display:flex;gap:8px;align-items:center}
+.drow p{margin:0;font-size:13.5px;color:var(--muted)}.drow.dark p{color:#c7d0d8}
+.drow .badge{font-size:18px}
+.banner{background:var(--navy);color:#f4ece1;border-radius:16px;padding:24px 28px;margin-top:20px}
+.banner b{color:#fff}
+
+/* layers */
+.layer{border-radius:14px;padding:20px 24px;margin-bottom:11px;color:#fff;position:relative}
+.layer h3{color:#fff;margin:0 0 4px}.layer p{margin:0;font-size:14px;opacity:.95}
+.layer .tag2{position:absolute;top:18px;right:22px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;opacity:.85}
+.l1{background:var(--clay)}.l2{background:var(--violet)}.l3{background:var(--navy)}
+
+/* roadmap */
+.phase{display:grid;grid-template-columns:auto 1fr;gap:16px;margin-bottom:16px}
+.phase .num{width:38px;height:38px;border-radius:50%;background:var(--clay);color:#fff;font-family:'Lora';font-size:18px;display:grid;place-items:center}
+.phase h3{margin:3px 0 4px;font-size:17px}.phase p{margin:0;font-size:14px;color:var(--muted)}
+
+footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
+
+/* tech stack consolidation */
+.stack{display:grid;grid-template-columns:1fr auto 1.1fr;gap:22px;align-items:center;margin-top:18px}
+.stack .old{display:flex;flex-direction:column;gap:8px}
+.toolpill{border:1px solid #e7cfc6;background:var(--bad-bg);color:#8a6a60;border-radius:10px;padding:10px 14px;font-size:13.5px;display:flex;align-items:center;gap:8px;text-decoration:line-through;text-decoration-color:rgba(185,84,63,.4)}
+.toolpill .x{margin-left:auto;color:var(--bad);font-size:10px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;font-weight:600}
+.toolpill.partial{background:#fdf3e3;border-color:#e8cfa0;color:#806434;text-decoration:none}
+.toolpill.partial .x{color:var(--amber)}
+.stack .arrow{font-size:34px;color:var(--clay);text-align:center}
+.onebox{background:var(--navy);color:#fff;border-radius:16px;padding:24px;text-align:center}
+.onebox h3{color:#fff;margin:0 0 6px;font-size:20px}.onebox p{color:#c8d2da;font-size:13.5px;margin:0}
+.onebox .feats{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px}
+.onebox .feats span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:4px 11px;font-size:11px;text-decoration:none;color:#eef2f5}
+/* honest cost breakdown */
+.costs{display:grid;grid-template-columns:1fr auto 1fr auto;gap:14px;align-items:stretch;margin-top:22px}
+.costcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px}
+.costcard.old{background:var(--bad-bg);border-color:#e7cfc6}
+.costcard.new{background:var(--good-bg);border-color:#cfe5d6}
+.costcard h4{font-size:13px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline}
+.costcard.old h4{color:var(--bad)}.costcard.new h4{color:var(--good)}
+.costcard h4 b{font-family:'Lora';font-size:17px}
+.ci{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;color:#4a4039;border-bottom:1px dashed var(--line)}
+.ci:last-child{border-bottom:0}.ci span{font-variant-numeric:tabular-nums;color:var(--muted)}
+.costarrow{display:grid;place-items:center;font-size:26px;color:var(--clay)}
+.costnet{background:var(--navy);color:#fff;border-radius:14px;padding:15px 18px;display:flex;flex-direction:column;justify-content:center;text-align:center;min-width:130px}
+.costnet .cn-k{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#bfb09e}
+.costnet .cn-v{font-family:'Lora';font-size:30px;line-height:1.1;margin:3px 0}.costnet .cn-v span{font-size:13px;color:#cdbdac}
+.costnet .cn-s{font-size:10.5px;color:#cdbdac;line-height:1.35}
+.costnote{margin-top:16px;background:var(--sand);border-left:4px solid var(--clay);border-radius:0 10px 10px 0;padding:13px 16px;font-size:13.5px;color:#4a4039}
+.costnote b{color:var(--clay-deep)}
+@media (max-width:820px){.costs{grid-template-columns:1fr}.costarrow{transform:rotate(90deg)}}
+/* mockups */
+.mocks{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px}
+.mock{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.05)}
+.mock.full{margin-top:18px}
+.mock .bar{background:#f3efe8;border-bottom:1px solid var(--line);padding:9px 13px;display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--muted)}
+.mock .bar .dots{display:flex;gap:4px}.mock .bar .dots i{width:9px;height:9px;border-radius:50%;background:#d9cfc0;display:block}
+.mock .bar b{color:var(--ink);font-family:'Lora';font-weight:600}
+.mt{width:100%;border-collapse:collapse;font-size:12px}
+.mt th{text-align:left;background:#faf7f2;color:var(--muted);font-weight:600;padding:8px 11px;border-bottom:1px solid var(--line);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.mt td{padding:8px 11px;border-bottom:1px solid #f3eee4;color:var(--ink)}
+.mt tr:last-child td{border-bottom:0}
+.av{font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;white-space:nowrap}
+.av.open{background:var(--good-bg);color:var(--good)}.av.full{background:var(--bad-bg);color:var(--bad)}
+.av.pend{background:#fdf3e3;color:var(--amber)}.av.inact{background:#ececec;color:#888}
+.mock .cap{font-size:11.5px;color:var(--muted);padding:9px 13px;border-top:1px solid var(--line);background:var(--cream)}
+.kan{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:11px;background:#f8f4ee}
+.kcol{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px}
+.kcol h5{margin:0 0 7px;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:600}
+.kcol.urg h5{color:var(--bad)}.kcol.book h5{color:var(--good)}
+.kcard{background:#faf7f2;border:1px solid var(--line);border-radius:6px;padding:6px 7px;font-size:10.5px;margin-bottom:5px;color:var(--ink);line-height:1.3}
+.kcard small{color:var(--muted);font-size:9px;display:block}
+.kcol.urg .kcard{border-left:2px solid var(--bad)}.kcol.book .kcard{border-left:2px solid var(--good)}
+.funnel{padding:14px}
+.fstep{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.flabel{width:120px;color:var(--muted);font-size:11.5px;text-align:right;flex-shrink:0}
+.fbar{height:28px;border-radius:6px;display:flex;align-items:center;padding:0 11px;color:#fff;font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden}
+/* correlation */
+.corr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.cc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.cc .kp{font-size:11px;color:var(--clay-deep);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.cc .lr{display:flex;gap:11px;align-items:flex-start}
+.cc .ar{color:var(--clay);font-size:20px;line-height:1}
+.cc h4{margin:0 0 4px;font-size:16px}.cc p{margin:0;font-size:13.5px;color:var(--muted)}
+/* belief finale */
+.belief{background:linear-gradient(160deg,#3b4654,#2b3640);color:#f4ece1;border-radius:18px;padding:50px 42px;text-align:center;margin-top:32px}
+.belief .k{color:#e9c9b4;text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:600}
+.belief h2{color:#fff;font-size:33px;max-width:22ch;margin:16px auto 0;line-height:1.22}
+.belief p{color:#cdbdac;max-width:56ch;margin:16px auto 0;font-size:15px}
+.belief .sig{color:#e9c9b4;font-family:'Lora';font-style:italic;font-size:18px;margin-top:20px}
+/* product mockups */
+.resultcard{display:flex;gap:11px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px}
+.ravatar{width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;font-family:'Lora';display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.rchips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.rchips span{font-size:10px;background:var(--sand);color:var(--clay-deep);padding:2px 8px;border-radius:20px}
+.cbtn{display:block;width:100%;text-align:center;margin-top:10px;background:var(--clay);color:#fff;border-radius:9px;padding:9px;font-size:12.5px;font-weight:500}
+.statuscard{background:var(--good-bg);border:1px solid #cfe5d6;border-radius:10px;padding:12px;font-size:13px;color:var(--good);font-weight:600;margin-bottom:10px}
+.statuscard small{display:block;color:var(--muted);font-weight:400;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:11.5px;font-weight:500}
+.qcard small{display:block;color:var(--muted);font-weight:400;font-size:10px;margin-top:2px}
+/* ===== realistic app windows ===== */
+.win{border-radius:11px;overflow:hidden;border:1px solid #c8bfb0;box-shadow:0 14px 40px rgba(40,30,20,.18);margin-top:18px;background:#fff}
+.mocks .win{margin-top:0}
+.wtop{background:#e7e1d7;display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid #d3c9b9}
+.wtop .tl{display:flex;gap:6px}.wtop .tl i{width:11px;height:11px;border-radius:50%;display:block}
+.tl .r{background:#ec6a5e}.tl .y{background:#f4bf4f}.tl .g{background:#61c554}
+.wurl{flex:1;max-width:430px;background:#fff;border:1px solid #d3c9b9;border-radius:6px;padding:4px 11px;font-size:11px;color:#8a8175}
+.win .cap{font-size:11.5px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line);background:var(--cream)}
+/* CRM-style CRM */
+.crm{display:grid;grid-template-columns:182px 1fr}
+.crm-side{background:#15181d;color:#aeb4bc;padding:10px 0;font-size:11.5px}
+.crm-brand{display:flex;align-items:center;gap:7px;color:#fff;font-weight:600;padding:2px 13px 9px;border-bottom:1px solid #262b32;margin-bottom:7px;font-size:13px}
+.crm-brand .lg{width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#2d6cdf,#5b8def);display:grid;place-items:center;font-size:11px;color:#fff}
+.crm-loc{padding:0 13px 9px;font-size:9.5px;color:#6d747e;border-bottom:1px solid #262b32;margin-bottom:6px;line-height:1.45}
+.crm-nav a{display:flex;align-items:center;gap:9px;padding:6px 13px;color:#9aa1aa;text-decoration:none}
+.crm-nav a .ni{width:14px;text-align:center;font-size:11px}
+.crm-nav a.on{background:#20262e;color:#fff;box-shadow:inset 3px 0 0 var(--clay)}
+.crm-main{background:#fff;min-width:0}
+.crm-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid #eee}
+.crm-head h5{margin:0;font-family:'Lora';font-size:17px;font-weight:600}
+.crm-cnt{background:#eaf0fb;color:#3a6ad4;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.crm-head .rt{margin-left:auto;display:flex;gap:7px}
+.crm-add{background:#2d6cdf;color:#fff;font-size:11px;padding:6px 11px;border-radius:7px}
+.crm-imp{background:#fff;border:1px solid #d8d8d8;color:#555;font-size:11px;padding:6px 11px;border-radius:7px}
+.crm-tabs{display:flex;gap:18px;padding:9px 16px 0;border-bottom:1px solid #eee;font-size:11.5px;color:#8a8175}
+.crm-tabs .t{padding-bottom:9px}
+.crm-tabs .t.on{color:#2d6cdf;font-weight:600;box-shadow:inset 0 -2px 0 #2d6cdf}
+.ctab{width:100%;border-collapse:collapse;font-size:12px}
+.ctab th{text-align:left;color:#8a8175;font-weight:600;padding:9px 16px;border-bottom:1px solid #eee;font-size:10.5px}
+.ctab td{padding:9px 16px;border-bottom:1px solid #f4f1ea;color:#332c26}
+.ctab tr:last-child td{border-bottom:0}
+.rkan{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;padding:14px;background:#fbfaf8}
+.rk{display:flex;flex-direction:column}
+.rk .h{border-radius:7px;padding:9px 11px;font-size:11px;font-weight:600;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.rk .h small{font-weight:400;opacity:.7;font-size:9.5px}
+.rk.c1 .h{background:#d6efe0;color:#2c7a4b}
+.rk.c2 .h{background:#e2e4e8;color:#565c64}
+.rk.c3 .h{background:#e6def2;color:#6a4ba6}
+.rk.c4 .h{background:#f6dbd5;color:#bb4533}
+.rkcard{background:#fff;border:1px solid #e8e3da;border-radius:7px;padding:8px 9px;font-size:10.5px;margin-bottom:8px;box-shadow:0 1px 2px rgba(0,0,0,.05);line-height:1.35}
+.rkcard .lab{display:inline-block;font-size:8.5px;border:1px solid #ddd6c8;border-radius:4px;padding:1px 5px;color:#9a9186;margin-top:5px}
+.rkcard .row{display:flex;gap:7px;margin-top:6px;color:#bdb3a4;font-size:9px}
+.rkcard small{color:#9a9186;font-size:9px}
+.rk.c4 .rkcard{border-left:2px solid #bb4533}
+/* SimplePractice split */
+.spwrap{display:grid;grid-template-columns:1fr 230px}
+.spmain{background:#fff;border-right:1px solid #e6e2da}
+.sptop{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid #eee;font-size:12px;color:#555}
+.sptop .lg{font-weight:700;color:#2f7d6b;font-family:'Lora';font-size:14px}
+.spbody{padding:16px}
+.spbody h6{margin:0 0 12px;font-family:'Lora';font-size:15px;color:#332c26}
+.spline{height:10px;background:#f0ede7;border-radius:5px;margin-bottom:10px}
+.spside{background:#fbf6ef;padding:13px}
+.spside .sh{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--clay-deep);margin-bottom:11px}
+/* CCC coordinator console */
+.ccc{display:grid;grid-template-columns:1fr 232px;background:#fbf8ee}
+.ccc-top{grid-column:1/-1;display:flex;align-items:center;gap:9px;padding:11px 15px;border-bottom:1px solid #ece0cf;background:#fff}
+.ccc-brand{display:flex;align-items:center;gap:8px;font-family:'Lora';font-weight:700;color:var(--navy);font-size:13.5px}
+.ccc-brand .dot{width:24px;height:24px;border-radius:6px;background:var(--clay);color:#fff;display:grid;place-items:center;font-size:10px;font-weight:700}
+.ccc-modes{margin-left:auto;display:flex;border:1px solid #ece0cf;border-radius:999px;overflow:hidden;font-size:10.5px}
+.ccc-modes span{padding:5px 11px;color:var(--muted)}
+.ccc-modes span.on{background:var(--clay);color:#fff;font-weight:600}
+.ccc-gh{font-size:10.5px;border:1px solid #ece0cf;border-radius:999px;padding:5px 10px;color:var(--navy)}
+.ccc-main{padding:14px 16px;min-width:0}
+.ccc-crumbs{display:flex;gap:6px;font-size:10px;margin-bottom:11px;flex-wrap:wrap}
+.ccc-crumbs .cb{background:var(--clay);color:#fff;border-radius:999px;padding:3px 9px;font-weight:700}
+.ccc-crumbs .c{background:#fff;border:1px solid #ece0cf;border-radius:999px;padding:3px 9px;color:var(--navy)}
+.ccc-crumbs .c.cur{background:#fbf1ea;border-color:var(--clay);color:var(--clay-deep);font-weight:600}
+.ns{background:linear-gradient(135deg,#fbf1ea,#f6e7da);border:1px solid #e6cdb7;border-left:4px solid var(--clay);border-radius:12px;padding:11px 14px;margin-bottom:13px}
+.ns .k{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--clay-deep);margin-bottom:3px}
+.ns .b{font-size:12px;color:var(--navy);line-height:1.5}.ns .b b{color:var(--clay-deep)}
+.ccc-q{font-family:'Lora';font-size:16px;color:var(--navy);margin:2px 0 10px;font-weight:600}
+.ccc-script{background:#fff;border:1px solid #ece0cf;border-radius:10px;padding:11px 13px;font-size:12px;color:#544a40;line-height:1.5;margin-bottom:12px}
+.ccc-script .lbl{font-size:8.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;display:block;margin-bottom:4px}
+.ccc-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ccc-opt{background:#fff;border:2px solid #ece0cf;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--navy)}
+.ccc-opt.on{border-color:var(--clay);background:#fbf1ea;color:var(--clay-deep)}
+.ccc-side{border-left:1px solid #ece0cf;padding:14px;background:#fdfaf2}
+.ccc-note{border:1.5px solid var(--clay);border-radius:12px;background:#fff;padding:11px}
+.ccc-note h6{margin:0 0 8px;font-family:'Lora';font-size:13px;color:var(--navy);display:flex;align-items:center;gap:5px}
+.ccc-note .ni{font-size:10.5px;color:#544a40;padding:5px 0;border-bottom:1px dashed #ece0cf;display:flex;gap:6px}
+.ccc-note .ni:last-of-type{border-bottom:0}
+.ccc-note .ni .t{color:var(--muted);min-width:42px}
+.ccc-send{display:flex;gap:6px;margin-top:10px}
+.ccc-send .s1{flex:1;background:#fff;border:1px solid #ece0cf;border-radius:8px;padding:6px;font-size:10.5px;text-align:center;color:var(--navy)}
+.ccc-send .s2{flex:1.4;background:var(--clay);color:#fff;border-radius:8px;padding:6px;font-size:10.5px;text-align:center;font-weight:600}
+.ccc-mini{margin-top:11px;background:#fff;border:1px solid #ece0cf;border-radius:10px;padding:10px}
+.ccc-mini h6{margin:0 0 7px;font-size:11px;color:var(--navy);font-family:'Lora'}
+.ccc-mini .row{font-size:10px;display:flex;justify-content:space-between;padding:3px 0;color:#544a40}
+/* CCC docked beside a live CRM contact (real usage) */
+.dock{display:grid;grid-template-columns:1fr 254px;background:#fff}
+.dock-crm{border-right:1px solid #e6e2da;min-width:0;display:flex;flex-direction:column}
+.dconv-top{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid #eee;font-size:13px;color:var(--navy)}
+.dconv-top .av2{width:26px;height:26px;border-radius:50%;background:#b3a0d4;color:#fff;display:grid;place-items:center;font-size:10px;font-weight:600}
+.dconv-top .lab{margin-left:auto;font-size:9px;border:1px solid #ddd6c8;border-radius:5px;padding:2px 7px;color:#9a9186}
+.dconv-body{padding:13px 14px;background:#faf9f7;flex:1}
+.dmsg{background:#fff;border:1px solid #eee;border-radius:9px;padding:8px 10px;font-size:11px;margin-bottom:8px;color:#544a40;max-width:88%}
+.dmsg.sys{background:#f1eef9;border-color:#e2daf3;color:#6a4ba6;font-size:10px;max-width:100%}
+.dconv-comp{display:flex;align-items:center;gap:8px;padding:9px 12px;border-top:1px solid #eee}
+.dchan{border:1px solid #e0dccf;border-radius:8px;padding:5px 9px;font-size:10.5px;color:var(--navy);white-space:nowrap}
+.dchan b{color:#2d6cdf}
+.dinput{flex:1;border:1px solid #e0dccf;border-radius:8px;padding:6px 10px;font-size:11px;color:#9a9186}
+.dsend{width:30px;height:28px;border-radius:8px;background:#2d6cdf;color:#fff;display:grid;place-items:center;font-size:12px;flex-shrink:0}
+.dock-panel{background:#fbf8ee;padding:12px}
+.dp-brand{display:flex;align-items:center;gap:7px;font-family:'Lora';font-weight:700;color:var(--navy);font-size:12.5px}
+.dp-brand .dot{width:20px;height:20px;border-radius:5px;background:var(--clay);color:#fff;display:grid;place-items:center;font-size:9px;font-weight:700}
+.dp-sub{font-size:9.5px;color:var(--muted);margin:3px 0 11px 27px}
+/* ===== rich docked workspace: CRM contact (all channels) + CCC console ===== */
+.dock{grid-template-columns:1fr 300px}
+.ts3{display:grid;grid-template-columns:196px 1fr;min-width:0}
+.ts-col{border-right:1px solid #eee;min-width:0;padding:11px 12px}
+.ts-cd .nm{display:flex;align-items:center;gap:8px;font-family:'Lora';font-weight:700;color:var(--navy);font-size:13px}
+.ts-cd .nm .av2{width:26px;height:26px;border-radius:50%;background:#b3a0d4;color:#fff;display:grid;place-items:center;font-size:10px;font-weight:600}
+.ts-tag{display:inline-block;margin-top:8px;font-size:9px;border:1px solid #ddd6c8;border-radius:5px;padding:2px 7px;color:#9a9186}
+.ts-tabs{display:flex;gap:4px;margin:11px 0 9px;font-size:9px}
+.ts-tabs span{flex:1;text-align:center;padding:4px;border-radius:6px;background:#f4f1ea;color:var(--muted)}
+.ts-tabs span.on{background:#fff;border:1px solid #e0dccf;color:var(--navy);font-weight:600}
+.ts-inq{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin:11px 0 6px;display:flex;justify-content:space-between}
+.ts-card{border:1px solid #eee;border-radius:8px;padding:7px 8px;margin-bottom:7px;font-size:10px}
+.ts-card .h{display:flex;justify-content:space-between;gap:6px;font-weight:600;color:var(--navy)}
+.ts-card .sla{font-size:8px;background:#fdf3e3;color:var(--amber);border-radius:4px;padding:1px 5px;white-space:nowrap}
+.ts-card .sla.closed{background:#eee;color:#999}.ts-card .sla.open{background:#eaf3ec;color:var(--good)}
+.ts-card .meta{color:var(--muted);margin-top:3px;font-size:9px}
+.cv{display:flex;flex-direction:column;min-width:0}
+.cv-top{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid #eee}
+.cv-top .av2{width:24px;height:24px;border-radius:50%;background:#b3a0d4;color:#fff;display:grid;place-items:center;font-size:9px;font-weight:600}
+.cv-icons{margin-left:auto;display:flex;gap:9px;color:#b3a99c;font-size:12px}
+.cv-body{flex:1;padding:11px 12px;background:#faf9f7;font-size:10.5px}
+.cv-div{text-align:center;color:#2d6cdf;font-size:9px;margin:7px 0}
+.cv-form{background:#fff;border:1px solid #eee;border-radius:8px;padding:8px;margin-bottom:7px}
+.cv-form .ft{font-weight:600;color:var(--navy);font-size:10px}
+.cv-form .fa{display:flex;gap:12px;margin-top:5px;font-size:9px;color:#2d6cdf}
+.cv-row{display:flex;align-items:center;gap:6px;font-size:9.5px;color:#7c7066;padding:4px 0}
+.cv-msg{background:#fff;border:1px solid #eee;border-radius:8px;padding:7px 9px;font-size:10px;color:#544a40;margin-top:4px}
+.cv-comp{border-top:1px solid #eee;padding:8px 10px}
+.cv-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+.cv-chip{font-size:9px;border:1px solid #e0dccf;border-radius:6px;padding:3px 7px;color:var(--navy)}
+.cv-chip.on{background:#eaf0fb;border-color:#bcd0f5;color:#2d6cdf;font-weight:600}
+.cv-inp{display:flex;align-items:center;gap:7px}
+.cv-inp .box{flex:1;border:1px solid #e0dccf;border-radius:8px;padding:6px 9px;font-size:10px;color:#9a9186}
+.cv-inp .snd{width:28px;height:26px;border-radius:7px;background:#2d6cdf;color:#fff;display:grid;place-items:center;font-size:11px}
+.cc2{background:#fbf8ee;display:flex;flex-direction:column;min-width:0}
+.cc2-h{padding:10px 12px;border-bottom:1px solid #ece0cf}
+.cc2-brand{display:flex;align-items:center;gap:6px;font-family:'Lora';font-weight:700;color:var(--navy);font-size:11.5px;flex-wrap:wrap}
+.cc2-brand .dot{width:18px;height:18px;border-radius:5px;background:var(--clay);color:#fff;display:grid;place-items:center;font-size:8px;font-weight:700}
+.cc2-modes{display:flex;gap:4px;margin-left:auto}
+.cc2-modes span{font-size:8.5px;border:1px solid #ece0cf;border-radius:5px;padding:2px 6px;color:var(--muted)}
+.cc2-modes span.on{background:var(--clay);color:#fff;border-color:var(--clay);font-weight:600}
+.cc2-who{display:flex;align-items:center;gap:6px;font-size:9px;color:var(--muted);margin:7px 0 0}
+.cc2-icons{display:flex;gap:5px;align-items:center;margin-top:8px}
+.cc2-icons .i{width:20px;height:20px;border-radius:5px;border:1px solid #ece0cf;display:grid;place-items:center;font-size:9px;color:#7c7066}
+.cc2-icons .new{margin-left:auto;background:var(--clay);color:#fff;border-radius:6px;padding:3px 9px;font-size:9px;font-weight:600}
+.cc2-body{flex:1;padding:11px 12px}
+.cc2-bc{display:flex;align-items:center;gap:6px;font-size:9px;margin-bottom:9px;color:var(--muted)}
+.cc2-bc .bk{background:var(--clay);color:#fff;border-radius:999px;padding:2px 9px;font-weight:700}
+.cc2-bc .pill{background:#fbf1ea;border:1px solid var(--clay);color:var(--clay-deep);border-radius:999px;padding:2px 9px;font-weight:600}
+.cc2-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.06em;color:var(--clay-deep);font-weight:800}
+.cc2-q{font-family:'Lora';font-size:15px;color:var(--navy);margin:3px 0 9px;font-weight:600}
+.cc2-st{display:flex;gap:5px;margin-bottom:10px}
+.cc2-st span{font-size:9px;border:1px solid #ece0cf;border-radius:999px;padding:2px 9px;color:var(--muted)}
+.cc2-st span.on{background:#fbf1ea;border-color:var(--clay);color:var(--clay-deep);font-weight:600}
+.cc2-sec{font-weight:700;color:var(--navy);font-size:11px;margin-bottom:3px}
+.cc2-ni{font-size:9px;color:var(--muted);margin-bottom:7px}
+.cc2-ck{display:flex;gap:8px;font-size:9.5px;color:#544a40;padding:6px 0;line-height:1.4;border-bottom:1px dashed #ece0cf}
+.cc2-ck .bx{width:13px;height:13px;border:1.5px solid #cbb89c;border-radius:3px;flex-shrink:0;margin-top:1px;display:grid;place-items:center;color:#fff;font-size:8px}
+.cc2-ck.done .bx{background:var(--clay);border-color:var(--clay)}
+.cc2-tabs{display:flex;border-top:1px solid #ece0cf;background:#fff}
+.cc2-tabs .t{flex:1;text-align:center;padding:8px 2px;font-size:8.5px;color:var(--muted)}
+.cc2-tabs .t.on{color:var(--clay-deep);font-weight:700}
+.cc2-tabs .t .ic{font-size:14px;display:block;margin-bottom:2px}
+.cc2-tabs .t .bdg{display:inline-block;background:var(--clay);color:#fff;border-radius:999px;font-size:7px;padding:0 4px;margin-left:2px}
+@media (max-width:820px){
+  .rkan{grid-template-columns:1fr 1fr}.spwrap{grid-template-columns:1fr}
+  .dock{grid-template-columns:1fr}.ts3{grid-template-columns:1fr}.ts-col{border-right:0;border-bottom:1px solid #eee}.dock-crm{border-right:0;border-bottom:1px solid #e6e2da}
+  .ccc{grid-template-columns:1fr}.ccc-side{border-left:0;border-top:1px solid #ece0cf}
+  .stack{grid-template-columns:1fr}.stack .arrow{transform:rotate(90deg)}
+  .mocks,.corr{grid-template-columns:1fr}.kan{grid-template-columns:1fr 1fr}
+  .counters,.pillars,.deep{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:1fr 1fr}.eras{grid-template-columns:1fr}
+  .hero h1{font-size:40px}nav .nl{display:none}
+}
+@media (max-width:560px){.cards,.counters{grid-template-columns:1fr}.crm{grid-template-columns:1fr}.crm-side{display:none}.rkan{grid-template-columns:1fr}}
+
+@media print{
+  nav,#prog,.filterbar,.btn-print{display:none!important}
+  body{background:#fff;font-size:12px}
+  section{padding:22px 0;page-break-inside:avoid;border-bottom:1px solid var(--line)}
+  .hero{-webkit-print-color-adjust:exact}
+  .cards{grid-template-columns:1fr 1fr 1fr;gap:7px}
+  .card{display:flex!important;page-break-inside:avoid}
+  .card[hidden]{display:flex!important}
+  .deep,.pillars,.mocks,.corr{grid-template-columns:1fr 1fr}
+  .mock,.cc,.kcol,.stack,.win{page-break-inside:avoid}
+  .rkan{grid-template-columns:repeat(4,1fr)}.crm{grid-template-columns:182px 1fr}
+  .belief{page-break-inside:avoid}
+  .hero .wrap{padding:30px 28px}
+  .counters b{font-size:28px}.hero h1{font-size:34px}
+  a[href]:after{content:""}
+}
+</style>
+
+<div id="prog"></div>
+<nav><div class="wrap">
+  <a class="brand" href="#top">KP · The Build</a>
+  <a class="nl" href="#transform">Transformation</a>
+  <a class="nl" href="#stack">Tech stack</a>
+  <a class="nl" href="#mockups">In action</a>
+  <a class="nl" href="#pillars">Pillars</a>
+  <a class="nl" href="#catalog">Catalog</a>
+  <a class="nl" href="#security">HIPAA</a>
+  <a class="nl" href="#integrity">Integrity</a>
+  <a class="nl" href="#people">People</a>
+  <a class="nl" href="#liah">LIAH</a>
+  <button class="btn-print" onclick="window.print()">⌘ Save as PDF</button>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero" id="top"><div class="wrap">
+  <div class="kicker">Impact report · Kentlands Psychotherapy · June 2026</div>
+  <h1>Everything that was built —<br>down to the small things.</h1>
+  <div class="sub">A phone line with no memory became one synced, secure, human system.</div>
+  <p class="thesis">In six months, the practice's entire patient-acquisition and care-coordination stack was rebuilt from scratch: an automated matching engine, a coordinator co-pilot, a clinician self-service panel, and the website that ties them together — every layer HIPAA-safe, every record synced with care, every step designed around a real person on the other end. The whole custom layer was built to run on <b style="color:#fff">$0 of added infrastructure</b> — for about $100/mo more than the tools it replaced.</p>
+  <div class="counters">
+    <div class="c"><b data-count="726">0</b><span>Inquiries tracked</span></div>
+    <div class="c"><b id="featCount" data-count="65" data-suffix="+">0</b><span>Features built</span></div>
+    <div class="c"><b data-count="95" data-suffix="+">0</b><span>Match signals</span></div>
+    <div class="c"><b data-count="0" data-text="$0">0</b><span>added infra (custom layer)</span></div>
+  </div>
+</div></header>
+
+<!-- TRANSFORMATION -->
+<section id="transform"><div class="wrap">
+  <div class="kicker">The transformation</div>
+  <h2>From a phone line with no memory<br>to a system that never forgets</h2>
+  <div class="rule"></div>
+  <p class="lead">When this work began, the practice ran on disconnected tools that captured nothing and carried no context. Three eras tell the story.</p>
+  <div class="eras">
+    <div class="era e0"><div class="dot"></div><h4>Era 0 — The void</h4><p>A calling system with nothing synced. Calls came and went. No contacts, no history, no memory.</p></div>
+    <div class="era e1"><div class="dot"></div><h4>Era 1 — The patchwork</h4><p>A spreadsheet for availability, Outlook for email, and a third-party call center relaying everything by hand. Three places, no connective tissue.</p></div>
+    <div class="era e2"><div class="dot"></div><h4>Era 2 — Today</h4><p>One synced CRM, an automated matcher, self-updating clinician tools, and an automation engine working 24/7.</p></div>
+  </div>
+  <h3>What changed, line by line</h3>
+  <table class="ba">
+    <tr><th class="b">Before — the old stack</th><th class="a">After — what's running now</th></tr>
+    <tr><td class="b">A calling system with nothing synced — calls vanished</td><td class="a">Every inquiry captured as a contact, with full history</td></tr>
+    <tr><td class="b">Clinician availability lived in a spreadsheet, updated by hand</td><td class="a">Availability updates itself in real time, feeding the matcher</td></tr>
+    <tr><td class="b">Outlook for all communication, threads scattered</td><td class="a">One inbox: calls, texts, emails, chat — routed in a pipeline</td></tr>
+    <tr><td class="b">Call scripts in a static Word document</td><td class="a">Interactive, guided call-handling software</td></tr>
+    <tr><td class="b">Phone tree forwarded to a third-party call center</td><td class="a">Lead-filtering intake — faster, cheaper, higher quality</td></tr>
+    <tr><td class="b">Website homepage overwhelmed visitors</td><td class="a">One clear goal: find your match</td></tr>
+    <tr><td class="b">Onboarding was confusing and multi-step</td><td class="a">Streamlined, step-by-step checklists</td></tr>
+    <tr><td class="b">CTA buried 3 pages deep (home → book → form)</td><td class="a">HIPAA-compliant interactive tool, right on the page</td></tr>
+  </table>
+</div></section>
+
+<!-- TECH STACK -->
+<section id="stack"><div class="wrap">
+  <div class="kicker">One stack, not ten</div>
+  <h2>We didn't add tools — we removed them</h2>
+  <div class="rule"></div>
+  <p class="lead">The old setup was a pile of disconnected services that didn't talk to each other — and every gap between them was a place for a person to get lost. We consolidated all of it into one integrated, automated system.</p>
+  <div class="stack">
+    <div class="old">
+      <div class="toolpill">☎️ Virtual PBX <span class="x">retired</span></div>
+      <div class="toolpill">📞 Quo phone line <span class="x">retired</span></div>
+      <div class="toolpill">📊 Excel availability sheets <span class="x">retired</span></div>
+      <div class="toolpill partial">📧 Outlook email <span class="x">scaled back</span></div>
+      <div class="toolpill">🏢 3rd-party call center <span class="x">retired</span></div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="new">
+      <div class="onebox">
+        <h3>One integrated, automated system</h3>
+        <p>CRM, phone, automation, matching and self-service — all synced, all in one place, all owned by the practice.</p>
+        <div class="feats"><span>Unified inbox</span><span>Automated pipelines</span><span>Live availability</span><span>Lost-to-follow-up tracking</span><span>New-client funnel</span><span>Automations included</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:30px">What it actually costs</h3>
+  <p class="muted" style="max-width:64ch;margin-bottom:4px">Consolidation wasn't free — but it was close. Three disconnected subscriptions went away; one integrated platform replaced them.</p>
+  <div class="costs">
+    <div class="costcard old">
+      <h4>Retired <b>$222/mo</b></h4>
+      <div class="ci">Quo — phone <span>$82</span></div>
+      <div class="ci">Constant Contact — email <span>$100</span></div>
+      <div class="ci">Virtual PBX <span>$40</span></div>
+    </div>
+    <div class="costarrow">→</div>
+    <div class="costcard new">
+      <h4>New <b>$323/mo</b></h4>
+      <div class="ci">CRM platform <span>$248</span></div>
+      <div class="ci">SMS + calling usage <span>$75</span></div>
+      <div class="ci" style="color:var(--muted)">(replaces all three above)</div>
+    </div>
+    <div class="costnet">
+      <div class="cn-k">Net change</div>
+      <div class="cn-v">+$100<span>/mo</span></div>
+      <div class="cn-s">for an entirely new level of capability</div>
+    </div>
+  </div>
+  <div class="costnote">For about <b>$100 more a month</b>, three siloed tools became one integrated platform — and the entire custom layer on top (the matcher, both consoles, and the 24/7 automations) was built to run on <b>$0 of added infrastructure</b> on Cloudflare's free tier. The ~$100 buys the platform; the intelligence built on it was effectively free.</div>
+</div></section>
+
+<!-- PILLARS -->
+<section id="pillars"><div class="wrap">
+  <div class="kicker">The four pillars</div>
+  <h2>What does the heavy lifting</h2>
+  <div class="rule"></div>
+  <div class="pillars">
+    <div class="pillar"><div class="ic">🎯</div><h3>Automated clinician matching</h3>
+      <ul><li>A few questions become a ranked shortlist of the right clinicians</li><li>Scores 95+ signals; always returns a match — never a dead end</li><li>Reads live availability, so it only suggests clinicians taking clients</li></ul>
+      <div class="mech"><b>Under the hood:</b> 7 weighted dimensions (specialty ×5, population ×4, service ×4, modality ×3, age ×3, location ×2, PSYPACT ×2, gender ×1), a non-AI bio-relevance pass with 100+ stop-words, and 23 lay-language synonyms so people can type how they feel, not in clinical terms.</div>
+    </div>
+    <div class="pillar"><div class="ic">🔐</div><h3>HIPAA-secure data consolidation</h3>
+      <ul><li>Calls, texts, emails, forms and chat land on one contact record</li><li>Patient data never leaves the HIPAA-covered CRM</li><li>Public tools only ever see a tight field allow-list</li></ul>
+      <div class="mech"><b>Under the hood:</b> a 24-field public allow-list (new fields excluded by default), an explicit never-expose list, read vs. write tokens kept separate, and patient criteria that are never stored — used to match, then gone.</div>
+    </div>
+    <div class="pillar"><div class="ic">🔄</div><h3>Automated task movement</h3>
+      <ul><li>Inquiries flow New → Contacting → Urgent → Booked automatically</li><li>Workflows assign follow-ups without anyone having to remember</li><li>Every lead has an owner, a stage, and a next action</li></ul>
+      <div class="mech"><b>Under the hood:</b> webhook push from the CRM plus a 2-minute cron safety net, with write-on-change diffing so data only moves when it has actually changed.</div>
+    </div>
+    <div class="pillar"><div class="ic">🟢</div><h3>Clinician auto-updating availability</h3>
+      <ul><li>Clinicians tap Open or Full from a panel beside their EHR</li><li>The change feeds the public matcher within minutes</li><li>The availability spreadsheet is gone — data lives at its source</li></ul>
+      <div class="mech"><b>Under the hood:</b> a write-scoped service with HMAC sessions bound to one record, a 12-field server-side edit allow-list, and a profile editor pre-populated <i>exactly</i> from the CRM so nothing is a surprise.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- MOCKUPS -->
+<section id="mockups"><div class="wrap">
+  <div class="kicker">See it in action</div>
+  <h2>The system, on screen</h2>
+  <div class="rule"></div>
+  <p class="lead">The actual workspaces the team uses every day. <span class="muted">Recreated with illustrative data — no real patient information is shown, which is exactly how a public-safe view of these tools behaves too.</span></p>
+
+  <!-- 1. CRM — Inquiries pipeline (flagship) -->
+  <div class="win full">
+    <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 app.crm.com/inquiries</span></div>
+    <div class="crm">
+      <div class="crm-side">
+        <div class="crm-brand"><span class="lg">C</span> CRM</div>
+        <div class="crm-loc">Kentlands Psychotherapy<br>Gaithersburg, Maryland</div>
+        <div class="crm-nav">
+          <a><span class="ni">▦</span> Dashboard</a>
+          <a><span class="ni">💬</span> Conversations</a>
+          <a><span class="ni">📅</span> Calendars</a>
+          <a><span class="ni">👤</span> Contacts</a>
+          <a class="on"><span class="ni">📨</span> Inquiries</a>
+          <a><span class="ni">🧪</span> Testing Availabilities</a>
+          <a><span class="ni">🩺</span> Clinicians</a>
+          <a><span class="ni">💳</span> Payments</a>
+          <a><span class="ni">⚙️</span> Automation</a>
+          <a><span class="ni">📈</span> Reporting</a>
+        </div>
+      </div>
+      <div class="crm-main">
+        <div class="crm-head"><h5>Inquiries</h5><span class="crm-cnt">726 inquiries</span><span class="rt"><span class="crm-imp">Import</span><span class="crm-add">+ Add inquiry</span></span></div>
+        <div class="crm-tabs"><span class="t on">Open opportunities</span><span class="t">Top 5 List</span><span class="t">+ List</span></div>
+        <div class="rkan">
+          <div class="rk c1"><div class="h">New Inquiry · Not Contacted <small>312</small></div>
+            <div class="rkcard"><b>New inquiry</b><br><small>web form · 2:14 PM</small><div class="row">☎ 💬 ✉ 📋</div></div>
+            <div class="rkcard"><b>Matcher submission</b><br><small>1:02 PM</small><span class="lab">Clinician Matching</span></div>
+          </div>
+          <div class="rk c2"><div class="h">Calls · Txts · Emails <small>184</small></div>
+            <div class="rkcard"><b>Insurance question</b><br><small>worked · 11:20 AM</small><span class="lab">testing call</span></div>
+            <div class="rkcard"><b>Testing inquiry</b><br><small>worked · 10:05 AM</small></div>
+          </div>
+          <div class="rk c3"><div class="h">Needs Contacting Again <small>97</small></div>
+            <div class="rkcard"><b>Left voicemail</b><br><small>day 2 · auto re-try</small></div>
+            <div class="rkcard"><b>Awaiting insurance</b><br><small>day 3</small></div>
+          </div>
+          <div class="rk c4"><div class="h">URGENT · Contact ASAP <small>2</small></div>
+            <div class="rkcard"><b>Returning client</b><br><small>callback requested</small></div>
+            <div class="rkcard"><b>Crisis follow-up</b><br><small>flagged today</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b>The Inquiries board</b> — 726 leads the old phone system never captured, now staged, owned, and auto-routed. Colored columns = New → Contacting → Follow-up → Urgent.</div>
+  </div>
+
+  <!-- 2. CRM — Clinicians -->
+  <div class="win full">
+    <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 app.crm.com/clinicians</span></div>
+    <div class="crm">
+      <div class="crm-side">
+        <div class="crm-brand"><span class="lg">C</span> CRM</div>
+        <div class="crm-loc">Kentlands Psychotherapy<br>Gaithersburg, Maryland</div>
+        <div class="crm-nav">
+          <a><span class="ni">▦</span> Dashboard</a>
+          <a><span class="ni">💬</span> Conversations</a>
+          <a><span class="ni">📅</span> Calendars</a>
+          <a><span class="ni">👤</span> Contacts</a>
+          <a><span class="ni">📨</span> Inquiries</a>
+          <a><span class="ni">🧪</span> Testing Availabilities</a>
+          <a class="on"><span class="ni">🩺</span> Clinicians</a>
+          <a><span class="ni">💳</span> Payments</a>
+          <a><span class="ni">⚙️</span> Automation</a>
+          <a><span class="ni">📈</span> Reporting</a>
+        </div>
+      </div>
+      <div class="crm-main">
+        <div class="crm-head"><h5>Clinicians</h5><span class="crm-cnt">22 Clinicians</span><span class="rt"><span class="crm-imp">Import</span><span class="crm-add">+ Add Clinician</span></span></div>
+        <div class="crm-tabs"><span class="t">All</span><span class="t on">★ KP Openings</span><span class="t">Adults</span><span class="t">Minors</span></div>
+        <table class="ctab">
+          <tr><th>Clinician Name</th><th>New Pt Openings</th><th>Ideal Client</th><th>Times of Openings</th></tr>
+          <tr><td>Dr. A. Rivera</td><td><span class="av open">Yes (Open)</span></td><td>Any child under 10</td><td>Sun 8 AM; Wed 2 &amp; 6 PM</td></tr>
+          <tr><td>J. Bennett, LCPC</td><td><span class="av open">Yes (Open)</span></td><td>Adult females; parenting</td><td>Multiple weekly slots</td></tr>
+          <tr><td>P. Nguyen, PMHNP</td><td><span class="av open">Yes (Open)</span></td><td>Ages 10+; medication mgmt</td><td>Tue / Wed / Thu</td></tr>
+          <tr><td>Dr. R. Cohen</td><td><span class="av inact">Temporarily Inactive</span></td><td>Children 6+; testing soon</td><td>Parental leave</td></tr>
+          <tr><td>K. Beyer, LCSW</td><td><span class="av pend">Pending (Maybe)</span></td><td>Adults 30+; couples</td><td>See clinician note</td></tr>
+          <tr><td>Dr. M. Okafor</td><td><span class="av full">No (Full)</span></td><td>Couples; families (15+)</td><td>Mon 10:15 &amp; 3:30</td></tr>
+        </table>
+        <div class="cap" style="border-top:0">Page 1 of 2 · the live source of truth the public matcher reads every ~2 minutes.</div>
+      </div>
+    </div>
+    <div class="cap"><b>The Clinicians object</b> — availability, ideal-client and openings in one place. Each clinician can now update their own row from the side panel.</div>
+  </div>
+
+  <!-- 3. row: Testing + Lost-to-follow-up -->
+  <div class="mocks">
+    <!-- Testing -->
+    <div class="win">
+      <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 app.crm.com/testing</span></div>
+      <div class="crm-main">
+        <div class="crm-head"><h5>Testing Availabilities</h5><span class="crm-cnt">37 weekends</span></div>
+        <div class="crm-tabs"><span class="t">All</span><span class="t on">2026 Testing</span><span class="t">Open 2026</span></div>
+        <table class="ctab">
+          <tr><th>Weekend</th><th>Room</th><th>Psych A</th><th>Psych B</th></tr>
+          <tr><td>May 9–10</td><td><span class="av full">Booked</span></td><td>—</td><td>Open</td></tr>
+          <tr><td>May 16–17</td><td><span class="av full">Booked</span></td><td>Open</td><td>—</td></tr>
+          <tr><td>May 23–24</td><td><span class="av open">Open</span></td><td>Open</td><td>Open</td></tr>
+          <tr><td>Jun 6–7</td><td><span class="av open">Open</span></td><td>Open</td><td>—</td></tr>
+          <tr><td>Jun 13–14</td><td><span class="av full">Booked</span></td><td>—</td><td>Open</td></tr>
+        </table>
+      </div>
+      <div class="cap"><b>Testing Availabilities</b> — weekend slots &amp; room status at a glance, replacing a tangled spreadsheet.</div>
+    </div>
+
+    <!-- Lost-to-follow-up (Reporting) -->
+    <div class="win">
+      <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 app.crm.com/reporting/lifecycle</span></div>
+      <div class="crm-main">
+        <div class="crm-head"><h5>Lifecycle &amp; Lost-to-follow-up</h5><span class="crm-cnt">live</span></div>
+        <div class="funnel">
+          <div class="fstep"><span class="flabel">New inquiries</span><div class="fbar" style="width:100%;background:var(--clay)">tracked from first touch</div></div>
+          <div class="fstep"><span class="flabel">Contacted</span><div class="fbar" style="width:82%;background:var(--clay-deep)">auto-assigned &amp; worked</div></div>
+          <div class="fstep"><span class="flabel">Booked</span><div class="fbar" style="width:56%;background:var(--good)">converted to clients</div></div>
+          <div class="fstep"><span class="flabel">Went quiet</span><div class="fbar" style="width:32%;background:var(--amber)">flagged: lost-to-follow-up</div></div>
+          <div class="fstep"><span class="flabel">Re-engaged</span><div class="fbar" style="width:20%;background:var(--violet)">automated win-back</div></div>
+        </div>
+      </div>
+      <div class="cap">The part most systems miss: people who go quiet are <b>automatically flagged &amp; re-engaged</b> — not forgotten.</div>
+    </div>
+  </div>
+
+  <!-- 3b. CCC Coordinator Console (flagship built tool) -->
+  <div class="win full">
+    <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 kentlands-ccc-console.pages.dev</span></div>
+    <div class="ccc">
+      <div class="ccc-top">
+        <div class="ccc-brand"><span class="dot">KP</span> Care Coordinator Console</div>
+        <div class="ccc-modes"><span class="on">New CCC</span><span>Veteran CCC</span></div>
+        <span class="ccc-gh">🎓 Practice</span>
+        <span class="ccc-gh">🧭 Helper</span>
+      </div>
+      <div class="ccc-main">
+        <div class="ccc-crumbs"><span class="cb">← Back</span><span class="c">New-client call</span><span class="c">Their needs</span><span class="c cur">Step 3 · Match</span></div>
+        <div class="ns"><div class="k">★ North Star</div><div class="b">Remember: this is <b>a person reaching out for help</b>, not a transaction. Slow down, listen, and make them feel they're already in good hands.</div></div>
+        <div class="ccc-q">What kind of support are they looking for?</div>
+        <div class="ccc-script"><span class="lbl">Say something like</span>"Thanks so much for calling Kentlands — I'd love to help you find the right fit. Can you tell me a little about what's bringing you in today?"</div>
+        <div class="ccc-opts">
+          <div class="ccc-opt on">Individual therapy</div>
+          <div class="ccc-opt">Couples / family</div>
+          <div class="ccc-opt">Medication management</div>
+          <div class="ccc-opt">Testing &amp; assessment</div>
+        </div>
+      </div>
+      <div class="ccc-side">
+        <div class="ccc-note">
+          <h6>📋 Call note <span style="margin-left:auto;font-size:9px;color:var(--muted);font-weight:400">4 captured</span></h6>
+          <div class="ni"><span class="t">Care</span> Individual therapy</div>
+          <div class="ni"><span class="t">For</span> Teen, age 15</div>
+          <div class="ni"><span class="t">Prefers</span> Virtual · evenings</div>
+          <div class="ni"><span class="t">Match</span> Dr. Rivera — best fit</div>
+          <div class="ccc-send"><span class="s1">Copy</span><span class="s2">Send → CRM</span></div>
+        </div>
+        <div class="ccc-mini">
+          <h6>✅ Welcoming new clients</h6>
+          <div class="row"><span>Dr. A. Rivera</span><span style="color:var(--good);font-weight:600">Open</span></div>
+          <div class="row"><span>J. Bennett</span><span style="color:var(--good);font-weight:600">Open</span></div>
+          <div class="row"><span>P. Nguyen</span><span style="color:var(--good);font-weight:600">Open</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap"><b>The Coordinator Console (CCC)</b> — a live call co-pilot: 17 guided call flows with warm scripts, a values "North Star" on every call, a built-in matcher, and a call note that <b>auto-builds as you talk</b> and hands off to the CRM in one click. Replaces a static script document with on-rails, trainable software.</div>
+  </div>
+
+  <!-- 3c. CCC docked beside a live contact — the real workspace -->
+  <div class="win full">
+    <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 app.crm.com/contacts · Care Coordinator Console docked →</span></div>
+    <div class="dock">
+      <!-- CRM: contact details + omni-channel conversation -->
+      <div class="ts3">
+        <div class="ts-col ts-cd">
+          <div class="nm"><span class="av2">JM</span> Jordan M.</div>
+          <span class="ts-tag">testing call</span>
+          <div class="ts-tabs"><span class="on">All fields</span><span>DND</span><span>Actions</span></div>
+          <div class="ts-inq"><span>Inquiries</span><span style="color:var(--clay-deep)">+ Add</span></div>
+          <div class="ts-card"><div class="h"><span>Active care</span><span class="sla">1–2 mo SLA</span></div><div class="meta">Therapy + testing · Status: <b style="color:var(--good)">Open</b></div></div>
+          <div class="ts-card"><div class="h"><span>Missed-call follow-up</span><span class="sla closed">Closed</span></div><div class="meta">Returned &amp; logged · Primary</div></div>
+          <div class="ts-card"><div class="h"><span>New-client intake</span><span class="sla open">Open</span></div><div class="meta">Primary · this call</div></div>
+          <div class="ts-card"><div class="h"><span>Re-engagement</span><span class="sla">3–7 mo</span></div><div class="meta">Nurture sequence</div></div>
+        </div>
+        <div class="cv">
+          <div class="cv-top"><span class="av2">JM</span> <b style="font-family:'Lora';color:var(--navy);font-size:12px">Jordan M.</b><span class="cv-icons">💬 📞 📁 ⭐ ✉</span></div>
+          <div class="cv-body">
+            <div class="cv-div">— New —</div>
+            <div class="cv-form"><div class="ft">📋 Form submitted · Clinician Matching</div><div class="fa">👁 View submission&nbsp;&nbsp;☰ View all</div></div>
+            <div class="cv-row">✦ Opportunity created · New inquiry (Unsure) · Jun 22</div>
+            <div class="cv-row">🔕 DnD disabled by user · 5:02 PM</div>
+            <div class="cv-div">— Today —</div>
+            <div class="cv-form"><div class="ft">📋 Form submitted · CCC Call Script</div><div class="fa">👁 View submission&nbsp;&nbsp;☰ View all</div></div>
+            <div class="cv-msg">"Hi — I'm looking for someone for my teenage daughter, and we may need medication too."</div>
+          </div>
+          <div class="cv-comp">
+            <div class="cv-chips"><span class="cv-chip on">💬 SMS</span><span class="cv-chip">✉ Email</span><span class="cv-chip">💬 Live chat</span><span class="cv-chip">📱 Social</span><span class="cv-chip">📞 Call</span></div>
+            <div class="cv-inp"><span class="box">Type a message…</span><span class="snd">➤</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- docked CCC console running a real call flow -->
+      <div class="cc2">
+        <div class="cc2-h">
+          <div class="cc2-brand"><span class="dot">KP</span> Care Coordinator Console <span class="cc2-modes"><span>New</span><span class="on">Veteran</span></span></div>
+          <div class="cc2-who">👤 Elizabeth C. · sign out <span style="margin-left:auto;border:1px solid #ece0cf;border-radius:5px;padding:1px 5px">⌘K</span></div>
+          <div class="cc2-icons"><span class="i">🎓</span><span class="i">🆘</span><span class="i">⏱</span><span class="i">❓</span><span class="i">▭</span><span class="new">+ New</span></div>
+        </div>
+        <div class="cc2-body">
+          <div class="cc2-bc"><span class="bk">← Back</span> › <span class="pill">Medication / psychiatry</span></div>
+          <div class="cc2-lbl">Medication / psychiatry · Veteran view</div>
+          <div class="cc2-q">Medication / psychiatry</div>
+          <div class="cc2-st"><span class="on">1 · Medication mgmt</span><span>2 · Wrap up</span></div>
+          <div class="cc2-sec">Medication management</div>
+          <div class="cc2-ni">ⓘ Internal routing notes</div>
+          <div class="cc2-ck done"><span class="bx">✓</span><span>Confirmed age (meds from 8 w/ Dr. Kingsley, 10 w/ Dr. Donovan; a parent attends for minors)</span></div>
+          <div class="cc2-ck done"><span class="bx">✓</span><span>Explained evaluation-first (medication not guaranteed)</span></div>
+          <div class="cc2-ck"><span class="bx"></span><span>Captured current meds / prescriber + any PCP or therapist to coordinate</span></div>
+          <div class="cc2-ck"><span class="bx"></span><span>Matched a prescriber (8–9 → Dr. Kingsley; 10+ → either; complex → Dr. Kingsley)</span></div>
+          <div class="cc2-ck"><span class="bx"></span><span>Escalated if under 8, psychosis, or out-of-state telehealth</span></div>
+        </div>
+        <div class="cc2-tabs"><span class="t on"><span class="ic">📋</span>Call note<span class="bdg">1</span></span><span class="t"><span class="ic">🔎</span>Matcher</span><span class="t"><span class="ic">💬</span>Messages</span><span class="t"><span class="ic">📨</span>Send</span></div>
+      </div>
+    </div>
+    <div class="cap"><b>How it's actually used — and why "one place" is the whole point.</b> Every call, text, email, live-chat and social message lands on <b>one timeline</b>, with the contact's full inquiry history and notes beside it. The coordinator docks the console on the right and follows the exact call flow — here, the real medication/psychiatry routing logic — while the call note builds itself and sends back to <b>this same record</b>. Conversation, history, and guidance, finally together.</div>
+  </div>
+
+  <!-- 4. row: Public matcher + SimplePractice + console -->
+  <div class="mocks">
+    <!-- Public matcher (browser) -->
+    <div class="win">
+      <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 kentlandspsychotherapy.com/search</span></div>
+      <div style="padding:16px;background:#faf6ee">
+        <div style="font-family:'Lora';font-size:14px;color:var(--ink);margin-bottom:4px">Based on what you shared,</div>
+        <div style="font-family:'Lora';font-size:14px;color:var(--muted);margin-bottom:12px">here are your best matches:</div>
+        <div class="resultcard">
+          <div class="ravatar">AR</div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><b style="font-size:13px">Dr. A. Rivera, LCPC</b><span class="av open">★ Best fit</span></div>
+            <div class="rchips"><span>Anxiety</span><span>Children</span><span>In-person + virtual</span></div>
+            <div style="font-size:10.5px;color:var(--muted);margin-top:6px">$190 / session · welcoming new clients</div>
+          </div>
+        </div>
+        <div class="cbtn">Connect with Dr. Rivera →</div>
+      </div>
+      <div class="cap"><b>The public matcher</b> — embedded on the website. No dead ends, no jargon, with the reasons why.</div>
+    </div>
+
+    <!-- SimplePractice + clinician console -->
+    <div class="win">
+      <div class="wtop"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="wurl">🔒 secure.simplepractice.com</span></div>
+      <div class="spwrap">
+        <div class="spmain">
+          <div class="sptop"><span class="lg">◳ SimplePractice</span> · Calendar</div>
+          <div class="spbody">
+            <div class="spline" style="width:90%"></div><div class="spline" style="width:70%"></div>
+            <div class="spline" style="width:80%"></div><div class="spline" style="width:55%"></div>
+            <div class="spline" style="width:75%"></div>
+          </div>
+        </div>
+        <div class="spside">
+          <div class="sh">▣ Clinician Console</div>
+          <div class="statuscard"><small>Your new-client availability</small>● Open — welcoming new</div>
+          <div class="qa">
+            <div class="qcard">🟢 Open</div>
+            <div class="qcard">🔴 Full</div>
+            <div class="qcard">✏️ Profile</div>
+            <div class="qcard">🕐 Openings</div>
+            <div class="qcard">📋 Forms</div>
+            <div class="qcard">🎫 Request</div>
+          </div>
+        </div>
+      </div>
+      <div class="cap"><b>Docked beside the EHR</b> — clinicians flip Open/Full in one tap without leaving SimplePractice.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- FEATURE CATALOG -->
+<section id="catalog"><div class="wrap">
+  <div class="kicker">The feature catalog</div>
+  <h2>The little things that add up</h2>
+  <div class="rule"></div>
+  <p class="lead">Every quiet decision that makes the system feel effortless and trustworthy. Filter by tool or by what it protects — or search.</p>
+  <div class="filterbar">
+    <input id="q" placeholder="Search features…  (try ‘undo’, ‘age’, ‘token’, ‘crisis’)">
+    <div class="chips" id="toolchips">
+      <span class="chip on" data-tool="all">All tools</span>
+      <span class="chip" data-tool="Matcher">Matcher</span>
+      <span class="chip" data-tool="Website">Website</span>
+      <span class="chip" data-tool="CCC">Coordinator console</span>
+      <span class="chip" data-tool="Clinician">Clinician console</span>
+      <span class="chip" data-tool="Platform">Platform &amp; sync</span>
+    </div>
+    <div class="chips" id="themechips">
+      <span class="chip" data-theme="privacy" style="--t:var(--navy)">🔐 Privacy &amp; HIPAA</span>
+      <span class="chip" data-theme="integrity" style="--t:var(--good)">🔄 Data integrity</span>
+      <span class="chip" data-theme="human" style="--t:var(--clay)">💛 People-first</span>
+      <span class="chip" data-theme="speed" style="--t:var(--amber)">⚡ Speed</span>
+      <span class="chip" data-theme="access" style="--t:var(--violet)">♿ Accessibility</span>
+    </div>
+    <div class="count-line" id="countline"></div>
+  </div>
+  <div class="cards" id="cards"></div>
+</div></section>
+
+<!-- SECURITY -->
+<section id="security"><div class="wrap">
+  <div class="kicker">HIPAA, by design</div>
+  <h2>Security wasn't bolted on — it's the foundation</h2>
+  <div class="rule"></div>
+  <p class="lead">Mental-health data is some of the most sensitive there is. Every tool was built so that protected information simply has nowhere unsafe to go.</p>
+  <div class="deep">
+    <div class="drow dark"><h4><span class="badge">🛡️</span> No patient PHI ever touches our servers</h4><p>The public matcher uses a patient's criteria only to rank clinicians, then discards them. Nothing about the person is stored. The CRM — already HIPAA-covered — remains the single home for any real data.</p></div>
+    <div class="drow"><h4><span class="badge">✅</span> Allow-list, not block-list</h4><p>Public tools can only ever see 24 explicitly approved fields. Add a new field in the CRM and it's hidden by default — the safe failure mode. Sensitive notes are on an explicit never-expose list.</p></div>
+    <div class="drow"><h4><span class="badge">🔑</span> Least-privilege tokens</h4><p>The public matcher reads with a read-only token; clinician edits go through a completely separate write-scoped service. A breach of one can't touch the other. Tokens live only in encrypted infrastructure secrets — never in code or git.</p></div>
+    <div class="drow"><h4><span class="badge">🪪</span> Sessions that can only edit you</h4><p>Clinicians sign in with their email and the last four of their phone, verified server-side. Their session is a signed token bound to their own record — it is cryptographically impossible to edit someone else's profile.</p></div>
+    <div class="drow"><h4><span class="badge">⏱️</span> Brute-force lockout</h4><p>A four-digit PIN has only 10,000 combinations, so sign-in is rate-limited: six wrong tries locks that account for fifteen minutes. Simple front door, serious lock.</p></div>
+    <div class="drow"><h4><span class="badge">🔒</span> Locked-down access</h4><p>Cross-origin access is restricted to the real console domains only, and the edit service independently re-checks an allow-list on every write — the browser can never write a field it shouldn't.</p></div>
+  </div>
+  <div class="banner">A pre-launch <b>readiness audit</b> endpoint confirms every clinician can sign in and flags any data gaps <b>without ever exposing a single phone number or email</b> — so the system goes live with confidence, not crossed fingers.</div>
+</div></section>
+
+<!-- DATA INTEGRITY -->
+<section id="integrity"><div class="wrap">
+  <div class="kicker">Synced with care</div>
+  <h2>Data integrity at every step</h2>
+  <div class="rule"></div>
+  <p class="lead">"Synced" is easy to say and hard to do right. The system goes out of its way to keep every record accurate, fresh, and consistent across tools.</p>
+  <div class="deep">
+    <div class="drow"><h4><span class="badge">📡</span> Real-time, with a safety net</h4><p>The CRM pushes changes the instant they happen via webhook, and a 2-minute cron sweeps as a backstop. If a push is ever missed, the system self-heals within minutes.</p></div>
+    <div class="drow"><h4><span class="badge">♻️</span> Write-on-change only</h4><p>Before publishing, the system compares old and new data and writes only when something actually changed — no churn, no stale overwrites, no wasted work.</p></div>
+    <div class="drow"><h4><span class="badge">🧹</span> Normalized at the boundary</h4><p>The CRM returns data in several shapes; the system unpacks nested records and normalizes checkbox values across five-plus formats so everything downstream is clean and predictable.</p></div>
+    <div class="drow"><h4><span class="badge">🎯</span> Resilient to schema drift</h4><p>Field keys are auto-detected (with manual overrides available), so renaming or re-ordering fields in the CRM won't silently break matching or editing.</p></div>
+    <div class="drow"><h4><span class="badge">🪞</span> Edited exactly as stored</h4><p>The clinician profile editor pre-loads every field <i>exactly</i> as it is in the CRM — no guessing, no drift between what a clinician sees and what the matcher uses.</p></div>
+    <div class="drow"><h4><span class="badge">🌱</span> Freshness, gently enforced</h4><p>Each profile shows when it was last updated, and a soft nudge appears after 60 days — keeping referral data current without nagging.</p></div>
+  </div>
+  <div class="banner">There's even a documented workaround for a CRM quirk where checkbox fields can't be updated by API — the editor steers clinicians to the field types that <b>can</b> be written safely, so a save never silently fails. Integrity means <b>knowing the edges</b>, not just the happy path.</div>
+</div></section>
+
+<!-- PEOPLE FIRST -->
+<section id="people"><div class="wrap">
+  <div class="kicker">A person on the other end</div>
+  <h2>Every step kept people in mind</h2>
+  <div class="rule"></div>
+  <p class="lead">The technology is in service of three people: a patient looking for help, a coordinator answering the call, and a clinician trying to do their work. We built for each of them with care.</p>
+  <div class="deep">
+    <div class="drow"><h4>🧭 For the patient — never a dead end</h4><p>The matcher always returns someone, explains <i>why</i> they fit, and is honest about where they differ. A human coordinator is offered on every result. No empty screens, no jargon — you can describe how you feel and be understood.</p></div>
+    <div class="drow"><h4>☎️ For the coordinator — never lost</h4><p>A guided console with 17 call flows, a values card on every call reminding them it's "a person, not a transaction," a glossary that defines terms on hover, warm pre-written messages, and a one-key path to crisis support when it matters most.</p></div>
+    <div class="drow"><h4>🩺 For the clinician — never anxious</h4><p>One tap to change availability, a forgiving 4.8-second undo, an unsaved-changes guard, and a "what the matcher sees about you" card so they always know how they're being represented. Their data, in their hands.</p></div>
+    <div class="drow"><h4>♿ For everyone — accessible</h4><p>Reduced-motion preferences respected, AA-contrast color, labeled controls for screen readers, full keyboard navigation, and layouts that work from a phone to a docked side panel.</p></div>
+  </div>
+</div></section>
+
+<!-- LIAH -->
+<section id="liah"><div class="wrap">
+  <div class="kicker">From one practice to a movement</div>
+  <h2>The same foundations build Love is a Habit</h2>
+  <div class="rule"></div>
+  <p class="lead">Kentlands was the proving ground. These systems aren't practice-specific plumbing — they're the reusable foundations of how Love is a Habit reaches people at scale.</p>
+  <h3 style="margin-bottom:4px">Every capability becomes a way to support people</h3>
+  <p class="muted" style="margin-bottom:6px;max-width:64ch">Each system we proved at Kentlands is a blueprint for how Love is a Habit will meet people, support them, and help them move toward whatever they're chasing.</p>
+  <div class="corr">
+    <div class="cc"><div class="kp">At Kentlands · Clinician matcher</div><div class="lr"><span class="ar">↳</span><div><h4>A dream &amp; resource matcher</h4><p>Matching a patient to the right clinician becomes matching a person to the right mentor, program, scholarship, or next step toward their goal.</p></div></div></div>
+    <div class="cc"><div class="kp">At Kentlands · Coordinator console</div><div class="lr"><span class="ar">↳</span><div><h4>A care-navigator co-pilot</h4><p>Guided structure so whoever answers gives every person a warm, knowledgeable, consistent response — at any scale.</p></div></div></div>
+    <div class="cc"><div class="kp">At Kentlands · Lost-to-follow-up pipeline</div><div class="lr"><span class="ar">↳</span><div><h4>No one falls through</h4><p>The system that catches and re-engages people who go quiet becomes our promise: anyone who reaches out is followed up with, not forgotten.</p></div></div></div>
+    <div class="cc"><div class="kp">At Kentlands · Self-updating availability</div><div class="lr"><span class="ar">↳</span><div><h4>Living, person-owned profiles</h4><p>People and partners keep their own information current — continuity of support without anyone chasing manual updates.</p></div></div></div>
+    <div class="cc"><div class="kp">At Kentlands · HIPAA data consolidation</div><div class="lr"><span class="ar">↳</span><div><h4>One trusted record</h4><p>Every interaction in one secure place, so no one re-tells their story and context travels with the person, wherever they go next.</p></div></div></div>
+    <div class="cc"><div class="kp">At Kentlands · lean, free-tier build</div><div class="lr"><span class="ar">↳</span><div><h4>Built to reach everyone</h4><p>When high-impact tools don't require a big budget, we can support anyone, anywhere — the reach has no ceiling.</p></div></div></div>
+  </div>
+
+  <h3>The roadmap — mapped, not yet built</h3>
+  <div class="phase"><div class="num">1</div><div><h3>LIAH Chat Support → CRM via API</h3><p>The chat console pushes each conversation into the CRM as a contact and note through a small secure service — the same pattern as KP's write layer. Sensitive data stays in the HIPAA-covered CRM; a coordinator picks up with full context.</p></div></div>
+  <div class="phase"><div class="num">2</div><div><h3>An easy-access hotline</h3><p>A dedicated number with a lead-filtering phone tree — urgent to a crisis bridge, then resources, then intake — built on the same routing that replaced KP's third-party call center. Faster and cheaper from day one.</p></div></div>
+  <div class="phase"><div class="num">3</div><div><h3>Continuity &amp; continuation of care</h3><p>Automated follow-ups by conversation type and gentle re-engagement for anyone who's gone quiet, with a coordinator dashboard — the CCC console pattern, repointed to LIAH.</p></div></div>
+
+  <h3 style="margin-top:30px">The north star</h3>
+  <p class="muted" style="max-width:60ch">KP proves the tech layer. That unlocks the infrastructure layer. Which makes the prevention layer possible.</p>
+  <div style="margin-top:14px">
+    <div class="layer l3"><span class="tag2">Layer 3</span><h3>Prevention</h3><p>Operate upstream of clinical care — helping people build habits, community, and resilience before they ever need a clinician.</p></div>
+    <div class="layer l2"><span class="tag2">Layer 2</span><h3>Infrastructure</h3><p>Build the connective tissue between people who need care and the places that provide it — a shared backbone for mental health.</p></div>
+    <div class="layer l1"><span class="tag2">Layer 1 · proven at KP</span><h3>Technology</h3><p>Equip mental-health organizations with the tools to reach more people, more efficiently. This is what the last six months proved.</p></div>
+  </div>
+  <div class="belief">
+    <div class="k">Why all of this matters</div>
+    <h2>We believe a generation given the tools to chase their dreams will change the world.</h2>
+    <p>The last six months proved it at one practice: with the right systems in place, no one slips through the cracks — every call is answered, every person is matched to real help, and every follow-up happens.</p>
+    <p>Love is a Habit takes those same foundations and points them outward — toward everyone who needs support, and everyone reaching for something bigger than themselves. What helped one practice never lose a single person can help a whole generation find their footing, their people, and their purpose.</p>
+    <div class="sig">Give people the tools. Watch them change everything.</div>
+  </div>
+</div></section>
+
+<footer>Drew Story · Love is a Habit · June 2026 &nbsp;·&nbsp; <span id="fcount"></span> features documented &nbsp;·&nbsp; custom layer runs on $0/mo added infrastructure</footer>
+
+<script>
+/* ---- feature catalog data ---- */
+const F=[
+ // Matcher
+ ["7-dimension weighted scoring","Specialty, population, service, modality, age, location, licensure and gender each carry their own weight.","Matcher",["integrity"],"Patients get the right fit, not a random name."],
+ ["Never a dead end","Always returns the top 1–3 clinicians, falling back to a pending tier if needed.","Matcher",["human"],"No one ever hits an empty screen when they're reaching out for help."],
+ ["Non-AI bio relevance","Keyword matching against clinician bios with 100+ stop-words filtered and prefix matching.","Matcher",["integrity"],"Catches nuance ('anxious', 'ADHD-spectrum') without an unexplainable black box."],
+ ["Clinician's-own-words weighting","A clinician's ideal-client description is weighted 2× in ranking.","Matcher",["integrity"],"The people who know the fit best shape the match."],
+ ["23 lay-language synonyms","'Depressed', 'panic', 'cheating' map to the right clinical tags.","Matcher",["human"],"People can type how they feel, not in clinical terms."],
+ ["Soft age matching","Partial credit for near-fits instead of a hard zero.","Matcher",["human"],"Real life is fuzzy; a 17-year-old isn't turned away from an 18+ clinician on a technicality."],
+ ["Testing 'always available' card","The testing team shows first, regardless of individual load.","Matcher",["human"],"Removes choice anxiety for an already-stressful process."],
+ ["Medication prescriber uncapping","Shows every available prescriber when medication is the need.","Matcher",["integrity"],"No artificial limit on access to a scarce resource."],
+ ["'Differs on' transparency","Each result lists where the clinician differs from the request.","Matcher",["human"],"Honest trade-offs build trust instead of overselling."],
+ ["Explainable reasons","Every match shows why ('offers couples therapy · PSYPACT-licensed').","Matcher",["human"],"The patient understands the recommendation."],
+ ["Step 2 personalizes to Step 1","Headline, prompts, quick-picks and age visibility adapt to the care type chosen.","Matcher",["human"],"The form feels made for their situation."],
+ ["SMS + form handoff","Connect by text or by form, whichever they prefer.","Matcher",["human"],"Meets people where they're comfortable."],
+ ["Message tagging for routing","Each inquiry is tagged (referral, insurance, testing…) for the CRM.","Matcher",["integrity"],"Every inquiry lands in the right queue automatically."],
+ ["Fees shown at commitment","Costs appear right where the decision is made.","Matcher",["human"],"No surprises, no bait-and-switch."],
+ ["Insurance education view","A plain-language step explains out-of-network before committing.","Matcher",["human"],"Informed decisions, fewer painful surprises later."],
+ ["Initials-avatar fallback","A tasteful serif monogram when no photo exists.","Matcher",["little"],"The results always look polished and human."],
+ ["Credential formatting","'lcpc' becomes 'LCPC' across 20+ credential slugs.","Matcher",["little"],"Reads like a person, not a database."],
+ ["Modal back-button closes modal","Browser Back dismisses the dialog instead of leaving the page.","Matcher",["little"],"Behaves the way people expect — no lost progress."],
+ ["Reduced-motion respected","Animations turn off for users who prefer less motion.","Matcher",["access"],"Comfort and accessibility for sensitive users."],
+ ["Coordinator always offered","A human-help banner appears even on a perfect match.","Matcher",["human"],"There's always a person available, not just a machine."],
+ // Website
+ ["8 embeddable sections","Hero, headshots, CTA band, care tiles, team grid, spotlight, specialties cloud, sticky CTA.","Website",["speed"],"The team places polished sections themselves, no developer needed."],
+ ["One-snippet install","A single script auto-renders any section marked in the page.","Website",["speed"],"Updates everywhere the moment the source changes."],
+ ["Full-screen matcher takeover","The matcher opens over any page; the logo closes it.","Website",["human"],"Turns an overwhelming homepage into one clear goal: find your match."],
+ ["Deep-link prefills","A shared link can pre-pick care type and run the search.","Website",["speed"],"Coordinators send a patient straight to relevant results."],
+ ["Team copy-paste toolkit","A page that hands non-developers ready-to-paste code.","Website",["speed"],"The practice owns and edits its own site."],
+ ["Mobile-first sections","Everything reflows cleanly to a phone.","Website",["access"],"Most patients arrive on mobile."],
+ // CCC
+ ["17 guided call flows","New-client, discovery, couples, testing, medication, insurance, crisis and more.","CCC",["human"],"Every kind of call has a confident path."],
+ ["Guided ↔ Streamlined modes","Full scripts for new staff; a one-page expert view for veterans.","CCC",["speed"],"The tool grows with the coordinator instead of slowing them down."],
+ ["Auto-compiling call note","Everything entered across any flows gathers into one note.","CCC",["integrity"],"Nothing said on the call is lost."],
+ ["Prefilled handoff + name stamp","The note prefills the CRM form, stamped with the coordinator.","CCC",["integrity"],"Clean handoffs and clear accountability."],
+ ["In-console research matcher","Score every clinician live, with % fit and reasoning.","CCC",["speed"],"Answers a 'who's a good fit?' question during the call."],
+ ["Command palette (⌘K)","Jump to any flow, tool, message or term instantly.","CCC",["speed"],"Power users move at the speed of thought."],
+ ["Keyboard shortcuts","n=new call, /=search, m=matcher, x=crisis, g=glossary and more.","CCC",["speed"],"Hands stay on the keyboard during a live call."],
+ ["Hover glossary","25+ terms auto-underlined with definitions on hover.","CCC",["human"],"A new coordinator is never lost in jargon."],
+ ["Quick-messages library","~12 warm, copyable boilerplate replies.","CCC",["speed"],"Consistent, caring communication every time."],
+ ["One-time how-to guide","A gentle walkthrough on first sign-in, recallable anytime.","CCC",["human"],"Onboarding without a training session."],
+ ["'North Star' values card","Opens every call with the practice's ethos.","CCC",["human"],"Keeps the work human: a person, not a transaction."],
+ ["Practice mode","A training mode where nothing touches real systems.","CCC",["privacy"],"Staff can learn safely with zero PHI risk."],
+ ["No backend, memory-only","Session state lives in memory; nothing is persisted.","CCC",["privacy"],"There's simply no patient data at rest to leak."],
+ ["One-key crisis entry","'x' jumps straight to crisis handling.","CCC",["human"],"Speed exactly when it matters most."],
+ ["Read-aloud script cleanup","Parenthetical coaching is stripped from spoken lines.","CCC",["little"],"Coordinators read naturally, not robotically."],
+ ["'Welcoming new clients' list","A live sidebar of who's currently open.","CCC",["speed"],"Instant answer to the most common question."],
+ // Clinician
+ ["Email + last-4 sign-in","Simple credentials, verified entirely server-side.","Clinician",["privacy"],"Easy for non-technical clinicians, safe by construction."],
+ ["Record-bound HMAC session","A signed 12-hour token tied to one clinician record.","Clinician",["privacy"],"You can only ever edit your own profile."],
+ ["Brute-force lockout","Six wrong PINs locks the account for 15 minutes.","Clinician",["privacy"],"A 4-digit PIN stays safe against guessing."],
+ ["Server-side edit allow-list","Only 12 fields can be written, enforced on the server.","Clinician",["privacy"],"The browser can never change something it shouldn't."],
+ ["Readiness audit endpoint","A protected check confirms everyone can sign in.","Clinician",["integrity"],"Launch with confidence, exposing no contact info."],
+ ["One-tap Open / Full","Toggle new-client availability instantly.","Clinician",["integrity"],"The matcher reflects reality within minutes."],
+ ["Pre-populated exactly from CRM","The editor loads every field as it truly is.","Clinician",["integrity"],"No drift between what they see and what patients see."],
+ ["Live schema chip pickers","Multi-selects pull current options, with filter + count.","Clinician",["speed"],"Editing 40 specialties stays fast and tidy."],
+ ["4.8-second undo","An undo button follows every availability change.","Clinician",["human"],"A misclick is never a problem."],
+ ["Unsaved-changes guard","Closing with edits prompts before discarding.","Clinician",["little"],"Work is never lost by accident."],
+ ["'What the matcher sees' card","A plain summary of how they're represented.","Clinician",["human"],"Total transparency into their own referral profile."],
+ ["60-day staleness nudge","A soft reminder when a profile goes stale.","Clinician",["integrity"],"Referral data stays current without nagging."],
+ ["Auto-connect via health check","Goes live the moment the token is set — no flag flipping.","Clinician",["little"],"Zero-fuss launch."],
+ ["BAA-covered chat widget","Secure messaging to the care team built in.","Clinician",["privacy"],"HIPAA-safe conversations, no new app."],
+ // Platform
+ ["Webhook + cron safety net","Instant push plus a 2-minute backstop sweep.","Platform",["integrity"],"Real-time updates that self-heal if a push is missed."],
+ ["Write-on-change diffing","Publishes only when data actually changed.","Platform",["integrity"],"No churn, no stale overwrites."],
+ ["Boundary normalization","Nested records unpacked; checkbox formats unified.","Platform",["integrity"],"Clean, predictable data everywhere downstream."],
+ ["Schema slug→label cache","Machine keys mapped to friendly labels.","Platform",["little"],"Everything reads in plain English."],
+ ["Allow-list publishing","24 approved public fields; new fields hidden by default.","Platform",["privacy"],"The safe failure mode — nothing leaks by accident."],
+ ["Separate read/write tokens","Public reads and clinician writes use different scopes.","Platform",["privacy"],"Least privilege; a breach of one can't touch the other."],
+ ["Ephemeral patient criteria","Search inputs are used to match, then discarded.","Platform",["privacy"],"There's no patient data to store or expose."],
+ ["Client-owned accounts & keys","The practice holds every credential.","Platform",["human"],"No lock-in, no dependency — they own their stack."],
+ ["$0 added infrastructure","The custom matcher, consoles and automations run on free-tier services; the platform is one consolidated subscription.","Platform",["little"],"~$100/mo more than the 3 tools it replaced — for an entirely new level of capability."],
+ ["End-to-end lifecycle pipeline","Every inquiry tracked from first touch through booking, fall-off and recovery.","Platform",["integrity"],"Nobody is just a missed call anymore — the whole journey is visible."],
+ ["Lost-to-follow-up tracking","People who go quiet are automatically flagged for re-contact.","Platform",["human"],"The ones who slip away are often the ones who need us most."],
+ ["Automated win-back sequences","Gentle, scheduled re-engagement for flagged contacts.","CCC",["human"],"A second and third caring nudge — sent automatically, so no one has to remember."],
+ ["New-client conversion funnel","Pipeline stages from inquiry to scheduled client.","Platform",["integrity"],"The team can see exactly where people are — and where they stall."],
+ ["Unified contact timeline","Calls, texts, forms, chat and page-visits on one timeline.","Platform",["integrity"],"Anyone helping sees the whole story at a glance."],
+];
+const THEME={privacy:["🔐",getCSS('--navy')],integrity:["🔄",getCSS('--good')],human:["💛",getCSS('--clay')],speed:["⚡",getCSS('--amber')],access:["♿",getCSS('--violet')],little:["✨",getCSS('--muted')]};
+function getCSS(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#999'}
+const TOOLLABEL={Matcher:"Matcher",Website:"Website",CCC:"Coordinator",Clinician:"Clinician",Platform:"Platform"};
+let curTool="all",curThemes=new Set(),curQ="";
+const cardsEl=document.getElementById('cards'),countEl=document.getElementById('countline');
+document.getElementById('fcount').textContent=F.length;
+document.getElementById('featCount').dataset.count=F.length; // keep the hero stat honest
+
+function render(){
+  const q=curQ.toLowerCase();
+  let shown=0;
+  cardsEl.innerHTML='';
+  F.forEach(([title,desc,tool,themes,why])=>{
+    const okTool=curTool==='all'||tool===curTool;
+    const okTheme=curThemes.size===0||themes.some(t=>curThemes.has(t));
+    const hay=(title+' '+desc+' '+why+' '+tool).toLowerCase();
+    const okQ=!q||hay.includes(q);
+    if(!(okTool&&okTheme&&okQ))return;
+    shown++;
+    const tdots=themes.map(t=>`<span class="dottheme" style="background:${THEME[t][1]}" title="${t}"></span>`).join('');
+    const el=document.createElement('div');el.className='card';
+    el.innerHTML=`<div class="meta"><span class="tag tool">${TOOLLABEL[tool]||tool}</span>${tdots}</div>
+      <h4>${title}</h4><p class="why"><b style="color:var(--ink)">${desc}</b><br>${why}</p>`;
+    cardsEl.appendChild(el);
+  });
+  countEl.textContent=`Showing ${shown} of ${F.length} features`+(curTool!=='all'?` · ${TOOLLABEL[curTool]}`:'')+(curThemes.size?` · ${[...curThemes].join(', ')}`:'')+(q?` · “${curQ}”`:'');
+}
+document.querySelectorAll('#toolchips .chip').forEach(c=>c.onclick=()=>{
+  document.querySelectorAll('#toolchips .chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on');curTool=c.dataset.tool;render();
+});
+document.querySelectorAll('#themechips .chip').forEach(c=>c.onclick=()=>{
+  const t=c.dataset.theme;if(curThemes.has(t)){curThemes.delete(t);c.classList.remove('on')}else{curThemes.add(t);c.classList.add('on')}render();
+});
+document.getElementById('q').oninput=e=>{curQ=e.target.value;render()};
+render();
+
+/* ---- printing: always show the FULL catalog in the PDF, then restore the user's filter ---- */
+let _saved=null;
+addEventListener('beforeprint',()=>{_saved={t:curTool,th:new Set(curThemes),q:curQ};curTool='all';curThemes=new Set();curQ='';render();});
+addEventListener('afterprint',()=>{if(_saved){curTool=_saved.t;curThemes=_saved.th;curQ=_saved.q;render();_saved=null;}});
+
+/* ---- count-up (robust: final value is guaranteed even if rAF is throttled) ---- */
+function animateCount(el){
+  if(el.dataset.done)return;el.dataset.done=1;
+  if(el.dataset.text){el.textContent=el.dataset.text;return}
+  const end=+el.dataset.count,suf=el.dataset.suffix||'';
+  let s=null;
+  const step=t=>{if(!s)s=t;const p=Math.min((t-s)/900,1);el.textContent=Math.floor(p*end).toLocaleString()+suf;if(p<1)requestAnimationFrame(step)};
+  requestAnimationFrame(step);
+  setTimeout(()=>{el.textContent=end.toLocaleString()+suf;},1000); // safety net — never leave it at 0
+}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){animateCount(e.target);io.unobserve(e.target)}}),{threshold:.35});
+document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
+// final guarantee: if anything is still showing the placeholder after 3s, fill it in
+setTimeout(()=>document.querySelectorAll('[data-count]').forEach(animateCount),3000);
+
+/* ---- progress bar + nav active ---- */
+const prog=document.getElementById('prog'),nls=[...document.querySelectorAll('nav a.nl')];
+const secs=nls.map(a=>document.querySelector(a.getAttribute('href')));
+addEventListener('scroll',()=>{
+  const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let i=secs.length-1;while(i>0&&secs[i].getBoundingClientRect().top>120)i--;
+  nls.forEach(a=>a.classList.remove('on'));if(nls[i])nls[i].classList.add('on');
+},{passive:true});
+</script>
