@@ -1,0 +1,710 @@
+<meta charset="utf-8">
+<title>Andrew Stoy — Technical Walkthrough & Vision (deck)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c2330;--border:#2a313c;--border2:#3a4350;
+  --ink:#e6edf3;--muted:#9aa7b4;--dim:#6e7b8a;
+  --blue:#58a6ff;--green:#3fb950;--amber:#d29922;--purple:#bc8cff;--red:#f85149;--cyan:#56d4dd;--clay:#f0883e;--gold:#f0c75e;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+
+.deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}
+.deck::-webkit-scrollbar{display:none}
+.slide{min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;
+  padding:54px clamp(26px,5vw,72px) 50px;position:relative;border-bottom:1px solid var(--border);
+  background-image:radial-gradient(60% 40% at 85% -5%,rgba(88,166,255,.08),transparent 60%)}
+.slide.warm{background-image:radial-gradient(70% 50% at 86% -8%,rgba(240,136,62,.12),transparent 60%),radial-gradient(50% 40% at 0% 108%,rgba(188,140,255,.08),transparent 60%)}
+.inner{width:100%;max-width:1040px;margin:0 auto}
+
+#prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--green),var(--clay));width:0;z-index:60}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(13,17,23,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+nav .nwrap{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:5px;height:52px;padding:0 24px;flex-wrap:wrap}
+nav .brand{font-weight:700;margin-right:auto;font-size:14.5px;cursor:pointer}
+nav .brand .d{color:var(--clay)}
+nav a.nl{font-size:13px;color:var(--muted);padding:6px 9px;border-radius:7px;white-space:nowrap;cursor:pointer}
+nav a.nl:hover,nav a.nl.on{color:var(--ink);background:var(--surface2)}
+nav .ntog{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--border);background:var(--surface);border-radius:7px;padding:5px 10px;cursor:pointer;margin-left:4px}
+nav .ntog.on{color:var(--ink);border-color:var(--clay);background:rgba(240,136,62,.12)}
+
+.dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:9px}
+.dots button{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;cursor:pointer;padding:0;transition:all .2s}
+.dots button:hover{border-color:var(--clay)}
+.dots button.on{background:var(--clay);border-color:var(--clay);transform:scale(1.3)}
+
+.kick{font-family:var(--mono);font-size:13px;color:var(--green)}
+.kick.w{color:var(--clay)}
+h1{font-size:clamp(33px,5.4vw,56px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:15px 0 13px}
+h2{font-size:clamp(25px,3.6vw,40px);font-weight:800;letter-spacing:-.015em;line-height:1.08;margin:8px 0 10px}
+.grad{background:linear-gradient(90deg,var(--blue),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.gradw{background:linear-gradient(90deg,var(--clay),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.gradv{background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle,.lead{font-size:clamp(16px,1.9vw,19px);color:var(--muted);max-width:70ch}
+.metarow{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:6px 11px}
+.meta b{color:var(--ink)}
+.who{font-family:var(--mono);font-size:13.5px;color:var(--muted);margin-top:24px;line-height:1.7}.who b{color:var(--ink)}
+.seclabel{font-family:var(--mono);font-size:13px;color:var(--blue)}
+h3{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin:0 0 9px}
+
+/* tool header */
+.toolhead{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.toolnum{font-family:var(--mono);font-size:42px;font-weight:700;color:var(--border2);line-height:.9}
+.toolhead .tmeta{flex:1;min-width:240px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;border-radius:20px;padding:3px 11px;border:1px solid}
+.badge.client{color:var(--cyan);border-color:rgba(86,212,221,.4);background:rgba(86,212,221,.08)}
+.badge.clin{color:var(--green);border-color:rgba(63,185,80,.4);background:rgba(63,185,80,.08)}
+.badge.admin{color:var(--purple);border-color:rgba(188,140,255,.4);background:rgba(188,140,255,.08)}
+.oneliner{font-size:clamp(18px,2.2vw,24px);font-weight:700;letter-spacing:-.01em;line-height:1.2;margin:8px 0 0;max-width:36ch}
+.oneliner em{font-style:normal;color:var(--cyan)}
+.stack{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 0}
+.stack span{font-family:var(--mono);font-size:12px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 9px}
+
+/* diagram */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin:9px 0}
+.flow.row{flex-wrap:nowrap;overflow-x:auto}
+.fnode{flex:1;min-width:118px;min-height:56px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.fnode .ft{font-size:14px;font-weight:700}
+.fnode .fs{font-family:var(--mono);font-size:10.5px;color:var(--dim);line-height:1.3}
+.fnode.crm{border-color:var(--amber);background:rgba(210,153,34,.09)}
+.fnode.ehr{border-color:var(--purple);background:rgba(188,140,255,.08)}
+.fnode.cf{border-color:var(--blue);background:rgba(88,166,255,.09)}
+.fnode.user{border-color:var(--cyan);background:rgba(86,212,221,.07)}
+.farr{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 5px;min-width:56px;color:var(--green)}
+.farr .a{font-size:20px;line-height:1}
+.farr .l{font-family:var(--mono);font-size:9px;color:var(--dim);text-align:center;margin-top:3px;max-width:72px}
+
+/* two-col tool body + specs + api */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;align-items:start;margin-top:2px}
+.specs{display:grid;grid-template-columns:1fr;gap:8px}
+.spec{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:9px 13px;display:flex;gap:11px;align-items:flex-start}
+.spec .si{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:grid;place-items:center;background:var(--surface2);font-size:15px}
+.spec b{font-size:14.5px;font-weight:700;display:block}
+.spec span{font-size:13px;color:var(--muted)}
+.spec code{font-family:var(--mono);font-size:12px;color:var(--cyan)}
+.api{background:#0a0e14;border:1px solid var(--border);border-radius:11px;padding:12px 14px;font-family:var(--mono);font-size:12.5px;overflow-x:auto}
+.api .row{display:flex;gap:11px;align-items:baseline;padding:4px 0;white-space:nowrap}
+.api .m{font-weight:600;width:42px;flex-shrink:0}
+.api .get{color:var(--green)}.api .post{color:var(--amber)}.api .put{color:var(--purple)}
+.api .ep{color:var(--ink)}.api .cm{color:var(--dim)}
+.callout{border-left:3px solid var(--blue);background:var(--surface);border-radius:0 10px 10px 0;padding:12px 16px;margin-top:12px}
+.callout .ct{font-family:var(--mono);font-size:11.5px;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.callout p{margin:0;font-size:14px;color:var(--ink)}
+.callout.amber{border-color:var(--amber)}.callout.amber .ct{color:var(--amber)}
+.callout.green{border-color:var(--green)}.callout.green .ct{color:var(--green)}
+.callout.clay{border-color:var(--clay)}.callout.clay .ct{color:var(--clay)}
+.note{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:12px}
+
+/* logical chain (perspectives) */
+.chain{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.cstep{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.cstep .n{width:30px;height:30px;border-radius:9px;background:var(--surface2);border:1px solid var(--border2);display:grid;place-items:center;font-family:var(--mono);font-weight:600;font-size:13px;color:var(--cyan)}
+.cstep .ct2{font-size:15.5px}.cstep .ct2 b{color:var(--ink)}.cstep .ct2 span{color:var(--muted)}
+.chain .q{color:var(--clay)}
+
+/* video embed */
+.videowrap{margin-top:16px;max-width:880px}
+.videoframe{position:relative;width:100%;aspect-ratio:16/9;max-height:56vh;background:#0a0e15;border:1px solid var(--border2);border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.videoframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vposter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:30px;gap:7px;text-align:center;
+  background:radial-gradient(70% 90% at 50% 36%,rgba(88,166,255,.16),transparent 60%),radial-gradient(55% 60% at 82% 92%,rgba(240,136,62,.14),transparent),linear-gradient(160deg,#111925,#0a0e15)}
+.vposter::after{content:'';position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 50%,transparent 58%,rgba(0,0,0,.5));pointer-events:none}
+.vbrand{font-family:var(--mono);font-size:clamp(10px,1.2vw,12px);letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;z-index:1}
+.vtitle{font-size:clamp(24px,3.6vw,42px);font-weight:800;letter-spacing:-.01em;z-index:1;background:linear-gradient(90deg,#fff,#cfe3ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.vsub{font-family:var(--mono);font-size:clamp(10px,1.2vw,12.5px);color:var(--muted);z-index:1}
+.vplay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;
+  background:rgba(255,255,255,.13);backdrop-filter:blur(3px);border:1.5px solid rgba(255,255,255,.7);display:grid;place-items:center;cursor:pointer;z-index:3;transition:transform .15s,background .15s}
+.vplay::before{content:'';width:0;height:0;border-left:23px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px}
+.vplay:hover{transform:translate(-50%,-50%) scale(1.08);background:rgba(240,136,62,.9)}
+.vplay::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3);animation:vpulse 2.4s infinite}
+@keyframes vpulse{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.55);opacity:0}}
+.vbadge{position:absolute;top:12px;right:12px;z-index:3;font-family:var(--mono);font-size:11px;color:#fff;background:rgba(0,0,0,.62);border-radius:5px;padding:2px 7px}
+.vbar{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:center;gap:11px;padding:11px 14px;background:linear-gradient(0deg,rgba(0,0,0,.72),transparent)}
+.vbar .vicon{color:#fff;font-size:13px;opacity:.92}
+.vbar .track{flex:1;height:4px;border-radius:3px;background:rgba(255,255,255,.26);position:relative}
+.vbar .track .fill{position:absolute;left:0;top:0;bottom:0;width:18%;background:var(--clay);border-radius:3px}
+.vbar .track .fill::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(240,136,62,.4)}
+.vbar .vtime{font-family:var(--mono);font-size:11px;color:#fff;white-space:nowrap}
+.vcap{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:10px}
+
+/* two-up cards (principles) */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:18px}
+.rcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+.rcard .ic{font-size:22px;margin-bottom:8px}
+.rcard h4{margin:0 0 5px;font-size:16px;font-weight:700}
+.rcard p{margin:0;font-size:13.5px;color:var(--muted)}
+
+/* bridge rows */
+.bridge{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.brow{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center}
+.brow .b1{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 15px;font-size:14px}
+.brow .b1 .t{font-family:var(--mono);font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:2px}
+.brow .ar{color:var(--clay);font-size:20px;text-align:center}
+.brow .b2{font-size:14.5px;color:var(--ink);font-weight:600}
+
+/* big stat + layers + cta + points + chips */
+.bigstat{font-weight:800;font-size:clamp(64px,12vw,140px);line-height:.95;letter-spacing:-.03em;margin:4px 0}
+.bigstat span{font-size:.34em;color:var(--muted);font-weight:600}
+.layers{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.layer{border-radius:13px;padding:14px 18px;color:#fff;position:relative}
+.layer h4{margin:0 0 2px;font-size:17px;font-weight:700}.layer p{margin:0;font-size:13.5px;opacity:.95}
+.layer .tag{position:absolute;top:13px;right:16px;font-family:var(--mono);font-size:10px;opacity:.85;text-transform:uppercase;letter-spacing:.08em}
+.l1{background:linear-gradient(100deg,#1f6feb,#2d8cff)}.l2{background:linear-gradient(100deg,#7d4bd0,#9a6cf0)}.l3{background:linear-gradient(100deg,#c2691f,#e0883a)}
+.cta-card{display:block;background:linear-gradient(120deg,rgba(240,136,62,.16),rgba(240,199,94,.08));border:1px solid rgba(240,136,62,.5);border-radius:18px;padding:28px 32px;margin-top:22px;transition:transform .18s,box-shadow .18s}
+.cta-card:hover{transform:translateY(-3px);box-shadow:0 18px 50px rgba(240,136,62,.25)}
+.cta-card .u{font-weight:800;font-size:clamp(28px,4.2vw,44px);color:var(--ink);letter-spacing:-.01em}
+.cta-card .go{display:inline-flex;align-items:center;gap:9px;margin-top:10px;font-size:16px;font-weight:600;color:var(--clay)}
+.cta-card .go .arr{transition:transform .2s}.cta-card:hover .go .arr{transform:translateX(5px)}
+.points{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px}
+.points li{display:flex;gap:12px;font-size:16px;color:var(--ink)}
+.points li .ck{color:var(--green);flex-shrink:0;font-weight:700}
+.points li span{color:var(--muted)}
+.comp{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:11px;margin-top:14px}
+.comp .c{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 14px}
+.comp .c b{display:block;font-size:14px;margin-bottom:3px}
+.comp .c span{font-size:12.5px;color:var(--muted);line-height:1.4}
+.quote{font-size:clamp(18px,2.2vw,23px);font-style:italic;color:var(--ink);max-width:36ch;margin:14px 0 0;line-height:1.35}
+/* problem: from -> to */
+.fromto{display:flex;align-items:center;gap:14px;margin-top:20px;flex-wrap:wrap}
+.ft{font-family:var(--mono);font-size:13.5px;padding:9px 16px;border-radius:999px;border:1px solid}
+.ft.from{color:var(--dim);border-color:var(--border2);background:var(--surface)}
+.ft.to{color:var(--clay);border-color:rgba(240,136,62,.5);background:rgba(240,136,62,.12)}
+.ftar{color:var(--clay);font-size:20px}
+/* 3-layer north star */
+.layers{display:flex;flex-direction:column;gap:10px;margin-top:16px;max-width:820px}
+.lyr{border-radius:14px;padding:13px 18px;color:#fff}
+.lyr .tag{display:block;font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.07em;opacity:.92;margin-bottom:5px}
+.lyr h3{font-family:'Inter',system-ui,sans-serif;color:#fff;text-transform:none;letter-spacing:-.01em;margin:0 0 2px;font-size:18px;font-weight:800}
+.lyr p{margin:0;font-size:13px;opacity:.96;max-width:66ch;line-height:1.4}
+.lyr.l1{background:linear-gradient(100deg,#b3530f,#f0883e)}
+.lyr.l2{background:linear-gradient(100deg,#1f6feb,#58a6ff)}
+.lyr.l3{background:linear-gradient(100deg,#2f9e57,#3fb950)}
+.spine{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:14px;max-width:84ch;line-height:1.5}
+.spine b{color:var(--clay)}
+/* why now: 3-up */
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:18px}
+.tri .rcard .n{font-family:var(--mono);font-size:11.5px;color:var(--clay);margin-bottom:7px;letter-spacing:.04em}
+@media(max-width:880px){.tri{grid-template-columns:1fr}}
+/* video buttons */
+.vbtns{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+.vbtn{font-family:'Inter',system-ui,sans-serif;font-size:14px;font-weight:600;padding:11px 20px;border-radius:10px;border:1px solid var(--border2);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .15s,border-color .15s,box-shadow .15s}
+.vbtn:hover{transform:translateY(-2px);border-color:var(--clay)}
+.vbtn.primary{background:linear-gradient(120deg,#f0883e,#f0c75e);color:#1a1205;border-color:transparent}
+.vbtn.primary:hover{box-shadow:0 12px 30px rgba(240,136,62,.32)}
+/* transformation: eras */
+.eras{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:18px}
+.era{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px 17px}
+.era .dot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-bottom:9px}
+.era.e0 .dot{background:var(--red)}.era.e1 .dot{background:var(--amber)}.era.e2 .dot{background:var(--green)}
+.era.e2{border-color:rgba(63,185,80,.45);background:rgba(63,185,80,.07)}
+.era .yr{font-family:var(--mono);font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+.era h4{margin:0;font-size:15.5px;font-weight:700}
+.era p{margin:7px 0 0;font-size:12.5px;color:var(--muted);line-height:1.45}
+/* before / after table */
+.ba{width:100%;border-collapse:collapse;margin-top:16px;font-size:13.5px}
+.ba th,.ba td{text-align:left;padding:8px 14px;border:1px solid var(--border);width:50%}
+.ba th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.ba th.b{color:var(--dim)}.ba th.a{color:var(--green)}
+.ba td.b{color:var(--muted);background:var(--surface)}
+.ba td.a{color:var(--ink);background:rgba(63,185,80,.06)}
+/* consolidation */
+.consol{display:grid;grid-template-columns:minmax(220px,1fr) auto 1.2fr;gap:18px;align-items:center;margin-top:18px}
+.retired{display:flex;flex-direction:column;gap:8px}
+.tpill{font-size:13px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 15px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.tpill .nm{text-decoration:line-through;text-decoration-color:var(--red)}
+.tpill .x{font-family:var(--mono);font-size:9px;color:var(--red);text-transform:uppercase;letter-spacing:.05em}
+.tpill.partial .x{color:var(--amber)}
+.consol .ar{font-size:30px;color:var(--clay);text-align:center}
+.onebox{background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.4);border-radius:16px;padding:18px 20px}
+.onebox h3{font-family:'Inter',system-ui,sans-serif;color:var(--ink);text-transform:none;letter-spacing:-.01em;font-size:18px;font-weight:800;margin:0 0 6px}
+.onebox p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.feats{display:flex;flex-wrap:wrap;gap:6px}
+.feats span{font-size:11.5px;color:var(--blue);background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.25);border-radius:999px;padding:4px 10px}
+.coststrip{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:16px}
+.coststrip b{color:var(--ink)}.coststrip .net{color:var(--clay)}.coststrip .free{color:var(--green)}
+@media(max-width:880px){.eras{grid-template-columns:1fr}.consol{grid-template-columns:1fr}.consol .ar{transform:rotate(90deg)}}
+
+/* presenter cue */
+.cue{display:none;position:absolute;left:clamp(26px,5vw,72px);right:clamp(26px,5vw,72px);bottom:18px;
+  font-family:var(--mono);font-size:12px;color:var(--dim);border-top:1px dashed var(--border2);padding-top:8px;line-height:1.5}
+.cue b{color:var(--clay)}
+body.notes .cue{display:block}
+.scrollhint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:var(--dim);text-align:center}
+.scrollhint .arr{font-size:18px;display:block;animation:bob 1.8s infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+body.notes .scrollhint{display:none}
+
+@media(max-width:880px){.tgrid,.two,.brow{grid-template-columns:1fr}.comp{grid-template-columns:1fr 1fr}.dots{display:none}.slide{justify-content:flex-start;padding-top:72px}.brow .ar{transform:rotate(90deg)}}
+
+/* ---- PRINT / PDF: one slide per landscape page, links stay clickable ---- */
+@media print{
+  @page{size:1366px 768px;margin:0}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  html,body{height:auto;overflow:visible;background:#0d1117}
+  nav,#prog,.dots,.scrollhint,.cue{display:none !important}
+  .deck{height:auto;overflow:visible;display:block;scroll-snap-type:none}
+  .slide{width:1366px;height:768px;min-height:0;background-color:#0d1117;overflow:hidden;scroll-snap-align:none;page-break-after:always;break-after:page;page-break-inside:avoid}
+  .slide:last-child{page-break-after:auto;break-after:auto}
+  #playbtn{display:none !important}
+  .videoframe{cursor:default}
+  /* keep the verified desktop layout — Chrome print otherwise fires the mobile breakpoint and clips dense slides */
+  .slide{justify-content:center !important;padding-top:0 !important}
+  .tgrid,.two{grid-template-columns:1fr 1fr !important}
+  .brow{grid-template-columns:1fr auto 1fr !important}
+  .comp{grid-template-columns:1fr 1fr 1fr 1fr !important}
+  .tri,.eras{grid-template-columns:repeat(3,1fr) !important}
+  .consol{grid-template-columns:minmax(220px,1fr) auto 1.2fr !important}
+  .brow .ar,.consol .ar{transform:none !important}
+}
+</style>
+
+<div id="prog"></div>
+<nav><div class="nwrap">
+  <span class="brand" data-go="hero">Andrew Stoy <span class="d">·</span> walkthrough &amp; vision</span>
+  <a class="nl" data-go="era">Transformation</a>
+  <a class="nl" data-go="overview">Overview</a>
+  <a class="nl" data-go="perspectives">Demo</a>
+  <a class="nl" data-go="t1">Tools</a>
+  <a class="nl" data-go="skills">Engineering</a>
+  <a class="nl" data-go="stakes">Love is a Habit</a>
+  <a class="nl" data-go="visit">Visit</a>
+</div></nav>
+<div class="dots" id="dots"></div>
+
+<div class="deck" id="deck">
+
+  <!-- HERO -->
+  <section class="slide" id="hero"><div class="inner">
+    <div class="kick">// shipped to production · ~6 months · solo build · live today</div>
+    <h1>Three tools, three audiences,<br><span class="grad">one HIPAA-safe system.</span></h1>
+    <p class="subtitle">A backend walkthrough of a therapy practice's patient-acquisition stack — a public matching engine, a clinician self-service console, and a coordinator call co-pilot. Serverless, in production, $0/month added infrastructure — and the foundation for scaling human support to a whole generation.</p>
+    <div class="metarow">
+      <span class="meta"><b>Runtime:</b> Cloudflare Workers · Pages · KV · Web Crypto</span>
+      <span class="meta"><b>Integrates:</b> GoHighLevel CRM + SimplePractice EHR</span>
+      <span class="meta"><b>Constraints:</b> HIPAA · the API can't access PHI · $0 infra · no database</span>
+    </div>
+  </div>
+  <div class="scrollhint"><span class="arr">↓</span>scroll · or use arrow keys</div>
+  <div class="cue"><b>on camera:</b> Quick face intro. Two roles at Kentlands — Technology Integration Lead &amp; Client Experience Coordinator. Thesis: I build technology in service of people, and it's the foundation for something bigger.</div>
+  </section>
+
+  <!-- TRANSFORMATION · 3 ERAS -->
+  <section class="slide" id="era"><div class="inner">
+    <div class="seclabel">## the transformation · 6 months</div>
+    <h2>From a phone line with no memory<br>to <span class="grad">a system that never forgets.</span></h2>
+    <p class="subtitle">When this work began, the practice ran on disconnected tools that captured nothing and carried no context. Three eras tell the story.</p>
+    <div class="eras">
+      <div class="era e0"><div class="dot"></div><span class="yr">Era 0 · the start</span><h4>The void</h4><p>A calling system with nothing synced. Calls came and went — no contacts, no history, no memory.</p></div>
+      <div class="era e1"><div class="dot"></div><span class="yr">Era 1 · the patchwork</span><h4>Disconnected tools</h4><p>A spreadsheet for availability, Outlook for email, and a third-party call center relaying everything by hand. Three places, no connective tissue.</p></div>
+      <div class="era e2"><div class="dot"></div><span class="yr">Era 2 · today</span><h4>One synced system</h4><p>One CRM, an automated matcher, self-updating clinician tools, and an automation engine working 24/7.</p></div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> The origin story. I walked into a practice whose phone system captured nothing — every caller vanished. In six months it became a system that never forgets. Walk the three eras: void → patchwork → today.</div>
+  </section>
+
+  <!-- WHAT CHANGED -->
+  <section class="slide" id="changed"><div class="inner">
+    <div class="seclabel">## what changed, line by line</div>
+    <h2>Every gap where a person could get lost — <span class="grad">closed.</span></h2>
+    <table class="ba">
+      <tr><th class="b">Before — the old stack</th><th class="a">After — what's running now</th></tr>
+      <tr><td class="b">A calling system with nothing synced — calls vanished</td><td class="a">Every inquiry captured as a contact, with full history</td></tr>
+      <tr><td class="b">Clinician availability lived in a spreadsheet, updated by hand</td><td class="a">Availability updates itself in real time, feeding the matcher</td></tr>
+      <tr><td class="b">Outlook for everything — threads scattered</td><td class="a">One inbox: calls, texts, emails, chat — routed in a pipeline</td></tr>
+      <tr><td class="b">Call scripts in a static Word document</td><td class="a">Interactive, guided call-handling software</td></tr>
+      <tr><td class="b">Phone tree forwarded to a third-party call center</td><td class="a">Lead-filtering intake — faster, cheaper, higher quality</td></tr>
+      <tr><td class="b">Booking CTA buried 3 pages deep</td><td class="a">A HIPAA-safe matching tool, right on the page</td></tr>
+    </table>
+  </div>
+  <div class="cue"><b>on camera:</b> Don't read every row — point to two or three. The throughline: every disconnect was a place a real person could fall through, and each one is now closed.</div>
+  </section>
+
+  <!-- CONSOLIDATION -->
+  <section class="slide" id="consol"><div class="inner">
+    <div class="seclabel">## one stack, not ten</div>
+    <h2>We didn't add tools —<br><span class="grad">we removed them.</span></h2>
+    <div class="consol">
+      <div class="retired">
+        <div class="tpill"><span class="nm">Virtual PBX</span><span class="x">retired</span></div>
+        <div class="tpill"><span class="nm">Quo phone line</span><span class="x">retired</span></div>
+        <div class="tpill"><span class="nm">Excel availability sheets</span><span class="x">retired</span></div>
+        <div class="tpill"><span class="nm">3rd-party call center</span><span class="x">retired</span></div>
+        <div class="tpill partial"><span class="nm">Outlook email</span><span class="x">scaled back</span></div>
+      </div>
+      <div class="ar">→</div>
+      <div class="onebox">
+        <h3>One integrated, automated system</h3>
+        <p>CRM, phone, automation, matching and self-service — all synced, all in one place, all owned by the practice.</p>
+        <div class="feats"><span>Unified inbox</span><span>Automated pipelines</span><span>Live availability</span><span>Lost-to-follow-up tracking</span><span>New-client funnel</span></div>
+      </div>
+    </div>
+    <div class="coststrip">Retired <b>$222/mo</b> &nbsp;→&nbsp; new platform <b>$323/mo</b> &nbsp;·&nbsp; <span class="net">+$100/mo</span> for an entirely new level of capability &nbsp;·&nbsp; the custom layer on top runs on <span class="free">$0 added infrastructure</span>.</div>
+  </div>
+  <div class="cue"><b>on camera:</b> The honest cost story — consolidation wasn't free, but it was close. ~$100/mo more replaced a pile of disconnected services; the intelligence built on top (matcher, consoles, automations) was effectively free on Cloudflare's free tier.</div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="slide" id="overview"><div class="inner">
+    <div class="seclabel">## system overview</div>
+    <h2>Two systems of record. Three apps that bridge them.</h2>
+    <p class="lead">Two HIPAA systems of record bookend a patient's journey: <b>GoHighLevel</b> (acquisition CRM) and <b>SimplePractice</b> (clinical EHR). They don't talk to each other. Three independent serverless apps form the connective layer — sharing an API + sync contract scoped to non-PHI data only, not a database.</p>
+    <div class="flow row" style="margin-top:14px">
+      <div class="fnode user"><div class="ft">① Matcher</div><div class="fs">public · read</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">reads · non-PHI</span></div>
+      <div class="fnode crm"><div class="ft">GoHighLevel</div><div class="fs">acquisition CRM</div></div>
+      <div class="farr"><span class="a">←</span><span class="l">writes · non-PHI</span></div>
+      <div class="fnode cf"><div class="ft">② Clinician</div><div class="fs">authed · write</div></div>
+      <div class="farr"><span class="a">↺</span><span class="l">dock · deep-link</span></div>
+      <div class="fnode ehr"><div class="ft">SimplePractice</div><div class="fs">clinical EHR</div></div>
+    </div>
+    <div class="callout green"><div class="ct">PHI access — the foundation</div><p>Both the CRM and the EHR hold patient PHI — and the application layer can reach <b>neither</b>. GoHighLevel's API token is scoped to <b>non-PHI custom objects only</b>; SimplePractice is only ever <b>docked beside</b> in the clinician's own browser, never called via API. Patient data moves solely through the CRM's HIPAA-covered form. Read &amp; write use <b>two isolated tokens</b> — least privilege, PHI structurally out of reach of the code.</p></div>
+  </div>
+  <div class="cue"><b>on camera:</b> Set the stage — two HIPAA systems that don't talk; my software is the bridge. Hit the PHI point hard: the code literally can't touch PHI. That's the foundation everything else stands on.</div>
+  </section>
+
+  <!-- PERSPECTIVES (sneak peek setup) -->
+  <section class="slide" id="perspectives"><div class="inner">
+    <div class="seclabel">## a sneak peek — from every perspective</div>
+    <h2>Let me show you the live software —<br><span class="grad">through the eyes of each person who uses it.</span></h2>
+    <div class="chain">
+      <div class="cstep"><div class="n">1</div><div class="ct2"><b>The client</b> answers a few questions and is matched to the right <i>available</i> therapist. <span class="q">But how can a match be accurate…</span></div></div>
+      <div class="cstep"><div class="n">2</div><div class="ct2"><span class="q">…unless the matching criteria and availability are right and current?</span> <b>So clinicians update their own profile &amp; availability in seconds</b> — the Clinician Console. <span class="q">And how do we keep that effortless…</span></div></div>
+      <div class="cstep"><div class="n">3</div><div class="ct2"><span class="q">…and shape one set of data for two very different people?</span> <b>A client who must not be overwhelmed</b>, and <b>a coordinator who needs everything</b> — the Coordinator Console. </div></div>
+      <div class="cstep"><div class="n">✦</div><div class="ct2"><b>Three tools, one loop — each makes the others honest.</b> <span>That's what makes the match real.</span></div></div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> This is your roadmap slide — walk the logical chain out loud, then say "let me show you." Next slide is where you screen-share / play the video. Order: client → clinician console → coordinator console.</div>
+  </section>
+
+  <!-- LIVE PREVIEW (video embed) -->
+  <section class="slide" id="demo"><div class="inner">
+    <div class="seclabel">## the live software</div>
+    <h2>Now — <span class="grad">let me show you the live preview.</span></h2>
+    <div class="videowrap">
+      <div class="videoframe" id="videoframe">
+        <div class="vposter">
+          <div class="vbrand">Kentlands Psychotherapy · live walkthrough</div>
+          <div class="vtitle">The system, end to end</div>
+          <div class="vsub">client matcher · clinician console · coordinator console</div>
+        </div>
+        <div class="vbadge">7:58</div>
+        <button class="vplay" aria-label="Play"></button>
+        <div class="vbar"><span class="vicon">▶</span><span class="track"><span class="fill"></span></span><span class="vtime">1:26 / 7:58</span><span class="vicon">⛶</span></div>
+      </div>
+      <div class="vbtns">
+        <button class="vbtn primary" id="playbtn">▶ Play the walkthrough</button>
+        <a class="vbtn" href="https://youtu.be/-pkrUws8klk" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> Either play the embedded video or switch to your screen and demo the live tools in this order: 1) the public matcher (client view), 2) the clinician console, 3) the coordinator console. Then come back to the deck.</div>
+  </section>
+
+  <!-- TOOL 1 -->
+  <section class="slide" id="t1"><div class="inner">
+    <div class="toolhead">
+      <div class="toolnum">01</div>
+      <div class="tmeta">
+        <span class="badge client">◆ THE CLIENT SEES THIS · PUBLIC · READ-ONLY</span>
+        <div class="oneliner">A patient answers a few questions → the <em>right clinicians, ranked</em> — instantly, with zero patient data stored.</div>
+        <div class="stack"><span>Cloudflare Workers</span><span>Workers KV</span><span>LeadConnector REST</span><span>cron</span><span>vanilla JS · 0 deps</span></div>
+      </div>
+    </div>
+    <div class="flow row">
+      <div class="fnode crm"><div class="ft">GHL object</div><div class="fs">clinicians</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">webhook + 2-min cron</span></div>
+      <div class="fnode cf"><div class="ft">Worker · sync</div><div class="fs">fetch · diff</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">write-on-change</span></div>
+      <div class="fnode cf"><div class="ft">KV cache</div><div class="fs">sanitized JSON</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">POST /match</span></div>
+      <div class="fnode user"><div class="ft">Wizard</div><div class="fs">ranked 1–3</div></div>
+    </div>
+    <div class="tgrid">
+      <div class="specs">
+        <div class="spec"><span class="si">🔄</span><div><b>Hybrid event + cron sync</b><span>Webhook + a 2-min cron net; diffs KV, writes <b>only on change</b> — idempotent.</span></div></div>
+        <div class="spec"><span class="si">🎯</span><div><b>Weighted matching engine</b><span>8 signals (specialty ×5 → gender ×1) + a non-AI bio ranker. <b>Always returns 1–3.</b></span></div></div>
+        <div class="spec"><span class="si">🔐</span><div><b>PHI-safe by construction</b><span>Read-only token, non-PHI objects only; allow-list trims even that; input ephemeral.</span></div></div>
+        <div class="spec"><span class="si">😀</span><div><b>Simple for the client</b><span>3 questions, plain language — never overwhelming, never a dead end.</span></div></div>
+      </div>
+      <div>
+        <h3>// public API</h3>
+        <div class="api">
+          <div class="row"><span class="m get">GET</span><span class="ep">/clinicians</span></div>
+          <div class="row"><span class="m get">GET</span><span class="ep">/schema</span></div>
+          <div class="row"><span class="m post">POST</span><span class="ep">/match</span><span class="cm"># server-side ranking</span></div>
+          <div class="row"><span class="m post">POST</span><span class="ep">/webhook</span><span class="cm"># GHL change push</span></div>
+        </div>
+        <div class="callout"><div class="ct">The hard problem</div><p>Keep a <b>public, fast, PHI-safe</b> read model in sync with a third-party CRM — <b>without a database</b>. Solved with hybrid sync, write-on-change idempotency, and a fail-safe allow-list.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> "A match is only as good as its data." Show the live matcher: 3 questions → ranked results. Note it's simple for clients but powered by a real weighted engine + live availability.</div>
+  </section>
+
+  <!-- TOOL 2 -->
+  <section class="slide" id="t2"><div class="inner">
+    <div class="toolhead">
+      <div class="toolnum">02</div>
+      <div class="tmeta">
+        <span class="badge clin">◆ THE CLINICIAN UPDATES THIS · AUTHENTICATED · WRITE</span>
+        <div class="oneliner">Clinicians keep their own data current — <em>their own record, only their own</em> — in seconds. No database, no stored passwords.</div>
+        <div class="stack"><span>Cloudflare Pages</span><span>write-scoped Worker</span><span>KV (rate limit)</span><span>Web Crypto · HMAC-SHA256</span><span>docks beside SimplePractice</span></div>
+      </div>
+    </div>
+    <div class="flow row">
+      <div class="fnode user"><div class="ft">Clinician</div><div class="fs">email + last-4</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">/auth · server-verify</span></div>
+      <div class="fnode cf"><div class="ft">HMAC token</div><div class="fs">record-bound · 12h</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">Bearer + allow-list</span></div>
+      <div class="fnode cf"><div class="ft">Write Worker</div><div class="fs">coerce · validate</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">PUT → sync</span></div>
+      <div class="fnode crm"><div class="ft">GHL → matcher</div><div class="fs">live in minutes</div></div>
+    </div>
+    <div class="tgrid">
+      <div class="specs">
+        <div class="spec"><span class="si">🪪</span><div><b>Stateless HMAC sessions</b><span>Signs <code>{rid,exp}</code>; <b>record-bound</b>, 12h, constant-time verify. No session DB.</span></div></div>
+        <div class="spec"><span class="si">⏱️</span><div><b>Brute-force defense</b><span>KV rate-limit: <b>6 fails/email + 30/IP</b>, 15-min lockout.</span></div></div>
+        <div class="spec"><span class="si">🛡️</span><div><b>Server-side allow-list</b><span>Writes <b>only 5 fields</b> (type-coerced); 4 more display-only. Off-list rejected.</span></div></div>
+        <div class="spec"><span class="si">🔑</span><div><b>Least privilege + isolation</b><span>Separate write-scoped token in its own Worker; CORS locked.</span></div></div>
+      </div>
+      <div>
+        <h3>// endpoints</h3>
+        <div class="api">
+          <div class="row"><span class="m post">POST</span><span class="ep">/clinician/auth</span></div>
+          <div class="row"><span class="m get">GET</span><span class="ep">/clinician/me</span></div>
+          <div class="row"><span class="m put">POST</span><span class="ep">/profile · /availability · /hours</span></div>
+          <div class="row"><span class="m get">GET</span><span class="ep">/health · /admin/diagnose</span></div>
+        </div>
+        <div class="callout amber"><div class="ct">Why it exists</div><p>The match is only honest if the data is current. This makes updating it <b>effortless</b> for clinicians — which is exactly what keeps the client's match accurate.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> "This is how the data stays true." Show a clinician flipping Open/Full and editing their profile — and that it reaches the matcher within minutes. Tie back: effortless updates = accurate matches.</div>
+  </section>
+
+  <!-- TOOL 3 -->
+  <section class="slide" id="t3"><div class="inner">
+    <div class="toolhead">
+      <div class="toolnum">03</div>
+      <div class="tmeta">
+        <span class="badge admin">◆ THE COORDINATOR WORKS HERE · INTERNAL</span>
+        <div class="oneliner">The same data, for the person who needs <em>everything</em> — a live call co-pilot with no backend and zero PHI at rest.</div>
+        <div class="stack"><span>static Cloudflare Pages</span><span>vanilla JS</span><span>data-driven: playbook.json</span><span>reuses matcher API</span><span>GHL form handoff</span></div>
+      </div>
+    </div>
+    <div class="flow row">
+      <div class="fnode cf"><div class="ft">playbook.json</div><div class="fs">flows · scripts</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">drives UI</span></div>
+      <div class="fnode user"><div class="ft">Console</div><div class="fs">matcher · call note</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">reads /clinicians</span></div>
+      <div class="fnode cf"><div class="ft">Matcher API</div><div class="fs">shared engine</div></div>
+      <div class="farr"><span class="a">→</span><span class="l">prefilled form</span></div>
+      <div class="fnode crm"><div class="ft">GHL handoff</div><div class="fs">HIPAA form</div></div>
+    </div>
+    <div class="tgrid">
+      <div class="specs">
+        <div class="spec"><span class="si">🗂️</span><div><b>Zero-backend by design</b><span>No server, no secrets, memory-only — <b>no PHI at rest</b>. Real data → HIPAA GHL form.</span></div></div>
+        <div class="spec"><span class="si">🧩</span><div><b>Data-driven</b><span><b>17 flows · 46 steps · 25 terms · 6 snippets</b> in <code>playbook.json</code> — edited without code.</span></div></div>
+        <div class="spec"><span class="si">♻️</span><div><b>Code reuse (DRY)</b><span>Imports the matcher's engine via a <code>scoreAll()</code> variant — one algorithm, two views.</span></div></div>
+        <div class="spec"><span class="si">📚</span><div><b>Everything, surfaced</b><span>The coordinator sees full fit %, reasons, gaps, fees — the deep view of the same data.</span></div></div>
+      </div>
+      <div>
+        <div class="callout green"><div class="ct">The same data, shaped two ways</div><p>One source of truth → a <b>simple</b> view for clients and a <b>complete</b> view for coordinators. That's the whole point of the loop: accurate, current, and right-sized for whoever's looking.</p></div>
+        <div class="note">→ Sign-in is a client-side passcode (a speed-bump, not real auth) — fine because the console holds <b>no PHI</b>; Cloudflare Access is the upgrade path.</div>
+      </div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> "Same data — but the coordinator needs the full picture." Show the in-console research matcher (fit %, reasons, gaps) and the auto-building call note → one-click HIPAA handoff. Close the loop you opened on the perspectives slide.</div>
+  </section>
+
+  <!-- ENGINEERING -->
+  <section class="slide" id="skills"><div class="inner">
+    <div class="seclabel">## what this demonstrates</div>
+    <h2>Engineering competencies on display</h2>
+    <p class="lead">A production system with real users, built under real constraints — HIPAA, a third-party CRM, $0 budget, no backend. End-to-end, it exercised the core of a CS &amp; information-management toolkit:</p>
+    <div class="comp">
+      <div class="c"><b>Serverless architecture</b><span>Workers, Pages, KV, cron — stateless distributed systems.</span></div>
+      <div class="c"><b>API integration</b><span>REST, pagination, auth headers, third-party quirks.</span></div>
+      <div class="c"><b>Applied security</b><span>HMAC, stateless sessions, rate-limiting, least privilege, CORS.</span></div>
+      <div class="c"><b>Algorithm design</b><span>Weighted scoring + a non-AI ranker with a guaranteed-result invariant.</span></div>
+      <div class="c"><b>Data integrity</b><span>Normalization, idempotent sync, schema-drift resilience, coercion.</span></div>
+      <div class="c"><b>Privacy engineering</b><span>HIPAA-safe data flow, allow-lists, ephemeral data, PHI isolation.</span></div>
+      <div class="c"><b>Product + delivery</b><span>Shipped to production, documented, handed off.</span></div>
+      <div class="c"><b>Constraint engineering</b><span>Real impact on $0/month of added infrastructure.</span></div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> Quick — these are the skills the build proves. Don't read every box; say "this wasn't a class project, it's in production," then pivot to the bigger picture: this is just the beginning.</div>
+  </section>
+
+  <!-- BRIDGE -->
+  <section class="slide warm" id="bridge"><div class="inner">
+    <div class="kick w">// why this is just the beginning</div>
+    <h2>The same foundations launch<br><span class="gradw">Love is a Habit.</span></h2>
+    <div class="bridge">
+      <div class="brow"><div class="b1"><span class="t">Proven at Kentlands</span>A matching engine that connects people to the right help</div><div class="ar">↳</div><div class="b2">Connect anyone to the right support, mentor, or next step</div></div>
+      <div class="brow"><div class="b1"><span class="t">Proven at Kentlands</span>A guided console for coordinators</div><div class="ar">↳</div><div class="b2">Care navigators for everyone who reaches out — at scale</div></div>
+      <div class="brow"><div class="b1"><span class="t">Proven at Kentlands</span>Lifecycle tracking — no one falls through</div><div class="ar">↳</div><div class="b2">A promise: anyone who reaches out is followed up with</div></div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> Transition from "what I built" to "where it goes." Kentlands proved the model on one practice; Love is a Habit aims the same engine at a generation.</div>
+  </section>
+
+  <!-- THE PROBLEM -->
+  <section class="slide warm" id="stakes"><div class="inner">
+    <div class="kick w">// the problem we exist to answer</div>
+    <h2>The most connected generation in history<br>is also the <span class="gradw">most alone.</span></h2>
+    <p class="lead">Young people reach out from behind a screen — often at their lowest, with the least energy and the most to fear. The hardest step is the first one, and it can only be answered by a real human on the other side.</p>
+    <div class="fromto">
+      <span class="ft from">isolation · behind a screen</span>
+      <span class="ftar">→</span>
+      <span class="ft to">real, in-person connection</span>
+    </div>
+    <p class="quote" style="margin-top:18px">"Isolation can be answered with embodied connection."</p>
+  </div>
+  <div class="cue"><b>on camera:</b> Name the stakes plainly — a generation that's hyper-connected and deeply alone. This is the human problem behind every tool. LIAH exists to move people out of isolation into real connection; the screen is only the doorway.</div>
+  </section>
+
+  <!-- LIAH VISION -->
+  <section class="slide warm" id="liah"><div class="inner">
+    <div class="kick w">// the mission</div>
+    <h2>Scaling human support &amp; connection —<br><span class="gradw">for a generation.</span></h2>
+    <p class="quote">"A generation given the tools to chase their dreams will change the world."</p>
+    <ul class="points" style="margin-top:16px">
+      <li><span class="ck">→</span><div><b>Out of isolation, into real connection</b> <span>— help young people move from screens to embodied, in-person support.</span></div></li>
+      <li><span class="ck">→</span><div><b>Technology is the doorway, not the destination</b> <span>— it amplifies human warmth; it never replaces it.</span></div></li>
+      <li><span class="ck">→</span><div><b>Love is the intelligence that never becomes artificial</b> <span>— automate the logistics, never the care.</span></div></li>
+    </ul>
+  </div>
+  <div class="cue"><b>on camera:</b> The heart of it. Love is a Habit's mission — using the best technology to scale human support and connection for a generation, moving people out of isolation. The Kentlands work is layer one, already proven.</div>
+  </section>
+
+  <!-- 3-LAYER NORTH STAR -->
+  <section class="slide warm" id="northstar"><div class="inner">
+    <div class="kick w">// the north star</div>
+    <h2>One practice was the proof.<br>The vision is a <span class="gradw">shared backbone.</span></h2>
+    <div class="layers">
+      <div class="lyr l3"><span class="tag">Layer 3 · the goal</span><h3>Prevention</h3><p>Reach people upstream — building habits, community, and resilience before anyone ever needs crisis care.</p></div>
+      <div class="lyr l2"><span class="tag">Layer 2 · the scale</span><h3>Infrastructure</h3><p>A shared backbone any mission-driven organization in the country can plug into — the connective tissue between people who need support and the places that provide it.</p></div>
+      <div class="lyr l1"><span class="tag">Layer 1 · proven at The Hope Line + Kentlands</span><h3>Technology</h3><p>Equip organizations with tools to reach people and connect them to real human support — efficiently, and privately.</p></div>
+    </div>
+    <p class="spine"><b>The Hope Line</b> + <b>Kentlands</b> prove the technology &nbsp;→&nbsp; that unlocks the infrastructure &nbsp;→&nbsp; which makes prevention possible — <b>for organizations everywhere.</b></p>
+  </div>
+  <div class="cue"><b>on camera:</b> The architecture of the whole vision. Two real proofs at the base — The Hope Line (reaching isolated youth at national scale) and Kentlands (the technology, lean and privacy-safe). That foundation scales into shared infrastructure for many organizations, and ultimately into prevention. Stress scalability: built once, handed to org after org.</div>
+  </section>
+
+  <!-- WHY NOW -->
+  <section class="slide warm" id="whynow"><div class="inner">
+    <div class="kick w">// why now</div>
+    <h2>What used to need a corporate IT budget<br><span class="gradw">now runs on a free tier.</span></h2>
+    <p class="lead">The window is open: the same forces that let one small practice rebuild itself now let a nonprofit reach a generation.</p>
+    <div class="tri">
+      <div class="rcard"><div class="n">01 · cost</div><h4>Enterprise tools, ~$0 infrastructure</h4><p>The Kentlands custom layer — matcher, consoles, automations — runs on roughly $0 of added infrastructure. What cost a fortune a decade ago is now within a nonprofit's reach.</p></div>
+      <div class="rcard"><div class="n">02 · proof</div><h4>Validated, not theoretical</h4><p>The Hope Line reached isolated youth at national scale; Kentlands proved the technology runs lean and privacy-safe. The model already works.</p></div>
+      <div class="rcard"><div class="n">03 · scale</div><h4>Replicable across the country</h4><p>Built once, the same backbone can be handed to organization after organization — each one stronger because the last one made it better.</p></div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> Why this is the moment. Cloud infrastructure collapsed the cost of doing this; the model is already proven; and it's built to replicate. The feasibility case — tie the technical depth straight to the mission's reach.</div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section class="slide warm" id="principles"><div class="inner">
+    <div class="kick w">// how we build — and how I already build</div>
+    <h2>The principles are already <span class="gradw">in the code.</span></h2>
+    <div class="two">
+      <div class="rcard"><div class="ic">🤝</div><h4>Human-first; AI as servant</h4><p>Automate the logistics, never the care. (The matcher uses <b>no AI</b> — explainable, human-tuned ranking.)</p></div>
+      <div class="rcard"><div class="ic">🚪</div><h4>The screen is the doorway</h4><p>Every tool moves someone toward real, in-person connection — never a dead end. (The matcher always returns a person.)</p></div>
+      <div class="rcard"><div class="ic">🔓</div><h4>Low friction, high trust</h4><p>Make reaching out effortless; protect privacy fiercely. (PHI-safe by construction; one-tap actions.)</p></div>
+      <div class="rcard"><div class="ic">☀️</div><h4>Design with dignity</h4><p>Meet people as their truest self — no shame, no dark patterns. <i>You are not your shadow.</i></p></div>
+    </div>
+  </div>
+  <div class="cue"><b>on camera:</b> The punchline — LIAH's build philosophy isn't aspirational for me; it's how I already engineered Kentlands. Tie each principle to a concrete thing in the tools.</div>
+  </section>
+
+  <!-- AD GRANT -->
+  <section class="slide warm" id="grant"><div class="inner" style="text-align:center">
+    <div class="kick w">// the fuel, arriving now</div>
+    <div class="bigstat gradw">$10,000<span> / month</span></div>
+    <h2 style="margin-top:4px">in Google Ad Grants, soon driving LIAH's growth.</h2>
+    <p class="lead" style="margin:14px auto 0">Thousands of people searching for help every month. Every click has to land somewhere that <b>actually helps</b> — guided, supported, no dead ends. That's exactly what these systems make possible.</p>
+  </div>
+  <div class="cue"><b>on camera:</b> The Ad Grant is real reach; the tech foundations make the spend count — turning searches into supported journeys, not bounced clicks.</div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="slide warm" id="visit"><div class="inner">
+    <div class="kick w">// see it for yourself</div>
+    <h2>We just re-launched the<br><span class="gradw">Love is a Habit website.</span></h2>
+    <p class="lead">It's live and growing — this is where the work goes public. I'd be honored if you took a look.</p>
+    <a class="cta-card" href="https://loveisahabit.org" target="_blank" rel="noopener">
+      <div class="u">loveisahabit.org</div>
+      <div class="go">Please take a look <span class="arr">→</span></div>
+    </a>
+  </div>
+  <div class="cue"><b>on camera:</b> Direct invitation — ask the reviewers to visit loveisahabit.org. (Confirm the URL is final.) Consider screen-sharing the site here.</div>
+  </section>
+
+  <!-- CLOSE -->
+  <section class="slide" id="close"><div class="inner">
+    <div class="kick">// why CSIM</div>
+    <h2>This is the mindset I'd bring<br>to <span class="grad">CSIM.</span></h2>
+    <ul class="points">
+      <li><span class="ck">✦</span><div><b>Self-taught, and shipped real systems</b> <span>— in production, with real users and real constraints.</span></div></li>
+      <li><span class="ck">✦</span><div><b>I fuse people and technology</b> <span>— I build for the human on the other end.</span></div></li>
+      <li><span class="ck">✦</span><div><b>I'm already building something with reach</b> <span>— and I want the depth CSIM offers to go further.</span></div></li>
+    </ul>
+    <div class="who" style="margin-top:24px"><b>Andrew Stoy</b> · Kentlands Psychotherapy · Love is a Habit<br><span style="color:var(--dim)">Thank you for considering my application.</span></div>
+  </div>
+  <div class="cue"><b>on camera:</b> Land it: real impact + people-first engineering + a growing mission = ready to thrive in CSIM. Warm, confident, thank them.</div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  // 👉 YouTube EMBED url for the demo slide. The poster shows first; clicking the frame or the "Play" button swaps in the live video.
+  const VIDEO_URL = 'https://www.youtube.com/embed/-pkrUws8klk';
+  const vf=document.getElementById('videoframe');
+  function playVideo(){
+    if(!VIDEO_URL||!vf||vf.dataset.playing)return;
+    vf.dataset.playing='1';
+    vf.innerHTML='<iframe src="'+VIDEO_URL+'?autoplay=1&rel=0" title="Live walkthrough" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+  }
+  if(vf){vf.style.cursor='pointer';vf.addEventListener('click',playVideo);}
+  const _pb=document.getElementById('playbtn');
+  if(_pb)_pb.addEventListener('click',e=>{e.preventDefault();playVideo();});
+
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const ids=slides.map(s=>s.id);
+  const nls=[...document.querySelectorAll('nav [data-go]')];
+  const dotsWrap=document.getElementById('dots');
+  const prog=document.getElementById('prog');
+  let cur=0;
+
+  const labels={hero:'Intro',era:'Transformation',changed:'What changed',consol:'One stack',overview:'Overview',perspectives:'Perspectives',demo:'Live preview',t1:'Matcher (client)',t2:'Clinician console',t3:'Coordinator console',skills:'Engineering',bridge:'The bridge',stakes:'The problem',liah:'LIAH mission',northstar:'3-layer north star',whynow:'Why now',principles:'How we build',grant:'$10k/mo grant',visit:'Visit the site',close:'Why CSIM'};
+  const dots=slides.map((s,i)=>{const b=document.createElement('button');b.title=labels[s.id]||s.id;b.onclick=()=>go(i);dotsWrap.appendChild(b);return b;});
+
+  function go(i){i=Math.max(0,Math.min(slides.length-1,i));slides[i].scrollIntoView({behavior:'smooth'});}
+  function setActive(i){cur=i;nls.forEach(a=>a.classList.toggle('on',a.dataset.go===ids[i]));dots.forEach((d,k)=>d.classList.toggle('on',k===i));}
+  nls.forEach(a=>a.addEventListener('click',()=>go(ids.indexOf(a.dataset.go))));
+
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)setActive(slides.indexOf(e.target));});},{root:deck,threshold:0.55});
+  slides.forEach(s=>io.observe(s));
+  deck.addEventListener('scroll',()=>{prog.style.width=(deck.scrollTop/(deck.scrollHeight-deck.clientHeight)*100)+'%';},{passive:true});
+
+  addEventListener('keydown',e=>{
+    if(['ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1);}
+    else if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
+    else if(e.key==='Home'){e.preventDefault();go(0);}
+    else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  });
+  setActive(0);
+})();
+</script>
