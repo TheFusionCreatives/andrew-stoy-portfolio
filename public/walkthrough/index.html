@@ -33,6 +33,8 @@ nav a.nl{font-size:13px;color:var(--muted);padding:6px 9px;border-radius:7px;whi
 nav a.nl:hover,nav a.nl.on{color:var(--ink);background:var(--surface2)}
 nav .ntog{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--border);background:var(--surface);border-radius:7px;padding:5px 10px;cursor:pointer;margin-left:4px}
 nav .ntog.on{color:var(--ink);border-color:var(--clay);background:rgba(240,136,62,.12)}
+nav .dlbtn{font-family:var(--mono);font-size:11.5px;font-weight:600;color:#1a1205;background:linear-gradient(120deg,#f0883e,#f0c75e);border:1px solid transparent;border-radius:7px;padding:5px 12px;margin-left:6px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:transform .15s,box-shadow .15s}
+nav .dlbtn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(240,136,62,.3)}
 
 .dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:9px}
 .dots button{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;cursor:pointer;padding:0;transition:all .2s}
@@ -275,6 +277,7 @@ body.notes .scrollhint{display:none}
   <a class="nl" data-go="skills">Engineering</a>
   <a class="nl" data-go="stakes">Love is a Habit</a>
   <a class="nl" data-go="visit">Visit</a>
+  <a class="dlbtn" href="walkthrough-deck.pdf" download="Andrew-Stoy-Kentlands-Walkthrough.pdf">⤓ PDF</a>
 </div></nav>
 <div class="dots" id="dots"></div>
 
