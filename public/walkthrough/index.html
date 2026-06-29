@@ -27,7 +27,8 @@ a{color:var(--blue);text-decoration:none}
 #prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--green),var(--clay));width:0;z-index:60}
 nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(13,17,23,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
 nav .nwrap{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:5px;height:52px;padding:0 24px;flex-wrap:wrap}
-nav .brand{font-weight:700;margin-right:auto;font-size:14.5px;cursor:pointer}
+nav .brand{font-weight:700;margin-right:auto;font-size:14.5px;cursor:pointer;color:var(--ink);text-decoration:none}
+nav .brand:hover{color:#fff}
 nav .brand .d{color:var(--clay)}
 nav a.nl{font-size:13px;color:var(--muted);padding:6px 9px;border-radius:7px;white-space:nowrap;cursor:pointer}
 nav a.nl:hover,nav a.nl.on{color:var(--ink);background:var(--surface2)}
@@ -269,7 +270,7 @@ body.notes .scrollhint{display:none}
 
 <div id="prog"></div>
 <nav><div class="nwrap">
-  <span class="brand" data-go="hero">Andrew Stoy <span class="d">·</span> walkthrough &amp; vision</span>
+  <a class="brand" href="https://andrew-stoy.com">Andrew Stoy <span class="d">·</span> walkthrough &amp; vision</a>
   <a class="nl" data-go="era">Transformation</a>
   <a class="nl" data-go="overview">Overview</a>
   <a class="nl" data-go="perspectives">Demo</a>
