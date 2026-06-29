@@ -34,6 +34,13 @@ nav a.nl{font-size:13px;color:var(--muted);padding:6px 9px;border-radius:7px;whi
 nav a.nl:hover,nav a.nl.on{color:var(--ink);background:var(--sand)}
 .btn-print{font-family:'Jost';font-size:13px;font-weight:500;background:var(--clay);color:#fff;border:0;padding:8px 14px;border-radius:8px;cursor:pointer}
 .btn-print:hover{background:var(--clay-deep)}
+.btn-demo{font-family:'Jost';font-size:13px;font-weight:600;background:var(--navy);color:#fff;border:0;padding:8px 14px;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-right:10px}
+.btn-demo:hover{filter:brightness(1.18)}
+.democta{margin-top:44px;text-align:center;border:1px solid var(--line);border-radius:20px;padding:38px 26px;background:linear-gradient(160deg,rgba(240,136,62,.10),rgba(240,136,62,.02))}
+.democta h3{font-size:26px;margin:0 0 8px;color:var(--ink)}
+.democta p{margin:0 auto 20px;max-width:54ch;color:var(--muted)}
+.democta-btn{display:inline-flex;align-items:center;gap:9px;background:var(--clay);color:#fff;padding:15px 30px;border-radius:13px;font-weight:600;font-size:17px;text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s}
+.democta-btn:hover{background:var(--clay-deep);transform:translateY(-2px);box-shadow:0 16px 40px rgba(240,136,62,.28)}
 
 /* hero */
 .hero{background:linear-gradient(160deg,#3b4654,#2b3640);color:#f4ece1;border-bottom:0}
@@ -407,6 +414,7 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   <a class="nl" href="#security">HIPAA</a>
   <a class="nl" href="#people">People</a>
   <a class="nl" href="#liah">LIAH</a>
+  <a class="btn-demo" href="/?demo=build#contact" target="_top">▶ Request a live demo</a>
   <button class="btn-print" onclick="window.print()">⌘ Save as PDF</button>
 </div></nav>
 
@@ -865,6 +873,12 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
     <p>The last six months proved it at one practice: with the right systems in place, no one slips through the cracks — every call is answered, every person is matched to real help, and every follow-up happens.</p>
     <p>Love is a Habit takes those same foundations and points them outward — toward everyone who needs support, and everyone reaching for something bigger than themselves. What helped one practice never lose a single person can help a whole generation find their footing, their people, and their purpose.</p>
     <div class="sig">Give people the tools. Watch them change everything.</div>
+  </div>
+
+  <div class="democta">
+    <h3>Want to see it in action?</h3>
+    <p>The best way to understand the build is to watch it work. I'd be glad to give you a live walkthrough — or send a short demo video.</p>
+    <a class="democta-btn" href="/?demo=build#contact" target="_top">▶ Request a live demo</a>
   </div>
 </div></section>
 

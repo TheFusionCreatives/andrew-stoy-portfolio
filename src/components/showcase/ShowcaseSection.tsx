@@ -86,6 +86,13 @@ export default function ShowcaseSection() {
   }, [inView, userTook])
 
   const pick = (i: number) => { setSel(i); setUserTook(true) }
+
+  // Prefill the contact form with a demo request and scroll to it (same page, no reload).
+  const requestDemo = () => {
+    window.dispatchEvent(new CustomEvent('request-demo'))
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   const person = PEOPLE[sel]
   const ac = ACCENT[person.accent]
 
@@ -194,13 +201,21 @@ export default function ShowcaseSection() {
           {/* CTA */}
           <div className="mt-7 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-dark-border pt-6">
             <span className="text-sm text-gray-medium">An interactive look at six months of work.</span>
-            <button
-              onClick={() => setOpen(true)}
-              className="group inline-flex items-center px-6 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-blue-primary to-green-primary transition-all duration-300 hover:shadow-lg hover:shadow-blue-primary/25 hover:scale-105"
-            >
-              Explore the full build
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={requestDemo}
+                className="inline-flex items-center px-5 py-3 rounded-lg font-medium text-white border border-dark-border bg-dark-bg/40 hover:border-blue-primary/60 transition-all duration-300"
+              >
+                Request a live demo
+              </button>
+              <button
+                onClick={() => setOpen(true)}
+                className="group inline-flex items-center px-6 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-blue-primary to-green-primary transition-all duration-300 hover:shadow-lg hover:shadow-blue-primary/25 hover:scale-105"
+              >
+                Explore the full build
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
+            </div>
           </div>
         </motion.div>
       </Container>

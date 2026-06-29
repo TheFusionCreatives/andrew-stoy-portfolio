@@ -1,9 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Container from '@/components/ui/Container'
 import { Mail, MapPin, Send, Linkedin, Github, Heart } from 'lucide-react'
+
+// Prewritten context for "Request a live demo" CTAs (case study, showcase, etc.)
+const DEMO_PREFILL = {
+  subject: 'Request: a live demo of the Kentlands build',
+  message:
+    "Hi Andrew — I just went through your Kentlands Psychotherapy case study and I'd love a live walkthrough or a short demo video of the system.\n\nA bit about me and what I'm hoping to see:\n",
+}
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -15,6 +22,23 @@ export default function ContactSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  // Prefill the form for a "live demo" request — from a ?demo= URL param (e.g. a
+  // link from the case study) or a same-page 'request-demo' event (the showcase button).
+  useEffect(() => {
+    const fill = () => {
+      setFormData(prev => ({ ...prev, subject: DEMO_PREFILL.subject, message: DEMO_PREFILL.message }))
+      const el = document.getElementById('contact')
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
+    if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('demo')) {
+      // let layout settle, then prefill + scroll
+      setTimeout(fill, 200)
+    }
+    const onRequest = () => fill()
+    window.addEventListener('request-demo', onRequest)
+    return () => window.removeEventListener('request-demo', onRequest)
+  }, [])
 
   const contactInfo = [
     {
