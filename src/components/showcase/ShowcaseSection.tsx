@@ -4,12 +4,13 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import {
   User, Headphones, ToggleRight, Target, MessageSquare, Heart,
-  Inbox, ClipboardList, Database, CheckCircle2, ArrowRight
+  Inbox, ClipboardList, Database, CheckCircle2, ArrowRight, X, ExternalLink
 } from 'lucide-react'
 import Container from '@/components/ui/Container'
 
-// Link to the full case-study document (lives in /public/kentlands/)
-const BUILD_URL = '/kentlands/'
+// Link to the full case-study document (lives in /public/kentlands/).
+// Use the explicit index.html so it resolves identically in local dev and on Netlify.
+const BUILD_URL = '/kentlands/index.html'
 
 type Step = { Icon: React.ComponentType<{ className?: string }>; t: string; s: string }
 type Accent = 'blue' | 'green' | 'purple'
@@ -54,8 +55,19 @@ const ACCENT: Record<Accent, { text: string; chip: string; dot: string; ring: st
 export default function ShowcaseSection() {
   const [sel, setSel] = useState(0)
   const [userTook, setUserTook] = useState(false)
+  const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.3 })
+
+  // Open the full case study in an in-page modal: lock scroll, close on Escape.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
+  }, [open])
 
   // When the section first scrolls into view, quickly fan through all three
   // people so visitors realize it's interactive, then settle into a slow rotate.
@@ -182,16 +194,65 @@ export default function ShowcaseSection() {
           {/* CTA */}
           <div className="mt-7 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-dark-border pt-6">
             <span className="text-sm text-gray-medium">An interactive look at six months of work.</span>
-            <a
-              href={BUILD_URL}
+            <button
+              onClick={() => setOpen(true)}
               className="group inline-flex items-center px-6 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-blue-primary to-green-primary transition-all duration-300 hover:shadow-lg hover:shadow-blue-primary/25 hover:scale-105"
             >
-              See the full build
+              Explore the full build
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-            </a>
+            </button>
           </div>
         </motion.div>
       </Container>
+
+      {/* Full case study, in an in-page modal */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setOpen(false)} />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 18 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97, y: 10 }}
+              transition={{ duration: 0.25 }}
+              className="relative w-full max-w-6xl h-[92vh] flex flex-col rounded-2xl overflow-hidden border border-dark-border bg-dark-bg shadow-2xl"
+            >
+              <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3 border-b border-dark-border bg-dark-surface/80">
+                <span className="text-sm font-medium text-white truncate">Kentlands Psychotherapy &mdash; The Build</span>
+                <div className="flex items-center gap-2 shrink-0">
+                  <a
+                    href={BUILD_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-gray-medium hover:text-white transition-colors"
+                  >
+                    Open in new tab <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                  <button
+                    onClick={() => setOpen(false)}
+                    aria-label="Close"
+                    className="w-9 h-9 grid place-items-center rounded-lg border border-dark-border text-gray-medium hover:text-white hover:border-gray-dark transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+              <iframe
+                src={BUILD_URL}
+                title="Kentlands Psychotherapy — The Build"
+                className="flex-1 w-full bg-dark-bg"
+                loading="lazy"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

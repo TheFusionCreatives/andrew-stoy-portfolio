@@ -404,9 +404,7 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   <a class="nl" href="#stack">Tech stack</a>
   <a class="nl" href="#mockups">In action</a>
   <a class="nl" href="#pillars">Pillars</a>
-  <a class="nl" href="#catalog">Catalog</a>
   <a class="nl" href="#security">HIPAA</a>
-  <a class="nl" href="#integrity">Integrity</a>
   <a class="nl" href="#people">People</a>
   <a class="nl" href="#liah">LIAH</a>
   <button class="btn-print" onclick="window.print()">⌘ Save as PDF</button>
@@ -508,19 +506,15 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   <div class="pillars">
     <div class="pillar"><div class="ic">🎯</div><h3>Automated clinician matching</h3>
       <ul><li>A few questions become a ranked shortlist of the right clinicians</li><li>Scores 95+ signals; always returns a match — never a dead end</li><li>Reads live availability, so it only suggests clinicians taking clients</li></ul>
-      <div class="mech"><b>Under the hood:</b> 7 weighted dimensions (specialty ×5, population ×4, service ×4, modality ×3, age ×3, location ×2, PSYPACT ×2, gender ×1), a non-AI bio-relevance pass with 100+ stop-words, and 23 lay-language synonyms so people can type how they feel, not in clinical terms.</div>
     </div>
     <div class="pillar"><div class="ic">🔐</div><h3>HIPAA-secure data consolidation</h3>
       <ul><li>Calls, texts, emails, forms and chat land on one contact record</li><li>Patient data never leaves the HIPAA-covered CRM</li><li>Public tools only ever see a tight field allow-list</li></ul>
-      <div class="mech"><b>Under the hood:</b> a 24-field public allow-list (new fields excluded by default), an explicit never-expose list, read vs. write tokens kept separate, and patient criteria that are never stored — used to match, then gone.</div>
     </div>
     <div class="pillar"><div class="ic">🔄</div><h3>Automated task movement</h3>
       <ul><li>Inquiries flow New → Contacting → Urgent → Booked automatically</li><li>Workflows assign follow-ups without anyone having to remember</li><li>Every lead has an owner, a stage, and a next action</li></ul>
-      <div class="mech"><b>Under the hood:</b> webhook push from the CRM plus a 2-minute cron safety net, with write-on-change diffing so data only moves when it has actually changed.</div>
     </div>
     <div class="pillar"><div class="ic">🟢</div><h3>Clinician auto-updating availability</h3>
       <ul><li>Clinicians tap Open or Full from a panel beside their EHR</li><li>The change feeds the public matcher within minutes</li><li>The availability spreadsheet is gone — data lives at its source</li></ul>
-      <div class="mech"><b>Under the hood:</b> a write-scoped service with HMAC sessions bound to one record, a 12-field server-side edit allow-list, and a profile editor pre-populated <i>exactly</i> from the CRM so nothing is a surprise.</div>
     </div>
   </div>
 </div></section>
@@ -610,7 +604,7 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
           <tr><td>K. Beyer, LCSW</td><td><span class="av pend">Pending (Maybe)</span></td><td>Adults 30+; couples</td><td>See clinician note</td></tr>
           <tr><td>Dr. M. Okafor</td><td><span class="av full">No (Full)</span></td><td>Couples; families (15+)</td><td>Mon 10:15 &amp; 3:30</td></tr>
         </table>
-        <div class="cap" style="border-top:0">Page 1 of 2 · the live source of truth the public matcher reads every ~2 minutes.</div>
+        <div class="cap" style="border-top:0">Page 1 of 2 · the live source of truth behind the public matcher.</div>
       </div>
     </div>
     <div class="cap"><b>The Clinicians object</b> — availability, ideal-client and openings in one place. Each clinician can now update their own row from the side panel.</div>
@@ -692,7 +686,7 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
         </div>
       </div>
     </div>
-    <div class="cap"><b>The Coordinator Console (CCC)</b> — a live call co-pilot: 17 guided call flows with warm scripts, a values "North Star" on every call, a built-in matcher, and a call note that <b>auto-builds as you talk</b> and hands off to the CRM in one click. Replaces a static script document with on-rails, trainable software.</div>
+    <div class="cap"><b>The Coordinator Console (CCC)</b> — a live call co-pilot: guided call flows with warm scripts, a values "North Star" on every call, a built-in matcher, and a call note that <b>fills itself in</b> and hands off to the CRM in one click. Replaces a static script document with guided, trainable software.</div>
   </div>
 
   <!-- 3c. CCC docked beside a live contact — the real workspace -->
@@ -751,7 +745,7 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
         <div class="cc2-tabs"><span class="t on"><span class="ic">📋</span>Call note<span class="bdg">1</span></span><span class="t"><span class="ic">🔎</span>Matcher</span><span class="t"><span class="ic">💬</span>Messages</span><span class="t"><span class="ic">📨</span>Send</span></div>
       </div>
     </div>
-    <div class="cap"><b>How it's actually used — and why "one place" is the whole point.</b> Every call, text, email, live-chat and social message lands on <b>one timeline</b>, with the contact's full inquiry history and notes beside it. The coordinator docks the console on the right and follows the exact call flow — here, the real medication/psychiatry routing logic — while the call note builds itself and sends back to <b>this same record</b>. Conversation, history, and guidance, finally together.</div>
+    <div class="cap"><b>How it's actually used — and why "one place" is the whole point.</b> Every call, text, email, live-chat and social message lands on <b>one timeline</b>, with the contact's full inquiry history and notes beside it. The coordinator docks the console on the right and follows the exact call flow — here, a medication/psychiatry call — while the call note builds itself and sends back to <b>this same record</b>. Conversation, history, and guidance, finally together.</div>
   </div>
 
   <!-- 4. row: Public matcher + SimplePractice + console -->
@@ -805,34 +799,6 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   </div>
 </div></section>
 
-<!-- FEATURE CATALOG -->
-<section id="catalog"><div class="wrap">
-  <div class="kicker">The feature catalog</div>
-  <h2>The little things that add up</h2>
-  <div class="rule"></div>
-  <p class="lead">Every quiet decision that makes the system feel effortless and trustworthy. Filter by tool or by what it protects — or search.</p>
-  <div class="filterbar">
-    <input id="q" placeholder="Search features…  (try ‘undo’, ‘age’, ‘token’, ‘crisis’)">
-    <div class="chips" id="toolchips">
-      <span class="chip on" data-tool="all">All tools</span>
-      <span class="chip" data-tool="Matcher">Matcher</span>
-      <span class="chip" data-tool="Website">Website</span>
-      <span class="chip" data-tool="CCC">Coordinator console</span>
-      <span class="chip" data-tool="Clinician">Clinician console</span>
-      <span class="chip" data-tool="Platform">Platform &amp; sync</span>
-    </div>
-    <div class="chips" id="themechips">
-      <span class="chip" data-theme="privacy" style="--t:var(--navy)">🔐 Privacy &amp; HIPAA</span>
-      <span class="chip" data-theme="integrity" style="--t:var(--good)">🔄 Data integrity</span>
-      <span class="chip" data-theme="human" style="--t:var(--clay)">💛 People-first</span>
-      <span class="chip" data-theme="speed" style="--t:var(--amber)">⚡ Speed</span>
-      <span class="chip" data-theme="access" style="--t:var(--violet)">♿ Accessibility</span>
-    </div>
-    <div class="count-line" id="countline"></div>
-  </div>
-  <div class="cards" id="cards"></div>
-</div></section>
-
 <!-- SECURITY -->
 <section id="security"><div class="wrap">
   <div class="kicker">HIPAA, by design</div>
@@ -841,30 +807,13 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   <p class="lead">Mental-health data is some of the most sensitive there is. Every tool was built so that protected information simply has nowhere unsafe to go.</p>
   <div class="deep">
     <div class="drow dark"><h4><span class="badge">🛡️</span> No patient PHI ever touches our servers</h4><p>The public matcher uses a patient's criteria only to rank clinicians, then discards them. Nothing about the person is stored. The CRM — already HIPAA-covered — remains the single home for any real data.</p></div>
-    <div class="drow"><h4><span class="badge">✅</span> Allow-list, not block-list</h4><p>Public tools can only ever see 24 explicitly approved fields. Add a new field in the CRM and it's hidden by default — the safe failure mode. Sensitive notes are on an explicit never-expose list.</p></div>
-    <div class="drow"><h4><span class="badge">🔑</span> Least-privilege tokens</h4><p>The public matcher reads with a read-only token; clinician edits go through a completely separate write-scoped service. A breach of one can't touch the other. Tokens live only in encrypted infrastructure secrets — never in code or git.</p></div>
-    <div class="drow"><h4><span class="badge">🪪</span> Sessions that can only edit you</h4><p>Clinicians sign in with their email and the last four of their phone, verified server-side. Their session is a signed token bound to their own record — it is cryptographically impossible to edit someone else's profile.</p></div>
-    <div class="drow"><h4><span class="badge">⏱️</span> Brute-force lockout</h4><p>A four-digit PIN has only 10,000 combinations, so sign-in is rate-limited: six wrong tries locks that account for fifteen minutes. Simple front door, serious lock.</p></div>
-    <div class="drow"><h4><span class="badge">🔒</span> Locked-down access</h4><p>Cross-origin access is restricted to the real console domains only, and the edit service independently re-checks an allow-list on every write — the browser can never write a field it shouldn't.</p></div>
+    <div class="drow"><h4><span class="badge">✅</span> Allow-list, not block-list</h4><p>Public tools can only ever see a tight set of explicitly approved fields. Add a new field in the CRM and it's hidden by default — the safe failure mode. Sensitive notes are never exposed.</p></div>
+    <div class="drow"><h4><span class="badge">🔑</span> Least-privilege by design</h4><p>Public reads and clinician edits run through completely separate, narrowly-scoped paths — a breach of one can't touch the other. Credentials live only in encrypted infrastructure secrets, never in code.</p></div>
+    <div class="drow"><h4><span class="badge">🪪</span> Sessions that can only edit you</h4><p>Clinicians are verified server-side, and each session is cryptographically bound to that clinician's own record — making it impossible to view or edit anyone else's profile.</p></div>
+    <div class="drow"><h4><span class="badge">⏱️</span> Brute-force protection</h4><p>Sign-in is rate-limited, with automatic lockout after repeated failed attempts. A simple front door with a serious lock.</p></div>
+    <div class="drow"><h4><span class="badge">🔒</span> Locked-down access</h4><p>Access is restricted to the real console domains only, and every write is independently re-checked on the server — the browser can never change a field it shouldn't.</p></div>
   </div>
-  <div class="banner">A pre-launch <b>readiness audit</b> endpoint confirms every clinician can sign in and flags any data gaps <b>without ever exposing a single phone number or email</b> — so the system goes live with confidence, not crossed fingers.</div>
-</div></section>
-
-<!-- DATA INTEGRITY -->
-<section id="integrity"><div class="wrap">
-  <div class="kicker">Synced with care</div>
-  <h2>Data integrity at every step</h2>
-  <div class="rule"></div>
-  <p class="lead">"Synced" is easy to say and hard to do right. The system goes out of its way to keep every record accurate, fresh, and consistent across tools.</p>
-  <div class="deep">
-    <div class="drow"><h4><span class="badge">📡</span> Real-time, with a safety net</h4><p>The CRM pushes changes the instant they happen via webhook, and a 2-minute cron sweeps as a backstop. If a push is ever missed, the system self-heals within minutes.</p></div>
-    <div class="drow"><h4><span class="badge">♻️</span> Write-on-change only</h4><p>Before publishing, the system compares old and new data and writes only when something actually changed — no churn, no stale overwrites, no wasted work.</p></div>
-    <div class="drow"><h4><span class="badge">🧹</span> Normalized at the boundary</h4><p>The CRM returns data in several shapes; the system unpacks nested records and normalizes checkbox values across five-plus formats so everything downstream is clean and predictable.</p></div>
-    <div class="drow"><h4><span class="badge">🎯</span> Resilient to schema drift</h4><p>Field keys are auto-detected (with manual overrides available), so renaming or re-ordering fields in the CRM won't silently break matching or editing.</p></div>
-    <div class="drow"><h4><span class="badge">🪞</span> Edited exactly as stored</h4><p>The clinician profile editor pre-loads every field <i>exactly</i> as it is in the CRM — no guessing, no drift between what a clinician sees and what the matcher uses.</p></div>
-    <div class="drow"><h4><span class="badge">🌱</span> Freshness, gently enforced</h4><p>Each profile shows when it was last updated, and a soft nudge appears after 60 days — keeping referral data current without nagging.</p></div>
-  </div>
-  <div class="banner">There's even a documented workaround for a CRM quirk where checkbox fields can't be updated by API — the editor steers clinicians to the field types that <b>can</b> be written safely, so a save never silently fails. Integrity means <b>knowing the edges</b>, not just the happy path.</div>
+  <div class="banner">A pre-launch <b>readiness check</b> confirms every clinician can sign in and flags any data gaps <b>without ever exposing a single phone number or email</b> — so the system goes live with confidence, not crossed fingers.</div>
 </div></section>
 
 <!-- PEOPLE FIRST -->
@@ -875,7 +824,7 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   <p class="lead">The technology is in service of three people: a patient looking for help, a coordinator answering the call, and a clinician trying to do their work. We built for each of them with care.</p>
   <div class="deep">
     <div class="drow"><h4>🧭 For the patient — never a dead end</h4><p>The matcher always returns someone, explains <i>why</i> they fit, and is honest about where they differ. A human coordinator is offered on every result. No empty screens, no jargon — you can describe how you feel and be understood.</p></div>
-    <div class="drow"><h4>☎️ For the coordinator — never lost</h4><p>A guided console with 17 call flows, a values card on every call reminding them it's "a person, not a transaction," a glossary that defines terms on hover, warm pre-written messages, and a one-key path to crisis support when it matters most.</p></div>
+    <div class="drow"><h4>☎️ For the coordinator — never lost</h4><p>A guided console with a call flow for every situation, a values card on every call reminding them it's "a person, not a transaction," a glossary that defines terms on hover, warm pre-written messages, and a one-key path to crisis support when it matters most.</p></div>
     <div class="drow"><h4>🩺 For the clinician — never anxious</h4><p>One tap to change availability, a forgiving 4.8-second undo, an unsaved-changes guard, and a "what the matcher sees about you" card so they always know how they're being represented. Their data, in their hands.</p></div>
     <div class="drow"><h4>♿ For everyone — accessible</h4><p>Reduced-motion preferences respected, AA-contrast color, labeled controls for screen readers, full keyboard navigation, and layouts that work from a phone to a docked side panel.</p></div>
   </div>
@@ -919,129 +868,9 @@ footer{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
   </div>
 </div></section>
 
-<footer>Drew Story · Love is a Habit · June 2026 &nbsp;·&nbsp; <span id="fcount"></span> features documented &nbsp;·&nbsp; custom layer runs on $0/mo added infrastructure</footer>
+<footer>Drew Story · Love is a Habit · June 2026 &nbsp;·&nbsp; custom layer runs on $0/mo added infrastructure</footer>
 
 <script>
-/* ---- feature catalog data ---- */
-const F=[
- // Matcher
- ["7-dimension weighted scoring","Specialty, population, service, modality, age, location, licensure and gender each carry their own weight.","Matcher",["integrity"],"Patients get the right fit, not a random name."],
- ["Never a dead end","Always returns the top 1–3 clinicians, falling back to a pending tier if needed.","Matcher",["human"],"No one ever hits an empty screen when they're reaching out for help."],
- ["Non-AI bio relevance","Keyword matching against clinician bios with 100+ stop-words filtered and prefix matching.","Matcher",["integrity"],"Catches nuance ('anxious', 'ADHD-spectrum') without an unexplainable black box."],
- ["Clinician's-own-words weighting","A clinician's ideal-client description is weighted 2× in ranking.","Matcher",["integrity"],"The people who know the fit best shape the match."],
- ["23 lay-language synonyms","'Depressed', 'panic', 'cheating' map to the right clinical tags.","Matcher",["human"],"People can type how they feel, not in clinical terms."],
- ["Soft age matching","Partial credit for near-fits instead of a hard zero.","Matcher",["human"],"Real life is fuzzy; a 17-year-old isn't turned away from an 18+ clinician on a technicality."],
- ["Testing 'always available' card","The testing team shows first, regardless of individual load.","Matcher",["human"],"Removes choice anxiety for an already-stressful process."],
- ["Medication prescriber uncapping","Shows every available prescriber when medication is the need.","Matcher",["integrity"],"No artificial limit on access to a scarce resource."],
- ["'Differs on' transparency","Each result lists where the clinician differs from the request.","Matcher",["human"],"Honest trade-offs build trust instead of overselling."],
- ["Explainable reasons","Every match shows why ('offers couples therapy · PSYPACT-licensed').","Matcher",["human"],"The patient understands the recommendation."],
- ["Step 2 personalizes to Step 1","Headline, prompts, quick-picks and age visibility adapt to the care type chosen.","Matcher",["human"],"The form feels made for their situation."],
- ["SMS + form handoff","Connect by text or by form, whichever they prefer.","Matcher",["human"],"Meets people where they're comfortable."],
- ["Message tagging for routing","Each inquiry is tagged (referral, insurance, testing…) for the CRM.","Matcher",["integrity"],"Every inquiry lands in the right queue automatically."],
- ["Fees shown at commitment","Costs appear right where the decision is made.","Matcher",["human"],"No surprises, no bait-and-switch."],
- ["Insurance education view","A plain-language step explains out-of-network before committing.","Matcher",["human"],"Informed decisions, fewer painful surprises later."],
- ["Initials-avatar fallback","A tasteful serif monogram when no photo exists.","Matcher",["little"],"The results always look polished and human."],
- ["Credential formatting","'lcpc' becomes 'LCPC' across 20+ credential slugs.","Matcher",["little"],"Reads like a person, not a database."],
- ["Modal back-button closes modal","Browser Back dismisses the dialog instead of leaving the page.","Matcher",["little"],"Behaves the way people expect — no lost progress."],
- ["Reduced-motion respected","Animations turn off for users who prefer less motion.","Matcher",["access"],"Comfort and accessibility for sensitive users."],
- ["Coordinator always offered","A human-help banner appears even on a perfect match.","Matcher",["human"],"There's always a person available, not just a machine."],
- // Website
- ["8 embeddable sections","Hero, headshots, CTA band, care tiles, team grid, spotlight, specialties cloud, sticky CTA.","Website",["speed"],"The team places polished sections themselves, no developer needed."],
- ["One-snippet install","A single script auto-renders any section marked in the page.","Website",["speed"],"Updates everywhere the moment the source changes."],
- ["Full-screen matcher takeover","The matcher opens over any page; the logo closes it.","Website",["human"],"Turns an overwhelming homepage into one clear goal: find your match."],
- ["Deep-link prefills","A shared link can pre-pick care type and run the search.","Website",["speed"],"Coordinators send a patient straight to relevant results."],
- ["Team copy-paste toolkit","A page that hands non-developers ready-to-paste code.","Website",["speed"],"The practice owns and edits its own site."],
- ["Mobile-first sections","Everything reflows cleanly to a phone.","Website",["access"],"Most patients arrive on mobile."],
- // CCC
- ["17 guided call flows","New-client, discovery, couples, testing, medication, insurance, crisis and more.","CCC",["human"],"Every kind of call has a confident path."],
- ["Guided ↔ Streamlined modes","Full scripts for new staff; a one-page expert view for veterans.","CCC",["speed"],"The tool grows with the coordinator instead of slowing them down."],
- ["Auto-compiling call note","Everything entered across any flows gathers into one note.","CCC",["integrity"],"Nothing said on the call is lost."],
- ["Prefilled handoff + name stamp","The note prefills the CRM form, stamped with the coordinator.","CCC",["integrity"],"Clean handoffs and clear accountability."],
- ["In-console research matcher","Score every clinician live, with % fit and reasoning.","CCC",["speed"],"Answers a 'who's a good fit?' question during the call."],
- ["Command palette (⌘K)","Jump to any flow, tool, message or term instantly.","CCC",["speed"],"Power users move at the speed of thought."],
- ["Keyboard shortcuts","n=new call, /=search, m=matcher, x=crisis, g=glossary and more.","CCC",["speed"],"Hands stay on the keyboard during a live call."],
- ["Hover glossary","25+ terms auto-underlined with definitions on hover.","CCC",["human"],"A new coordinator is never lost in jargon."],
- ["Quick-messages library","~12 warm, copyable boilerplate replies.","CCC",["speed"],"Consistent, caring communication every time."],
- ["One-time how-to guide","A gentle walkthrough on first sign-in, recallable anytime.","CCC",["human"],"Onboarding without a training session."],
- ["'North Star' values card","Opens every call with the practice's ethos.","CCC",["human"],"Keeps the work human: a person, not a transaction."],
- ["Practice mode","A training mode where nothing touches real systems.","CCC",["privacy"],"Staff can learn safely with zero PHI risk."],
- ["No backend, memory-only","Session state lives in memory; nothing is persisted.","CCC",["privacy"],"There's simply no patient data at rest to leak."],
- ["One-key crisis entry","'x' jumps straight to crisis handling.","CCC",["human"],"Speed exactly when it matters most."],
- ["Read-aloud script cleanup","Parenthetical coaching is stripped from spoken lines.","CCC",["little"],"Coordinators read naturally, not robotically."],
- ["'Welcoming new clients' list","A live sidebar of who's currently open.","CCC",["speed"],"Instant answer to the most common question."],
- // Clinician
- ["Email + last-4 sign-in","Simple credentials, verified entirely server-side.","Clinician",["privacy"],"Easy for non-technical clinicians, safe by construction."],
- ["Record-bound HMAC session","A signed 12-hour token tied to one clinician record.","Clinician",["privacy"],"You can only ever edit your own profile."],
- ["Brute-force lockout","Six wrong PINs locks the account for 15 minutes.","Clinician",["privacy"],"A 4-digit PIN stays safe against guessing."],
- ["Server-side edit allow-list","Only 12 fields can be written, enforced on the server.","Clinician",["privacy"],"The browser can never change something it shouldn't."],
- ["Readiness audit endpoint","A protected check confirms everyone can sign in.","Clinician",["integrity"],"Launch with confidence, exposing no contact info."],
- ["One-tap Open / Full","Toggle new-client availability instantly.","Clinician",["integrity"],"The matcher reflects reality within minutes."],
- ["Pre-populated exactly from CRM","The editor loads every field as it truly is.","Clinician",["integrity"],"No drift between what they see and what patients see."],
- ["Live schema chip pickers","Multi-selects pull current options, with filter + count.","Clinician",["speed"],"Editing 40 specialties stays fast and tidy."],
- ["4.8-second undo","An undo button follows every availability change.","Clinician",["human"],"A misclick is never a problem."],
- ["Unsaved-changes guard","Closing with edits prompts before discarding.","Clinician",["little"],"Work is never lost by accident."],
- ["'What the matcher sees' card","A plain summary of how they're represented.","Clinician",["human"],"Total transparency into their own referral profile."],
- ["60-day staleness nudge","A soft reminder when a profile goes stale.","Clinician",["integrity"],"Referral data stays current without nagging."],
- ["Auto-connect via health check","Goes live the moment the token is set — no flag flipping.","Clinician",["little"],"Zero-fuss launch."],
- ["BAA-covered chat widget","Secure messaging to the care team built in.","Clinician",["privacy"],"HIPAA-safe conversations, no new app."],
- // Platform
- ["Webhook + cron safety net","Instant push plus a 2-minute backstop sweep.","Platform",["integrity"],"Real-time updates that self-heal if a push is missed."],
- ["Write-on-change diffing","Publishes only when data actually changed.","Platform",["integrity"],"No churn, no stale overwrites."],
- ["Boundary normalization","Nested records unpacked; checkbox formats unified.","Platform",["integrity"],"Clean, predictable data everywhere downstream."],
- ["Schema slug→label cache","Machine keys mapped to friendly labels.","Platform",["little"],"Everything reads in plain English."],
- ["Allow-list publishing","24 approved public fields; new fields hidden by default.","Platform",["privacy"],"The safe failure mode — nothing leaks by accident."],
- ["Separate read/write tokens","Public reads and clinician writes use different scopes.","Platform",["privacy"],"Least privilege; a breach of one can't touch the other."],
- ["Ephemeral patient criteria","Search inputs are used to match, then discarded.","Platform",["privacy"],"There's no patient data to store or expose."],
- ["Client-owned accounts & keys","The practice holds every credential.","Platform",["human"],"No lock-in, no dependency — they own their stack."],
- ["$0 added infrastructure","The custom matcher, consoles and automations run on free-tier services; the platform is one consolidated subscription.","Platform",["little"],"~$100/mo more than the 3 tools it replaced — for an entirely new level of capability."],
- ["End-to-end lifecycle pipeline","Every inquiry tracked from first touch through booking, fall-off and recovery.","Platform",["integrity"],"Nobody is just a missed call anymore — the whole journey is visible."],
- ["Lost-to-follow-up tracking","People who go quiet are automatically flagged for re-contact.","Platform",["human"],"The ones who slip away are often the ones who need us most."],
- ["Automated win-back sequences","Gentle, scheduled re-engagement for flagged contacts.","CCC",["human"],"A second and third caring nudge — sent automatically, so no one has to remember."],
- ["New-client conversion funnel","Pipeline stages from inquiry to scheduled client.","Platform",["integrity"],"The team can see exactly where people are — and where they stall."],
- ["Unified contact timeline","Calls, texts, forms, chat and page-visits on one timeline.","Platform",["integrity"],"Anyone helping sees the whole story at a glance."],
-];
-const THEME={privacy:["🔐",getCSS('--navy')],integrity:["🔄",getCSS('--good')],human:["💛",getCSS('--clay')],speed:["⚡",getCSS('--amber')],access:["♿",getCSS('--violet')],little:["✨",getCSS('--muted')]};
-function getCSS(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()||'#999'}
-const TOOLLABEL={Matcher:"Matcher",Website:"Website",CCC:"Coordinator",Clinician:"Clinician",Platform:"Platform"};
-let curTool="all",curThemes=new Set(),curQ="";
-const cardsEl=document.getElementById('cards'),countEl=document.getElementById('countline');
-document.getElementById('fcount').textContent=F.length;
-document.getElementById('featCount').dataset.count=F.length; // keep the hero stat honest
-
-function render(){
-  const q=curQ.toLowerCase();
-  let shown=0;
-  cardsEl.innerHTML='';
-  F.forEach(([title,desc,tool,themes,why])=>{
-    const okTool=curTool==='all'||tool===curTool;
-    const okTheme=curThemes.size===0||themes.some(t=>curThemes.has(t));
-    const hay=(title+' '+desc+' '+why+' '+tool).toLowerCase();
-    const okQ=!q||hay.includes(q);
-    if(!(okTool&&okTheme&&okQ))return;
-    shown++;
-    const tdots=themes.map(t=>`<span class="dottheme" style="background:${THEME[t][1]}" title="${t}"></span>`).join('');
-    const el=document.createElement('div');el.className='card';
-    el.innerHTML=`<div class="meta"><span class="tag tool">${TOOLLABEL[tool]||tool}</span>${tdots}</div>
-      <h4>${title}</h4><p class="why"><b style="color:var(--ink)">${desc}</b><br>${why}</p>`;
-    cardsEl.appendChild(el);
-  });
-  countEl.textContent=`Showing ${shown} of ${F.length} features`+(curTool!=='all'?` · ${TOOLLABEL[curTool]}`:'')+(curThemes.size?` · ${[...curThemes].join(', ')}`:'')+(q?` · “${curQ}”`:'');
-}
-document.querySelectorAll('#toolchips .chip').forEach(c=>c.onclick=()=>{
-  document.querySelectorAll('#toolchips .chip').forEach(x=>x.classList.remove('on'));
-  c.classList.add('on');curTool=c.dataset.tool;render();
-});
-document.querySelectorAll('#themechips .chip').forEach(c=>c.onclick=()=>{
-  const t=c.dataset.theme;if(curThemes.has(t)){curThemes.delete(t);c.classList.remove('on')}else{curThemes.add(t);c.classList.add('on')}render();
-});
-document.getElementById('q').oninput=e=>{curQ=e.target.value;render()};
-render();
-
-/* ---- printing: always show the FULL catalog in the PDF, then restore the user's filter ---- */
-let _saved=null;
-addEventListener('beforeprint',()=>{_saved={t:curTool,th:new Set(curThemes),q:curQ};curTool='all';curThemes=new Set();curQ='';render();});
-addEventListener('afterprint',()=>{if(_saved){curTool=_saved.t;curThemes=_saved.th;curQ=_saved.q;render();_saved=null;}});
-
 /* ---- count-up (robust: final value is guaranteed even if rAF is throttled) ---- */
 function animateCount(el){
   if(el.dataset.done)return;el.dataset.done=1;
