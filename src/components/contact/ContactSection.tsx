@@ -9,7 +9,7 @@ import { Mail, MapPin, Send, Linkedin, Github, Heart } from 'lucide-react'
 const DEMO_PREFILL = {
   subject: 'Request: a live demo of the Kentlands build',
   message:
-    "Hi Andrew — I just went through your Kentlands Psychotherapy case study and I'd love a live walkthrough or a short demo video of the system.\n\nA bit about me and what I'm hoping to see:\n",
+    "Hi Andrew — I just went through your Kentlands Psychotherapy case study and I'd love a live walkthrough or a short demo video of the system.\n\nHere is a bit about me and what I'm hoping to see:\n",
 }
 
 export default function ContactSection() {
