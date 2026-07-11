@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>The Care Coordination Console &mdash; Executive Summary</title>
+<meta name="description" content="Executive summary of The Care Coordination Console (Love Is A Habit &times; TheraSaaS)." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%A4%9D</text></svg>" />
+</head>
+<body>
+<style>
+  :root {
+    /* Light &mdash; deep-pine ink dominant, clay accent used sparingly, cool paper ground */
+    --paper: #f1f1ec;
+    --surface: #fafaf6;
+    --surface-2: #ebece4;
+    --ink: #16302a;
+    --ink-soft: #2f4a42;
+    --muted: #55635b;
+    --line: #d8dad0;
+    --line-soft: #e4e5dd;
+    --sage: #557567;
+    --sage-tint: color-mix(in srgb, #6f9080 16%, transparent);
+    --accent: #9a4f36;
+    --accent-bright: #bf6a4c;
+    --accent-tint: color-mix(in srgb, #bf6a4c 12%, transparent);
+    --on-accent: #fbf7f2;
+    --shadow: 0 1px 2px color-mix(in srgb, var(--ink) 8%, transparent), 0 8px 24px -12px color-mix(in srgb, var(--ink) 22%, transparent);
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "SF Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+
+    --measure: 40rem;
+    --wide: 66rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0d1a16;
+      --surface: #142320;
+      --surface-2: #1b2c27;
+      --ink: #ecf1ea;
+      --ink-soft: #cdd8d1;
+      --muted: #9aaaa0;
+      --line: #26372f;
+      --line-soft: #1f2e28;
+      --sage: #8fb3a0;
+      --sage-tint: color-mix(in srgb, #8fb3a0 15%, transparent);
+      --accent: #dd9174;
+      --accent-bright: #e6a184;
+      --accent-tint: color-mix(in srgb, #dd9174 16%, transparent);
+      --on-accent: #1a120e;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #f1f1ec; --surface: #fafaf6; --surface-2: #ebece4; --ink: #16302a; --ink-soft: #2f4a42;
+    --muted: #55635b; --line: #d8dad0; --line-soft: #e4e5dd; --sage: #557567;
+    --sage-tint: color-mix(in srgb, #6f9080 16%, transparent);
+    --accent: #9a4f36; --accent-bright: #bf6a4c; --accent-tint: color-mix(in srgb, #bf6a4c 12%, transparent);
+    --on-accent: #fbf7f2; --shadow: 0 1px 2px color-mix(in srgb, var(--ink) 8%, transparent), 0 8px 24px -12px color-mix(in srgb, var(--ink) 22%, transparent);
+  }
+  :root[data-theme="dark"] {
+    --paper: #0d1a16; --surface: #142320; --surface-2: #1b2c27; --ink: #ecf1ea; --ink-soft: #cdd8d1;
+    --muted: #9aaaa0; --line: #26372f; --line-soft: #1f2e28; --sage: #8fb3a0;
+    --sage-tint: color-mix(in srgb, #8fb3a0 15%, transparent);
+    --accent: #dd9174; --accent-bright: #e6a184; --accent-tint: color-mix(in srgb, #dd9174 16%, transparent);
+    --on-accent: #1a120e; --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 30px -14px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+  .prose { max-width: var(--measure); }
+  p { margin: 0 0 1rem; color: var(--ink-soft); }
+  strong { color: var(--ink); font-weight: 650; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; color: var(--ink); text-wrap: balance; line-height: 1.12; margin: 0; }
+  h1 { font-size: clamp(2.35rem, 6vw, 3.6rem); letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.6rem, 3.4vw, 2.15rem); letter-spacing: -0.01em; }
+  h3 { font-size: 1.18rem; letter-spacing: -0.005em; }
+
+  .eyebrow {
+    font-family: var(--sans); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 0.9rem;
+  }
+  .eyebrow.sage { color: var(--sage); }
+
+  /* ---- top bar ---- */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.7rem clamp(1.25rem, 4vw, 3rem);
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+  .brand .mark {
+    width: 30px; height: 30px; flex: none; border-radius: 7px;
+    background: var(--ink); color: var(--paper);
+    display: grid; place-items: center; font-family: var(--serif); font-weight: 700; font-size: 0.95rem;
+  }
+  .brand .txt { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+  .brand .txt b { font-size: 0.92rem; font-weight: 650; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand .txt span { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.02em; }
+
+  .btn {
+    font-family: var(--sans); font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1.05rem; border-radius: 8px; border: 1px solid transparent;
+    transition: transform 120ms ease, background 160ms ease, border-color 160ms ease;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-bright); text-decoration: none; }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { background: var(--surface-2); text-decoration: none; }
+  .btn svg { width: 16px; height: 16px; }
+  :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; border-radius: 4px; }
+
+  /* ---- hero ---- */
+  .hero { padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2rem, 5vw, 3rem); }
+  .hero h1 { margin-bottom: 1.25rem; }
+  .hero .lead { font-size: clamp(1.12rem, 2vw, 1.3rem); line-height: 1.55; color: var(--ink-soft); max-width: 42rem; }
+  .hero .lead strong { color: var(--ink); }
+  .mission {
+    margin-top: 1.9rem; padding-left: 1.1rem; border-left: 3px solid var(--accent);
+    font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ink); max-width: 40rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 2rem; align-items: center; }
+  .pdf-note { font-size: 0.8rem; color: var(--muted); }
+
+  /* ---- sections ---- */
+  section { padding: clamp(2.5rem, 6vw, 4rem) 0; border-top: 1px solid var(--line-soft); }
+  section.band { background: var(--surface); }
+  .sec-head { margin-bottom: 2rem; }
+  .sec-head h2 { margin-bottom: 0.6rem; }
+  .sec-head p { color: var(--muted); max-width: 42rem; }
+
+  .stat-row { display: flex; flex-wrap: wrap; gap: 2.25rem 3rem; margin-top: 1.5rem; }
+  .stat { display: flex; flex-direction: column; }
+  .stat .n { font-family: var(--serif); font-size: 2.5rem; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
+  .stat .l { font-size: 0.85rem; color: var(--muted); margin-top: 0.45rem; max-width: 12rem; }
+  .stat .n .u { color: var(--accent); }
+
+  /* problem list */
+  .points { display: grid; gap: 1.4rem; grid-template-columns: repeat(3, 1fr); margin-top: 0.5rem; }
+  .point { }
+  .point h3 { margin-bottom: 0.4rem; }
+  .point p { font-size: 0.95rem; color: var(--muted); margin: 0; }
+  .point .tick { display: inline-block; width: 26px; height: 2px; background: var(--accent); margin-bottom: 0.9rem; }
+
+  /* flow */
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.65rem; margin-top: 1.5rem; }
+  .flow .step {
+    font-family: var(--sans); font-weight: 600; font-size: 0.95rem; color: var(--ink);
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 0.4rem 0.95rem;
+  }
+  .flow .arrow { color: var(--sage); font-weight: 700; }
+
+  /* capability cards */
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-top: 1.5rem; }
+  .card { background: var(--surface); padding: 1.5rem 1.6rem; }
+  .card .k { font-family: var(--sans); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage); }
+  .card h3 { margin: 0.55rem 0 0.5rem; }
+  .card p { font-size: 0.94rem; color: var(--muted); margin: 0; }
+
+  /* two-column model */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.5rem; }
+  .col { border: 1px solid var(--line); border-radius: 10px; padding: 1.5rem 1.6rem; background: var(--surface); }
+  .col.free { border-top: 3px solid var(--sage); }
+  .col.prem { border-top: 3px solid var(--accent); }
+  .col h3 { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.3rem; }
+  .col .tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .col.free .tag { color: var(--sage); }
+  .col.prem .tag { color: var(--accent); }
+  .col > p.sub { font-size: 0.9rem; color: var(--muted); margin: 0 0 1rem; }
+  ul.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+  ul.list li { position: relative; padding-left: 1.4rem; font-size: 0.95rem; color: var(--ink-soft); }
+  ul.list li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 8px; height: 8px; border-radius: 2px; background: var(--sage); }
+  .col.prem ul.list li::before { background: var(--accent); }
+
+  /* why / differentiators */
+  .why { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem 2.5rem; margin-top: 0.5rem; }
+  .why .item { display: grid; grid-template-columns: auto 1fr; gap: 0.9rem; }
+  .why .num { font-family: var(--serif); font-size: 1.1rem; color: var(--accent); font-variant-numeric: tabular-nums; padding-top: 0.1rem; }
+  .why h3 { font-size: 1.05rem; margin-bottom: 0.3rem; }
+  .why p { font-size: 0.94rem; color: var(--muted); margin: 0; }
+
+  /* audience */
+  .who { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; margin-top: 1.5rem; }
+  .who .w { border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem; background: var(--surface); }
+  .who .w b { display: block; color: var(--ink); font-size: 0.98rem; margin-bottom: 0.25rem; }
+  .who .w span { font-size: 0.88rem; color: var(--muted); }
+
+  /* closing CTA */
+  .close { background: var(--ink); color: var(--paper); border-radius: 14px; padding: clamp(2rem, 5vw, 3.25rem); margin: 1rem 0 0; }
+  .close h2 { color: var(--paper); }
+  .close p { color: color-mix(in srgb, var(--paper) 82%, var(--ink)); }
+  .close .eyebrow { color: var(--accent-bright); }
+  .close .paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.75rem 0 1.5rem; }
+  .close .path { background: color-mix(in srgb, var(--paper) 8%, transparent); border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); border-radius: 10px; padding: 1.2rem; }
+  .close .path b { display: block; font-size: 1rem; margin-bottom: 0.3rem; color: var(--paper); }
+  .close .path span { font-size: 0.88rem; color: color-mix(in srgb, var(--paper) 74%, var(--ink)); }
+  .close .contact { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; padding-top: 1.5rem; border-top: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+  .close .contact a { color: var(--accent-bright); font-weight: 600; }
+  .close .contact .who-said { font-size: 0.9rem; color: color-mix(in srgb, var(--paper) 74%, var(--ink)); }
+
+  footer { padding: 2.5rem 0 3.5rem; border-top: 1px solid var(--line-soft); margin-top: 2.5rem; }
+  footer .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; font-size: 0.8rem; color: var(--muted); }
+  .confid { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .confid .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  sup.cite { font-size: 0.62em; font-weight: 700; color: var(--accent); vertical-align: super; line-height: 0; margin-left: 1px; }
+  .sources { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--line-soft); }
+  .sources b { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .sources ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.3rem; }
+  .sources li { font-size: 0.74rem; color: var(--muted); line-height: 1.5; }
+  .sources a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+
+  .print-only { display: none; }
+
+  /* load animation */
+  @media (prefers-reduced-motion: no-preference) {
+    .fade { opacity: 0; transform: translateY(10px); animation: rise 0.7s cubic-bezier(0.22,0.61,0.36,1) forwards; }
+    .fade.d1 { animation-delay: 0.05s; } .fade.d2 { animation-delay: 0.13s; } .fade.d3 { animation-delay: 0.21s; } .fade.d4 { animation-delay: 0.29s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+
+  /* responsive */
+  @media (max-width: 760px) {
+    .points, .cards, .split, .why, .who, .close .paths { grid-template-columns: 1fr; }
+    .why .item { grid-template-columns: 1fr; gap: 0.3rem; }
+    .brand .txt span { display: none; }
+  }
+
+  /* print &rarr; clean document */
+  @media print {
+    :root { --paper: #fff; --surface: #fff; --surface-2: #fff; --ink: #14231e; --ink-soft: #2a3a34; --muted: #5a655f; --line: #c9cbc2; --line-soft: #dcded5; }
+    body { font-size: 11.5pt; }
+    .topbar, .hero-actions, .pdf-note { display: none !important; }
+    .print-only { display: block; }
+    .print-only.head { border-bottom: 2px solid var(--ink); padding-bottom: 0.4rem; margin-bottom: 1.2rem; }
+    section, .hero { padding: 1.1rem 0; border-top: 1px solid var(--line-soft); break-inside: avoid-page; }
+    .hero { padding-top: 0; border-top: none; }
+    h1 { font-size: 26pt; } h2 { font-size: 16pt; } h3 { font-size: 12pt; }
+    .close { background: #fff; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 0; }
+    .close h2, .close .path b, .close .contact a { color: var(--ink); }
+    .close p, .close .path span, .close .contact .who-said { color: var(--ink-soft); }
+    .close .path { border-color: var(--line); background: #fff; }
+    .card, .col, .who .w { break-inside: avoid; }
+    .cards { gap: 0; }
+    a { color: var(--ink); text-decoration: none; }
+    @page { margin: 1.5cm; }
+  }
+</style>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="mark" aria-hidden="true">C</div>
+    <div class="txt">
+      <b>The Care Coordination Console</b>
+      <span>Love&nbsp;Is&nbsp;A&nbsp;Habit&nbsp;&times;&nbsp;TheraSaaS &middot; Executive Summary</span>
+    </div>
+  </div>
+  <button class="btn btn-primary" id="pdfBtn" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Download PDF
+  </button>
+</header>
+
+<main class="wrap">
+
+  <div class="print-only head">
+    <strong>The Care Coordination Console</strong> &mdash; Executive Summary &middot; Love Is A Habit &times; TheraSaaS &middot; July 2026 &middot; Confidential
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none">
+    <p class="eyebrow fade">Executive Summary &middot; Confidential</p>
+    <h1 class="fade d1">Care that doesn't get lost between the cracks.</h1>
+    <p class="lead fade d2">From a crisis line to a doctor's office to the right therapist, the path to mental-health care is slow, manual, and full of dead ends. We built the connective tissue that fixes it: <strong>one console where practices across the whole journey find each other, match clients to the right care in seconds, and hand off warmly &mdash; without a single identifiable record ever touching our servers.</strong></p>
+    <p class="mission fade d3">Practices find each other. Clinicians match quickly. Clients get connected &mdash; instead of bounced around.</p>
+    <div class="hero-actions fade d4">
+      <button class="btn btn-ghost" id="pdfBtn2" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download this summary as a PDF
+      </button>
+      <span class="pdf-note">Opens your browser's print dialog &mdash; choose &ldquo;Save as PDF.&rdquo;</span>
+    </div>
+  </section>
+
+  <!-- THE STAKES -->
+  <section>
+    <p class="eyebrow">The stakes</p>
+    <h2 style="max-width:44rem; margin-bottom:1.4rem">The need is enormous. The supply exists. What's broken is the path between them.</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="n">61.5<span class="u">M</span></div><div class="l">U.S. adults lived with mental illness in 2024 &mdash; more than 1 in 5<sup class="cite">1</sup></div></div>
+      <div class="stat"><div class="n">~half</div><div class="l">of them received no treatment at all that year<sup class="cite">1</sup></div></div>
+      <div class="stat"><div class="n">11<span class="u">yrs</span></div><div class="l">average delay between first symptoms and getting treatment<sup class="cite">2</sup></div></div>
+      <div class="stat"><div class="n">18<span class="u">%</span></div><div class="l">of listed in-network providers were actually reachable for an appointment<sup class="cite">3</sup></div></div>
+    </div>
+    <p class="prose" style="margin-top:1.85rem; font-size:1.04rem; color:var(--ink-soft)">From a 2&nbsp;a.m. crisis line, to a doctor's referral, to a therapist with an open slot &mdash; finding the <em>right, available</em> care is slow, manual, and full of dead ends. People don't fall through because help doesn't exist. They fall through because <strong>nothing connects the steps.</strong></p>
+  </section>
+
+  <!-- WHY THE GAP EXISTS -->
+  <section class="band">
+    <div class="sec-head">
+      <p class="eyebrow">Why the gap exists</p>
+      <h2>The tools meant to connect people are built to profit from them instead.</h2>
+      <p>This isn't a technology gap &mdash; it's an incentive gap. The directories that should map the journey make their money from the very organizations they claim to serve.</p>
+    </div>
+    <div class="points">
+      <div class="point">
+        <span class="tick" aria-hidden="true"></span>
+        <h3>Being found costs money</h3>
+        <p>The largest therapist directory charges practices to appear &mdash; about $360 a year, per clinician.<sup class="cite">4</sup> Good practices that can't or won't pay stay invisible, and the people who need them never learn they exist.</p>
+      </div>
+      <div class="point">
+        <span class="tick" aria-hidden="true"></span>
+        <h3>The listings are mostly dead ends</h3>
+        <p>Insurer &ldquo;ghost networks&rdquo; are full of providers who've moved, retired, or stopped taking patients &mdash; a Senate secret-shopper study booked a real appointment just 18% of the time,<sup class="cite">3</sup> and regulators almost never step in.<sup class="cite">5</sup></p>
+      </div>
+      <div class="point">
+        <span class="tick" aria-hidden="true"></span>
+        <h3>No one owns the whole journey</h3>
+        <p>A 988 crisis line stabilizes someone &mdash; 8 million contacts in 2024 alone<sup class="cite">6</sup> &mdash; then hands them a list. A doctor refers out into the void. Every step works alone; nothing carries a person to the next one.</p>
+      </div>
+    </div>
+    <p class="prose" style="margin-top:1.85rem; font-size:1.04rem; color:var(--ink)"><strong>That is exactly the opening.</strong> The incumbents' incentive is to monetize visibility. Ours is only to connect people &mdash; a network that is free to be found, accurate because each practice keeps its own status live, and built to span the <em>entire</em> path from crisis to care. That's not a better directory. It's a different kind of thing.</p>
+  </section>
+
+  <!-- SOLUTION -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">The solution</p>
+      <h2>One console for the whole network &mdash; discover, match, message, hand off.</h2>
+      <p>A single, warm, role-aware workspace that every practice logs into. It adapts to who's using it &mdash; a clinician sees their availability, a coordinator sees a live call cockpit, an admin runs the practice &mdash; on the same clean foundation.</p>
+    </div>
+    <div class="flow" aria-label="The coordination flow">
+      <span class="step">Discover a partner</span>
+      <span class="arrow" aria-hidden="true">&rarr;</span>
+      <span class="step">Match the client</span>
+      <span class="arrow" aria-hidden="true">&rarr;</span>
+      <span class="step">Message the org</span>
+      <span class="arrow" aria-hidden="true">&rarr;</span>
+      <span class="step">Hand off securely</span>
+    </div>
+    <p class="prose" style="margin-top:1.5rem; font-size:0.95rem; color:var(--muted)">The coordination that flows between practices is <strong>de-identified by design</strong>. Anything that identifies a client stays inside HIPAA-secure, practice-hosted forms &mdash; it never reaches our infrastructure.</p>
+  </section>
+
+  <!-- WHAT IT DOES -->
+  <section class="band">
+    <div class="sec-head">
+      <p class="eyebrow">What it does</p>
+      <h2>The capabilities, in plain terms.</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="k">Discovery</div>
+        <h3>A directory that finds the fit</h3>
+        <p>One search across your own clinicians, your partners, and the wider network &mdash; and a signal that surfaces where two practices <em>complement</em> each other, so partnerships form on their own.</p>
+      </div>
+      <div class="card">
+        <div class="k">Front door</div>
+        <h3>A guided patient matcher</h3>
+        <p>A calm, step-by-step matcher clients can use themselves &mdash; plus a hosted mini-site for every practice, so even those without a website have a real front door.</p>
+      </div>
+      <div class="card">
+        <div class="k">Messaging</div>
+        <h3>One inbox for every practice</h3>
+        <p>&ldquo;Message this org&rdquo; works the same for everyone; conversations with every partner live in one native inbox, with a gentle coach that keeps client details out.</p>
+      </div>
+      <div class="card">
+        <div class="k">Coordinators</div>
+        <h3>A live call cockpit</h3>
+        <p>Guided call scripts, quick matching, refer-out, and steady, compassionate guidance for the hardest conversations &mdash; everything a coordinator needs within reach on a call.</p>
+      </div>
+      <div class="card">
+        <div class="k">Trust</div>
+        <h3>Earned, positive-only recognition</h3>
+        <p>Practices earn warm milestones for showing up and coordinating well. No ratings, no shaming, no leaderboards &mdash; belonging, not competition.</p>
+      </div>
+      <div class="card">
+        <div class="k">Whole system of care</div>
+        <h3>Every kind of program</h3>
+        <p>Therapy practices, PHP/IOP programs, and therapeutic schools &mdash; each shown for exactly what they offer <em>and what they don't</em>, so a match is a real match.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow sage">Who it serves</p>
+      <h2>Built around the person actually using it.</h2>
+    </div>
+    <div class="who">
+      <div class="w"><b>Practice admins</b><span>Set up the practice, invite the team, and get discovered by the network.</span></div>
+      <div class="w"><b>Care coordinators</b><span>Handle every call with the right words, the right match, and nothing lost.</span></div>
+      <div class="w"><b>Clinicians</b><span>Keep availability current and get referrals that actually fit.</span></div>
+      <div class="w"><b>Clients &amp; families</b><span>Reach the right care on the first try &mdash; the whole point of the network.</span></div>
+    </div>
+  </section>
+
+  <!-- MODEL -->
+  <section class="band">
+    <div class="sec-head">
+      <p class="eyebrow">The model</p>
+      <h2>Free for every practice &mdash; and built to stay that way.</h2>
+      <p>Love Is A Habit is a nonprofit. Coordination is free forever for everyone in the network. It's sustained two ways, neither of which puts a wall in front of care.</p>
+    </div>
+    <div class="split">
+      <div class="col free">
+        <h3><span class="tag">Always free</span></h3>
+        <p class="sub">Every practice, forever. Not a trial.</p>
+        <ul class="list">
+          <li>Referrals &amp; the shared directory</li>
+          <li>The patient matcher &amp; a hosted mini-site</li>
+          <li>Cross-practice messaging &amp; inbox</li>
+          <li>The full coordinator toolkit</li>
+          <li>Standard embeddable website widgets</li>
+          <li>Earned trust badges</li>
+        </ul>
+      </div>
+      <div class="col prem">
+        <h3><span class="tag">Optional &mdash; sustains the network</span></h3>
+        <p class="sub">For practices that want more, via TheraSaaS.</p>
+        <ul class="list">
+          <li>Live team chat in your own connected CRM</li>
+          <li>Custom, authored call scripts</li>
+          <li>Advanced, branded widgets + analytics</li>
+          <li>A fully connected CRM experience</li>
+          <li>Donations from any practice keep the free tier free</li>
+        </ul>
+      </div>
+    </div>
+    <p class="prose" style="margin-top:1.5rem; font-size:0.95rem; color:var(--muted)"><strong>Show, don't sell.</strong> No ads, no pop-ups, no nagging. A practice can preview every premium feature as a real, working demo before it ever decides to grow.</p>
+  </section>
+
+  <!-- WHY DIFFERENT -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Why it holds up</p>
+      <h2>What makes it different &mdash; and hard to copy.</h2>
+    </div>
+    <div class="why">
+      <div class="item"><div class="num">01</div><div><h3>Private by architecture</h3><p>Identifiable client data physically cannot reach our servers &mdash; only de-identified, structured coordination does. Privacy isn't a policy here; it's the design.</p></div></div>
+      <div class="item"><div class="num">02</div><div><h3>Positive-only by principle</h3><p>A trust layer that celebrates good coordination instead of ranking practices against each other &mdash; right for a care network, and genuinely motivating.</p></div></div>
+      <div class="item"><div class="num">03</div><div><h3>Built for the least-technical user</h3><p>Plain language, live previews, guided help on every screen. The person answering the phone at a small practice can use it on day one.</p></div></div>
+      <div class="item"><div class="num">04</div><div><h3>Mission at the core</h3><p>A nonprofit anchor means the incentive is connection, not extraction. Practices trust a network that isn't trying to monetize their clients.</p></div></div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section>
+    <p class="eyebrow sage">Where it stands today</p>
+    <h2 style="max-width:44rem; margin-bottom:0.9rem">Not a concept &mdash; a working platform, already live.</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="n">20<span class="u">+</span></div><div class="l">partner practices already in the live network</div></div>
+      <div class="stat"><div class="n">90<span class="u">+</span></div><div class="l">clinicians represented in the shared directory</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">role-adaptive console for clinicians, coordinators &amp; admins</div></div>
+      <div class="stat"><div class="n">$0</div><div class="l">cost to any practice to join &mdash; forever</div></div>
+    </div>
+    <p class="prose" style="margin-top:1.5rem; font-size:0.95rem; color:var(--muted)">Anchored by Kentlands Psychology and built end-to-end &mdash; the console, a public patient matcher, and a Chrome side-panel companion that docks beside a practice's existing tools.</p>
+  </section>
+
+  <!-- CLOSE / CTA -->
+  <section style="border-top:none">
+    <div class="close">
+      <p class="eyebrow">The vision &amp; the ask</p>
+      <h2>Care coordination for everyone &mdash; from hotlines to practices to doctors.</h2>
+      <p style="max-width:44rem">We started with mental-health practices because that's where people fall through the widest cracks. The same connective tissue extends outward: crisis lines that need a warm place to send someone, primary-care offices, whole communities of care that can finally see and reach each other. The network grows the best way there is &mdash; practices inviting practices.</p>
+      <div class="paths">
+        <div class="path"><b>Join as a practice</b><span>Free to get listed, discovered, and coordinating. The network is stronger with you in it.</span></div>
+        <div class="path"><b>Help sustain it</b><span>Fund the free tier so every small practice keeps access, regardless of budget.</span></div>
+        <div class="path"><b>Grow with TheraSaaS</b><span>Unlock the connected experience for your practice &mdash; and keep it free for others.</span></div>
+      </div>
+      <div class="contact">
+        <span class="who-said">Start the conversation:</span>
+        <a href="mailto:drew.s@loveisahabit.org">drew.s@loveisahabit.org</a>
+        <span class="who-said">Drew S. &middot; Love Is A Habit</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="sources">
+      <b>Sources</b>
+      <ol>
+        <li>Substance Abuse and Mental Health Services Administration (SAMHSA), <a href="https://www.samhsa.gov/newsroom/press-announcements/20250728/samhsa-releases-annual-national-survey-on-drug-use-and-health">2024 National Survey on Drug Use and Health</a> &mdash; 61.5M adults (23.4%) with any mental illness; roughly half untreated.</li>
+        <li>National Alliance on Mental Illness (NAMI), <a href="https://www.nami.org/mental-health-by-the-numbers/">Mental Health By the Numbers</a> &mdash; ~11-year average delay between symptom onset and treatment.</li>
+        <li>U.S. Senate Finance Committee, <a href="https://www.finance.senate.gov/imo/media/doc/050323%20Ghost%20Network%20Hearing%20-%20Secret%20Shopper%20Study%20Report.pdf">Ghost Network secret-shopper study</a> (2023) &mdash; appointments booked with just 18% of listed in-network providers.</li>
+        <li>Psychology Today therapist directory listing fee, ~$29.95/month (&asymp;$360/year), per <a href="https://www.choosingtherapy.com/psychology-today-review/">ChoosingTherapy</a> (2024).</li>
+        <li>ProPublica, <a href="https://www.propublica.org/article/emblem-health-ghost-network-settlement-mental-health">EmblemHealth $2.5M ghost-network settlement</a> &mdash; directory errors chronic; enforcement rare.</li>
+        <li>KFF, <a href="https://www.kff.org/mental-health/988-suicide-crisis-lifeline-two-years-after-launch/">988 Suicide &amp; Crisis Lifeline: Two Years After Launch</a> &mdash; ~8M contacts in 2024; documented gaps in follow-up care.</li>
+      </ol>
+    </div>
+    <div class="meta" style="margin-top:1.75rem">
+      <span class="confid"><span class="dot" aria-hidden="true"></span> Confidential &mdash; prepared for review, not for public distribution.</span>
+      <span>The Care Coordination Console &middot; Love Is A Habit &times; TheraSaaS &middot; July 2026</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    function toPdf() { window.print(); }
+    var a = document.getElementById('pdfBtn'); if (a) a.addEventListener('click', toPdf);
+    var b = document.getElementById('pdfBtn2'); if (b) b.addEventListener('click', toPdf);
+  })();
+</script>
+</body>
+</html>
