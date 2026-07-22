@@ -16,13 +16,13 @@ export default function Home() {
     <main className="relative">
       <Navigation />
       <HeroSection />
-      <ShowcaseSection />
+      <CareConsoleModule />
       <AboutSection />
       <ExperienceSection />
       <StorySection />
       <EducationSection />
       <NonprofitSection />
-      <CareConsoleModule />
+      <ShowcaseSection />
       <ProjectsSection />
       <ContactSection />
       <Footer />
